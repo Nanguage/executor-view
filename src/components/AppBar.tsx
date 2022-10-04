@@ -8,6 +8,8 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import StorageIcon from '@mui/icons-material/Storage';
 
+import useStore from '../store';
+
 
 const drawerWidth = 240;
 
@@ -92,6 +94,10 @@ export default function CustomAppBar(props: IProps) {
     props.setDrawerOpen(true);
   };
 
+  const [serverAddr, setServerAddr] = useStore(
+    (state) => [state.serverAddr, state.setServerAddr]
+  )
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="absolute" open={props.drawerOpen}>
@@ -124,7 +130,8 @@ export default function CustomAppBar(props: IProps) {
               <StyledInputBase
                 placeholder="Server address"
                 inputProps={{ 'aria-label': 'search' }}
-                defaultValue="http://127.0.0.1:8000"
+                defaultValue={serverAddr}
+                onChange={(e) => setServerAddr(e.target.value)}
               />
           </Address>
 

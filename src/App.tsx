@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
 import './App.css'
@@ -24,16 +23,14 @@ function App() {
 
   return (
     <div className="App">
-      <Box>
-        <CustomAppBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
-        <CustomDrawer
-          open={drawerOpen} setOpen={setDrawerOpen}
-          setContentLabel={setContentLabel}
-          />
-        <Container maxWidth="lg" sx={{ mt: 10, mb: 4}}>
-          {contentRoute(contentLabel)}
-        </Container>
-      </Box>
+      <CustomAppBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
+      <CustomDrawer
+        open={drawerOpen} setOpen={setDrawerOpen}
+        setContentLabel={setContentLabel}
+        />
+      <Container maxWidth="lg" sx={{ mt: 10, mb: 4}}>
+        {contentRoute(contentLabel)}
+      </Container>
     </div>
   )
 }
