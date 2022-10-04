@@ -11,82 +11,80 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+
 
 const drawerWidth = 240;
 
 
 
 const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: 'flex-end',
 }));
 
 
 interface IProps {
-    open: boolean,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  open: boolean,
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  setContentLabel: React.Dispatch<React.SetStateAction<string>>,
 }
 
 
 export default function CustomDrawer(props: IProps) {
-    const theme = useTheme()
+  const theme = useTheme()
 
-    const handleDrawerClose = () => {
-      props.setOpen(false);
-    };
+  const handleDrawerClose = () => {
+    props.setOpen(false);
+  };
 
-    return (
-        <Drawer
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              '& .MuiDrawer-paper': {
-                width: drawerWidth,
-                boxSizing: 'border-box',
-              },
-            }}
-            variant="persistent"
-            anchor="left"
-            open={props.open}
-        >
-            <DrawerHeader>
-              <IconButton onClick={handleDrawerClose}>
-                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-              </IconButton>
-            </DrawerHeader>
-            <Divider />
-            <List>
-              {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <List>
-              {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-        </Drawer>
-    )
+  return (
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: drawerWidth,
+          boxSizing: 'border-box',
+        },
+      }}
+      variant="persistent"
+      open={props.open}
+    >
+      <DrawerHeader>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </IconButton>
+      </DrawerHeader>
+      <Divider />
+      <List>
+
+        <ListItem key="launch" disablePadding>
+          <ListItemButton onClick={() => props.setContentLabel("launch")}>
+            <ListItemIcon>
+              <RocketLaunchIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Launch task"/>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem key="jobs" disablePadding>
+          <ListItemButton onClick={() => props.setContentLabel("jobs")}>
+            <ListItemIcon>
+              <FormatListBulletedIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Jobs"/>
+          </ListItemButton>
+        </ListItem>
+
+      </List>
+
+    </Drawer>
+  )
 }
 
