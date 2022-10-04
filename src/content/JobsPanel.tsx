@@ -9,18 +9,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 import useStore from '../store'
-
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref,
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
+import Alert from '../components/Alert';
 
 
 interface IProps {
@@ -48,7 +39,6 @@ export default function JobsPanel(props: IProps) {
     if (reason === 'clickaway') {
       return;
     }
-
     setAlertOpen(false);
   };
 
