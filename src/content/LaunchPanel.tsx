@@ -7,12 +7,8 @@ import Grid from '@mui/material/Grid';
 import useStore from '../store';
 import Alert from '../components/Alert';
 import TaskCard from '../components/TaskCard'
+import { ITask } from '../types'
 
-
-interface ITask {
-  name: string,
-  description: string,
-}
 
 interface IProps {}
 
@@ -65,7 +61,7 @@ export default function LaunchPanel(props: IProps) {
           tasks.map(
             (t) =>
             <Grid item xs={12}>
-              <TaskCard name={t.name} description={t.description}/>
+              <TaskCard name={t.name} description={t.description} task={t}/>
             </Grid>
           )
         }
