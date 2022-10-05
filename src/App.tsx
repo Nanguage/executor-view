@@ -24,13 +24,15 @@ function App() {
   return (
     <div className="App">
       <CustomAppBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
-      <CustomDrawer
-        open={drawerOpen} setOpen={setDrawerOpen}
-        setContentLabel={setContentLabel}
-        />
-      <Container maxWidth="lg" sx={{ mt: 10, mb: 4}}>
-        {contentRoute(contentLabel)}
-      </Container>
+      <div style={{display: 'flex'}}>
+        <CustomDrawer
+          open={drawerOpen} setOpen={setDrawerOpen}
+          setContentLabel={setContentLabel}
+          />
+        <Container sx={{ mt: 10, mb: 4}}>
+          {contentRoute(contentLabel)}
+        </Container>
+      </div>
     </div>
   )
 }

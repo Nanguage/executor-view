@@ -46,8 +46,8 @@ export default function CustomDrawer(props: IProps) {
   return (
     <Drawer
       sx={{
-        width: drawerWidth,
-        flexShrink: 0,
+        width: (props.open ? drawerWidth : 0),
+        transition: "width 0.1s",
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',

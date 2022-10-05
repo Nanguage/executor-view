@@ -22,7 +22,7 @@ export default function LaunchPanel(props: IProps) {
   const [tasks, setTasks] = React.useState<Array<ITask>>([])
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const alertHidenDuration = 8000
+  const alertHidenDuration = 21000
   const fetchInterval = 20000
 
   const handleAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
