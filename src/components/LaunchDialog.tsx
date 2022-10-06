@@ -10,13 +10,20 @@ import Dialog from '@mui/material/Dialog';
 import MuiInput from '@mui/material/Input';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
-
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 import { ITask, ITaskArg } from '../types'
+import useStore from '../store';
 
 
 const Input = styled(MuiInput)`
   height: 50px;
+  width: 300px;
+`;
+
+
+const Dropdown = styled(Select)`
   width: 300px;
 `;
 
@@ -110,6 +117,11 @@ interface IProps {
 export default function TaskLaunchDialog(props: IProps) {
   const { open, onClose, task } = props;
   const [ vals, setVals ] = React.useState<any>(getInitValues(task.args))
+  const validJobTypes = useStore((state) => state.validJobTypes)
+  const [ jobType, setJobType ] = React.useState<string>("")
+  React.useEffect(() => {
+    setJobType(validJobTypes[0])
+  }, [validJobTypes])
 
   const handleClose = () => {
     onClose()
@@ -119,16 +131,32 @@ export default function TaskLaunchDialog(props: IProps) {
     <Dialog onClose={handleClose} open={open} maxWidth={'xs'} fullWidth={true}>
       <DialogTitle>{"Launch task: " + task.name}</DialogTitle>
       <List>
-        <ListItem></ListItem>
+        <ListItem key="job_type_selection">
+          <Grid container>
+            <Grid item xs={3}>
+              <ListItemText>Job type</ListItemText>
+            </Grid>
+            <Grid item xs={9}>
+              <Dropdown
+                value={jobType}
+                onChange={(e) => {setJobType(e.target.value as string)}}
+              >
+                {validJobTypes.map(
+                  (j) => <MenuItem key={j} value={j}>{j}</MenuItem>
+                )}
+              </Dropdown>
+            </Grid>
+          </Grid>
+        </ListItem>
         <Divider/>
         {
           task.args.map((arg) => (
             <ListItem key={arg.name}>
               <Grid container>
-                <Grid item xs={3}>
+                <Grid item xs={3} key={`label-${arg.name}`}>
                   <ListItemText primary={arg.name} secondary={arg.type}/>
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={9} key={`widget-${arg.name}`}>
                   <ArgInput
                     arg={arg} val={vals[arg.name]}
                     setVal={
