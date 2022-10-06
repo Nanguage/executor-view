@@ -66,10 +66,10 @@ const TasksFetch = (
 const ValidJobTypesFetch = (
       props: {
         nRefresh: number,
-        setJobTypes: (jtypes: string[]) => void
       }
     ) => {
-  const { setJobTypes, nRefresh } = props
+  const { nRefresh } = props
+  const setValidJobTypes = useStore((state) => state.setValidJobTypes)
   const serverAddr = useStore((state) => state.serverAddr)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
@@ -88,7 +88,7 @@ const ValidJobTypesFetch = (
   const fetchValidJobTypes = (serverAddr: string) => {
     const addr = serverAddr + "/valid_job_types"
     axios.get(addr).then((resp) => {
-      setJobTypes(resp.data)
+      setValidJobTypes(resp.data)
     })
     .catch((error) => {
       console.log(error)
@@ -117,7 +117,6 @@ const ValidJobTypesFetch = (
 
 export default function LaunchPanel(props: {}) {
   const [tasks, setTasks] = React.useState<Array<ITask>>([])
-  const [validJobTypes, setValidJobTypes] = React.useState<string[]>([])
   const [nRefresh, setNRefresh] = React.useState<number>(0)
 
   return (
@@ -127,13 +126,13 @@ export default function LaunchPanel(props: {}) {
       </div>
 
       <TasksFetch nRefresh={nRefresh} setTasks={(tasks) => {setTasks(tasks)}}/>
-      <ValidJobTypesFetch nRefresh={nRefresh} setJobTypes={(jtypes) => {setValidJobTypes(jtypes)}} />
+      <ValidJobTypesFetch nRefresh={nRefresh}/>
 
       <Grid container rowSpacing={1} columnSpacing={1}>
         {
           tasks.map(
             (t) =>
-            <Grid item xs={12}>
+            <Grid item xs={12} key={t.name}>
               <TaskCard name={t.name} description={t.description} task={t}/>
             </Grid>
           )

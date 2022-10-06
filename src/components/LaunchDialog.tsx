@@ -123,7 +123,7 @@ export default function TaskLaunchDialog(props: IProps) {
         <Divider/>
         {
           task.args.map((arg) => (
-            <ListItem>
+            <ListItem key={arg.name}>
               <Grid container>
                 <Grid item xs={3}>
                   <ListItemText primary={arg.name} secondary={arg.type}/>
