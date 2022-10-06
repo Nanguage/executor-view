@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
@@ -12,9 +13,12 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Snackbar from '@mui/material/Snackbar';
 
-import { ITask, ITaskArg } from '../types'
+import { ITask, ITaskArg, IJob } from '../types'
 import useStore from '../store';
+import Alert from '../components/Alert';
+import { getAlertCloseHandler } from '../utils';
 
 
 const Input = styled(MuiInput)`
@@ -108,6 +112,78 @@ const getInitValues = (args: ITaskArg[]) => {
 }
 
 
+interface IArgWidgetsProps {
+  args: ITaskArg[],
+  vals: any,
+  setVals: (vals: any) => void,
+}
+
+
+const ArgWidgets = ( props: IArgWidgetsProps) => {
+  const { args, vals, setVals } = props
+
+  return (
+    <>
+    {
+      args.map((arg) => (
+        <ListItem key={arg.name}>
+          <Grid container>
+            <Grid item xs={3} key={`label-${arg.name}`}>
+              <ListItemText primary={arg.name} secondary={arg.type}/>
+            </Grid>
+            <Grid item xs={9} key={`widget-${arg.name}`}>
+              <ArgInput
+                arg={arg} val={vals[arg.name]}
+                setVal={
+                  (val: any) => {
+                    const newVals = {...vals}
+                    newVals[arg.name] = val
+                    setVals(newVals)
+                  }
+                }
+                />
+            </Grid>
+          </Grid>
+        </ListItem>
+      ))
+    }
+    </>
+  )
+}
+
+
+interface IJobRunSetting {
+  validJobTypes: string[],
+  jobType: string,
+  setJobType: (t: string) => void,
+}
+
+
+const JobRunSettings = ( props: IJobRunSetting ) => {
+  const { jobType, validJobTypes, setJobType } = props
+
+  return (<>
+    <ListItem key="job_type_selection">
+      <Grid container>
+        <Grid item xs={3}>
+          <ListItemText>Job type</ListItemText>
+        </Grid>
+        <Grid item xs={9}>
+          <Dropdown
+            value={jobType}
+            onChange={(e) => {setJobType(e.target.value as string)}}
+          >
+            {validJobTypes.map(
+              (j) => <MenuItem key={j} value={j}>{j}</MenuItem>
+            )}
+          </Dropdown>
+        </Grid>
+      </Grid>
+    </ListItem>
+  </>)
+}
+
+
 interface IProps {
   open: boolean;
   onClose: () => void;
@@ -117,66 +193,70 @@ interface IProps {
 export default function TaskLaunchDialog(props: IProps) {
   const { open, onClose, task } = props;
   const [ vals, setVals ] = React.useState<any>(getInitValues(task.args))
+  const serverAddr = useStore((state) => state.serverAddr)
   const validJobTypes = useStore((state) => state.validJobTypes)
   const [ jobType, setJobType ] = React.useState<string>("")
   React.useEffect(() => {
     setJobType(validJobTypes[0])
   }, [validJobTypes])
 
+  const alertHidenDuration = 8000
+  const [errorOpen, setErrorOpen] = React.useState<boolean>(false)
+  const [errorMsg, setErrorMsg] = React.useState<string>("")
+  const [infoOpen, setInfoOpen] = React.useState<boolean>(false)
+  const [infoMsg, setInfoMsg] = React.useState<string>("")
+
+  const handleErrorClose = getAlertCloseHandler(setErrorOpen)
+  const handleInfoClose = getAlertCloseHandler(setInfoOpen)
+
   const handleClose = () => {
     onClose()
+  }
+
+  const launchTask = () => {
+    const addr = serverAddr + "/call"
+    const req = {
+      task_name: task.name,
+      args: [],
+      kwargs: vals,
+      job_type: jobType,
+    }
+    axios.post(addr, req).then((resp) => {
+      const job: IJob = resp.data
+      setInfoMsg(`Successful launch job: ${job.id}`)
+      setInfoOpen(true)
+    })
+    .catch((error) => {
+      console.log(error)
+      setErrorMsg(`${error.message}: query on ${addr}`)
+      setErrorOpen(true)
+    })
   }
 
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xs'} fullWidth={true}>
       <DialogTitle>{"Launch task: " + task.name}</DialogTitle>
       <List>
-        <ListItem key="job_type_selection">
-          <Grid container>
-            <Grid item xs={3}>
-              <ListItemText>Job type</ListItemText>
-            </Grid>
-            <Grid item xs={9}>
-              <Dropdown
-                value={jobType}
-                onChange={(e) => {setJobType(e.target.value as string)}}
-              >
-                {validJobTypes.map(
-                  (j) => <MenuItem key={j} value={j}>{j}</MenuItem>
-                )}
-              </Dropdown>
-            </Grid>
-          </Grid>
-        </ListItem>
+        <JobRunSettings validJobTypes={validJobTypes} jobType={jobType} setJobType={setJobType}/>
         <Divider/>
-        {
-          task.args.map((arg) => (
-            <ListItem key={arg.name}>
-              <Grid container>
-                <Grid item xs={3} key={`label-${arg.name}`}>
-                  <ListItemText primary={arg.name} secondary={arg.type}/>
-                </Grid>
-                <Grid item xs={9} key={`widget-${arg.name}`}>
-                  <ArgInput
-                    arg={arg} val={vals[arg.name]}
-                    setVal={
-                      (val: any) => {
-                        const newVals = {...vals}
-                        newVals[arg.name] = val
-                        setVals(newVals)
-                      }
-                    }
-                    />
-                </Grid>
-              </Grid>
-            </ListItem>
-          ))
-        }
+        <ArgWidgets args={task.args} vals={vals} setVals={setVals}/>
       </List>
+
       <DialogActions>
-        <Button>Launch</Button>
+        <Button onClick={launchTask}>Launch</Button>
         <Button onClick={handleClose} autoFocus>Cancel</Button>
       </DialogActions>
+
+      <Snackbar open={infoOpen} autoHideDuration={alertHidenDuration} onClose={handleInfoClose}>
+        <Alert onClose={handleInfoClose} severity="info" sx={{ width: '100%' }}>
+          {infoMsg}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={errorOpen} autoHideDuration={alertHidenDuration} onClose={handleErrorClose}>
+        <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
+          {errorMsg}
+        </Alert>
+      </Snackbar>
     </Dialog>
   );
 }

@@ -8,6 +8,7 @@ import useStore from '../store';
 import Alert from '../components/Alert';
 import TaskCard from '../components/TaskCard'
 import { ITask } from '../types'
+import { getAlertCloseHandler } from '../utils';
 
 
 const TasksFetch = (
@@ -44,12 +45,7 @@ const TasksFetch = (
     })
   }
 
-  const handleAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setAlertOpen(false);
-  };
+  const handleAlertClose = getAlertCloseHandler(setAlertOpen)
 
   return (
     <>
@@ -97,12 +93,7 @@ const ValidJobTypesFetch = (
     })
   }
 
-  const handleAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setAlertOpen(false);
-  };
+  const handleAlertClose = getAlertCloseHandler(setAlertOpen)
 
   return (
     <Snackbar open={alertOpen} autoHideDuration={alertHidenDuration} onClose={handleAlertClose}>

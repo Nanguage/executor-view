@@ -10,3 +10,11 @@ export interface ITask {
   description: string,
   args: Array<ITaskArg>,
 }
+
+export interface IJob {
+  id: string,
+  status: string,
+  name: string,
+  job_type: string,
+  check_time: string,
+}

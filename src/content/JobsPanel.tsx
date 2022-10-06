@@ -12,18 +12,11 @@ import Snackbar from '@mui/material/Snackbar';
 
 import useStore from '../store'
 import Alert from '../components/Alert';
+import { IJob } from '../types'
 
 
 interface IProps {
 
-}
-
-interface IJob {
-  id: string,
-  status: string,
-  name: string,
-  job_type: string,
-  check_time: string,
 }
 
 export default function JobsPanel(props: IProps) {
