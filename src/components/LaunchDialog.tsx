@@ -8,7 +8,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 import MuiInput from '@mui/material/Input';
-import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 
@@ -71,9 +70,10 @@ const ArgInput = (props: IArgInput) => {
             value={val} inputProps={inputProps}
             onChange={getChangeHandler(parseFloat)}/>
   } else {
-    return <TextField
+    return <Input
             value={val}
-            onChange={getChangeHandler((v) => v)}/>
+            onChange={getChangeHandler((v) => v)}
+            />
   }
 }
 
