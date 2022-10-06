@@ -40,7 +40,6 @@ export default function LaunchPanel(props: IProps) {
   const fetchTasks = (serverAddr: string) => {
     const addr = serverAddr + "/tasks"
     axios.get(addr).then((resp) => {
-      console.log(resp)
       setTasks(resp.data)
     })
     .catch((error) => {

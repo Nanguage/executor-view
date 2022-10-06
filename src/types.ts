@@ -1,12 +1,12 @@
 export interface ITaskArg{
   name: string,
   type: string,
-  range: string | null,
+  range: Array<string | number> | null,
   default: string | null,
 }
 
 export interface ITask {
   name: string,
   description: string,
-  args: [ITaskArg],
+  args: Array<ITaskArg>,
 }
