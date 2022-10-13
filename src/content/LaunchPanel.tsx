@@ -34,7 +34,7 @@ const TasksFetch = (
   }, [serverAddr, nRefresh])
 
   const fetchTasks = (serverAddr: string) => {
-    const addr = serverAddr + "/tasks"
+    const addr = serverAddr + "/task/list_all"
     axios.get(addr).then((resp) => {
       setTasks(resp.data)
     })
@@ -82,7 +82,7 @@ const ValidJobTypesFetch = (
   }, [serverAddr, nRefresh])
 
   const fetchValidJobTypes = (serverAddr: string) => {
-    const addr = serverAddr + "/valid_job_types"
+    const addr = serverAddr + "/job/valid_types"
     axios.get(addr).then((resp) => {
       setValidJobTypes(resp.data)
     })

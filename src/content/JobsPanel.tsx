@@ -47,7 +47,7 @@ export default function JobsPanel(props: IProps) {
 
 
   const fetchJobs = (serverAddr: string) => {
-    const addr = serverAddr + "/jobs"
+    const addr = serverAddr + "/job/list_all"
     axios.get(addr).then((resp) => {
       setJobs(resp.data)
     })

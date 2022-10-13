@@ -214,7 +214,7 @@ export default function TaskLaunchDialog(props: IProps) {
   }
 
   const launchTask = () => {
-    const addr = serverAddr + "/call"
+    const addr = serverAddr + "/task/call"
     const req = {
       task_name: task.name,
       args: [],
