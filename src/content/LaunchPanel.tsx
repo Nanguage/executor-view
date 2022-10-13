@@ -22,7 +22,7 @@ const TasksFetch = (
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const alertHidenDuration = 21000
-  const fetchInterval = 20000
+  const fetchInterval = 90000
 
   React.useEffect(() => {
     fetchTasks(serverAddr)
@@ -70,7 +70,7 @@ const ValidJobTypesFetch = (
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const alertHidenDuration = 21000
-  const fetchInterval = 20000
+  const fetchInterval = 90000
 
   React.useEffect(() => {
     fetchValidJobTypes(serverAddr)
