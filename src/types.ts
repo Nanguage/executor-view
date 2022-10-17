@@ -17,4 +17,7 @@ export interface IJob {
   name: string,
   job_type: string,
   check_time: string,
+  created_time: string,
+  submit_time: string | null,
+  stoped_time: string | null,
 }
