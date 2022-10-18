@@ -15,6 +15,8 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
     "axios": "^0.27.2",
+    "chonky": "^2.3.2",
+    "chonky-icon-fontawesome": "^2.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zustand": "^4.1.1"

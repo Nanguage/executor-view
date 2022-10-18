@@ -119,7 +119,7 @@ export default function LaunchPanel(props: {}) {
       <TasksFetch nRefresh={nRefresh} setTasks={(tasks) => {setTasks(tasks)}}/>
       <ValidJobTypesFetch nRefresh={nRefresh}/>
 
-      <Grid container rowSpacing={1} columnSpacing={1}>
+      <Grid container rowGap={1} columnGap={1}>
         {
           tasks.map(
             (t) =>

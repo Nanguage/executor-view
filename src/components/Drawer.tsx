@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { styled, useTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -13,6 +11,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FolderIcon from '@mui/icons-material/Folder';
+
+import { panelLabel } from '../types';
 
 
 const drawerWidth = 240;
@@ -31,8 +32,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 interface IProps {
   open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setContentLabel: React.Dispatch<React.SetStateAction<string>>,
+  setOpen: (o: boolean) => void,
+  setContentLabel: (l: panelLabel) => void,
 }
 
 
@@ -48,7 +49,7 @@ export default function CustomDrawer(props: IProps) {
       sx={{
         width: (props.open ? drawerWidth : 0),
         transition: "width 0.1s",
-        '& .MuiDrawer-paper': {
+        '& .my-MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
         },
@@ -82,6 +83,14 @@ export default function CustomDrawer(props: IProps) {
           </ListItemButton>
         </ListItem>
 
+        <ListItem key="files" disablePadding>
+          <ListItemButton onClick={() => props.setContentLabel("files")}>
+            <ListItemIcon>
+              <FolderIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Files"/>
+          </ListItemButton>
+        </ListItem>
       </List>
 
     </Drawer>

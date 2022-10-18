@@ -65,7 +65,7 @@ const AddressIconWrapper = styled('div')(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
-  '& .MuiInputBase-input': {
+  '& .my-MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from Icon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,

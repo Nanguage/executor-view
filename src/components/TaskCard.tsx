@@ -20,7 +20,7 @@ export default function TaskCard(props: IProps) {
   const [launchDialogOpen, setLaunchDialogOpen] = React.useState<boolean>(false)
 
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 275}}>
 
       <CardContent>
         <Typography variant="h5" component="div">

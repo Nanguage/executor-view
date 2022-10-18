@@ -21,3 +21,5 @@ export interface IJob {
   submit_time: string | null,
   stoped_time: string | null,
 }
+
+export type panelLabel = 'launch' | 'jobs' | 'files'
