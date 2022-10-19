@@ -17,3 +17,15 @@ export const folderChainToStr = (fc: FolderChain) => {
   const path = fc.map((f) => (f).name).join("/")
   return path
 }
+
+export const downloadFile = (fileName:string, fileContent: Blob) => {
+  const url = window.URL.createObjectURL(
+    new Blob([fileContent])
+  )
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', fileName)
+  document.body.appendChild(link)
+  link.click()
+  link.parentNode?.removeChild(link)
+}

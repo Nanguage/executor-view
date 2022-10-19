@@ -8,18 +8,30 @@ import {
     FileArray,
     FileData,
     FileActionHandler,
+    ChonkyActions,
 } from 'chonky';
 import { FileBrowser as ChonkyFileBrowser } from 'chonky';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '../components/Alert';
 
 import useStore from '../store';
-import { folderChainToStr } from '../utils';
+import { downloadFile, folderChainToStr, getAlertCloseHandler } from '../utils';
 
 
-export default function FileBrowser(props: {}) {
-  const [files, setFiles] = React.useState<FileArray>([])
-  const { currentPath, setCurrentPath } = useStore((state) => state)
+interface FetchFilesProps {
+  setFiles: (files: FileArray) => void;
+}
 
+
+const FetchFiles = (props: FetchFilesProps) => {
+  const { setFiles } = props
+  const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
+  const [errorText, setErrorText] = React.useState<string>("")
+  const alertHidenDuration = 6000
+  const { currentPath } = useStore((state) => state)
   const serverAddr = useStore((state) => state.serverAddr)
+  const handleAlertClose = getAlertCloseHandler(setAlertOpen)
+
   React.useEffect(() => {
     const addr = `${serverAddr}/file/list_dir/`
     const path = folderChainToStr(currentPath.slice(1, currentPath.length))
@@ -33,11 +45,28 @@ export default function FileBrowser(props: {}) {
       setFiles(sfiles)
     }).catch((error) => {
       console.log(error)
+      setErrorText(error.message + `: fetch ${addr}`)
+      setAlertOpen(true)
     })
   }, [serverAddr, currentPath])
 
+  return (
+    <>
+      <Snackbar open={alertOpen} autoHideDuration={alertHidenDuration} onClose={handleAlertClose}>
+        <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
+          {errorText}
+        </Alert>
+      </Snackbar>
+    </>
+  )
+}
+
+
+export default function FileBrowser(props: {}) {
+  const [files, setFiles] = React.useState<FileArray>([])
+  const { currentPath, setCurrentPath, serverAddr } = useStore((state) => state)
+
   const handleAction = React.useCallback<FileActionHandler>((data) => {
-    //console.log("file action data:", data)
     if (data.id === "open_files") {
       const target_file = data.payload.files[0]
       if (target_file.isDir) {
@@ -54,8 +83,28 @@ export default function FileBrowser(props: {}) {
           }
         }
       }
+    } else if (data.id === "download_files") {
+      const addr = `${serverAddr}/file/download`
+      const target_file = data.state.selectedFiles[0]
+      if (!target_file.isDir) {
+        const dirPath = folderChainToStr(currentPath.slice(1, currentPath.length))
+        let path: string
+        if (dirPath.length == 0) {
+          path = target_file.name
+        } else {
+          path = dirPath + "/" + target_file.name
+        }
+        axios.post(addr, {path: path}, {responseType: "blob"}).then((resp) => {
+          downloadFile(target_file.name, resp.data)
+        })
+      }
     }
   }, [currentPath])
+
+  const actions = [
+    ChonkyActions.UploadFiles,
+    ChonkyActions.DownloadFiles,
+  ]
 
   return (
     <>
@@ -63,12 +112,14 @@ export default function FileBrowser(props: {}) {
         files={files}
         folderChain={currentPath}
         onFileAction={handleAction}
+        fileActions={actions}
         >
         <FileNavbar />
         <FileToolbar />
         <FileList />
         <FileContextMenu />
       </ChonkyFileBrowser>
+      <FetchFiles setFiles={setFiles}/>
     </>
   )
 }
