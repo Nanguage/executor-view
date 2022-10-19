@@ -15,7 +15,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Snackbar from '@mui/material/Snackbar';
 
-import { ITask, ITaskArg, IJob } from '../types'
+import { Task, TaskArg, Job } from '../types'
 import useStore from '../store';
 import Alert from '../components/Alert';
 import { getAlertCloseHandler } from '../utils';
@@ -33,7 +33,7 @@ const Dropdown = styled(Select)`
 
 
 interface IArgInput {
-  arg: ITaskArg;
+  arg: TaskArg;
   val: any;
   setVal: (val: any) => void;
 };
@@ -89,7 +89,7 @@ const ArgInput = (props: IArgInput) => {
 }
 
 
-const getInitValues = (args: ITaskArg[]) => {
+const getInitValues = (args: TaskArg[]) => {
   const vals: any = {}
   for (let arg of args) {
     let val: any
@@ -113,7 +113,7 @@ const getInitValues = (args: ITaskArg[]) => {
 
 
 interface IArgWidgetsProps {
-  args: ITaskArg[],
+  args: TaskArg[],
   vals: any,
   setVals: (vals: any) => void,
 }
@@ -187,7 +187,7 @@ const JobRunSettings = ( props: IJobRunSetting ) => {
 interface IProps {
   open: boolean;
   onClose: () => void;
-  task: ITask;
+  task: Task;
 }
 
 export default function TaskLaunchDialog(props: IProps) {
@@ -222,7 +222,7 @@ export default function TaskLaunchDialog(props: IProps) {
       job_type: jobType,
     }
     axios.post(addr, req).then((resp) => {
-      const job: IJob = resp.data
+      const job: Job = resp.data
       setInfoMsg(`Successful launch job: ${job.id}`)
       setInfoOpen(true)
     })

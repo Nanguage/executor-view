@@ -10,10 +10,10 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 import JobLogDialog from './JobLogDialog';
-import { IJob } from '../types';
+import { Job } from '../types';
 
 
-const JobActions = (props: {job: IJob}) => {
+const JobActions = (props: {job: Job}) => {
   const [logDialogOpen, setLogDialogOpen] = React.useState(false)
 
   return (
@@ -30,7 +30,7 @@ const JobActions = (props: {job: IJob}) => {
 
 
 interface IProps {
-  jobs: IJob[],
+  jobs: Job[],
 }
 
 

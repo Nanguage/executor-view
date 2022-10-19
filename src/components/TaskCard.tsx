@@ -6,13 +6,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import TaskLaunchDialog from '../components/LaunchDialog';
-import { ITask } from '../types';
+import { Task } from '../types';
 
 
 interface IProps {
   name: string;
   description: string;
-  task: ITask;
+  task: Task;
 }
 
 

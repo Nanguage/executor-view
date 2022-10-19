@@ -13,7 +13,7 @@ import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FolderIcon from '@mui/icons-material/Folder';
 
-import { panelLabel } from '../types';
+import { PanelLabel } from '../types';
 
 
 const drawerWidth = 240;
@@ -33,7 +33,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 interface IProps {
   open: boolean,
   setOpen: (o: boolean) => void,
-  setContentLabel: (l: panelLabel) => void,
+  setContentLabel: (l: PanelLabel) => void,
 }
 
 

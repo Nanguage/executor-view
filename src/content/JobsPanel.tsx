@@ -6,7 +6,7 @@ import Snackbar from '@mui/material/Snackbar';
 import useStore from '../store'
 import Alert from '../components/Alert';
 import JobsTable from '../components/JobsTable';
-import { IJob } from '../types';
+import { Job } from '../types';
 
 
 interface IProps {}
@@ -14,7 +14,7 @@ interface IProps {}
 export default function JobsPanel(props: IProps) {
 
   const serverAddr = useStore((state) => state.serverAddr)
-  const [jobs, setJobs] = React.useState<Array<IJob>>([])
+  const [jobs, setJobs] = React.useState<Array<Job>>([])
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const alertHidenDuration = 8000

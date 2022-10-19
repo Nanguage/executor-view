@@ -6,23 +6,25 @@ import CustomDrawer from './components/Drawer';
 import LaunchPanel from './content/LaunchPanel';
 import JobsPanel from './content/JobsPanel';
 import FilesPanel from './content/FilesPanel';
-import { panelLabel } from './types';
+import { PanelLabel } from './types';
 import './MuiClassNameSetup';
+
+
+const ContentRoute = (props: {label: PanelLabel}) => {
+  const { label } = props
+  if (label === "launch") {
+    return <LaunchPanel/>
+  } else if (label === "jobs") {
+    return <JobsPanel/>
+  } else {
+    return <FilesPanel/>
+  }
+}
 
 
 function App() {
   const [drawerOpen, setDrawerOpen] = React.useState<boolean>(true)
-  const [contentLabel, setContentLabel] = React.useState<panelLabel>('launch')
-
-  const contentRoute = (label: string) => {
-    if (label === "launch") {
-      return <LaunchPanel/>
-    } else if (label === "jobs") {
-      return <JobsPanel/>
-    } else {
-      return <FilesPanel/>
-    }
-  }
+  const [contentLabel, setContentLabel] = React.useState<PanelLabel>('launch')
 
   return (
     <div className="App">
@@ -33,7 +35,7 @@ function App() {
           setContentLabel={(l) => {setContentLabel(l)}}
           />
         <Container sx={{ mt: 10, mb: 4}}>
-          {contentRoute(contentLabel)}
+          <ContentRoute label={contentLabel}/>
         </Container>
       </div>
     </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import Typography from '@mui/material/Typography';
 
 
 export default function PseudoTerminal(props: {content: string}) {
@@ -22,14 +21,14 @@ export default function PseudoTerminal(props: {content: string}) {
         height: "300px",
         overflow: "scroll",
       }}>
-      <Typography>
+      <div>
         <pre style={{
           margin: 0,
         }}>
           {props.content}
         </pre>
         <div ref={endRef}/>
-      </Typography>
+      </div>
     </div>
   )
 }

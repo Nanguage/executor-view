@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 
-import { IJob } from "../types";
+import { Job } from "../types";
 import { Accordion, AccordionSummary, AccordionDetails } from './Accordion';
 import PseudoTerminal from './PseudoTerminal';
 import useStore from '../store';
@@ -66,7 +66,7 @@ const FetchStderr = jobLogFetchFactory("stderr")
 
 
 interface IProps {
-  job: IJob;
+  job: Job;
   open: boolean;
   onClose: () => void;
 }

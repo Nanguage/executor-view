@@ -1,17 +1,17 @@
-export interface ITaskArg{
+export interface TaskArg{
   name: string,
   type: string,
   range: Array<string | number> | null,
   default: string | null,
 }
 
-export interface ITask {
+export interface Task {
   name: string,
   description: string,
-  args: Array<ITaskArg>,
+  args: Array<TaskArg>,
 }
 
-export interface IJob {
+export interface Job {
   id: string,
   status: string,
   name: string,
@@ -22,4 +22,11 @@ export interface IJob {
   stoped_time: string | null,
 }
 
-export type panelLabel = 'launch' | 'jobs' | 'files'
+export type PanelLabel = 'launch' | 'jobs' | 'files'
+
+export interface Folder {
+  id: string,
+  name: string,
+}
+
+export type FolderChain = Array<Folder>

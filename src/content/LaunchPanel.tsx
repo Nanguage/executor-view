@@ -7,14 +7,14 @@ import Grid from '@mui/material/Grid';
 import useStore from '../store';
 import Alert from '../components/Alert';
 import TaskCard from '../components/TaskCard'
-import { ITask } from '../types'
+import { Task } from '../types'
 import { getAlertCloseHandler } from '../utils';
 
 
 const TasksFetch = (
       props: {
         nRefresh: number,
-        setTasks: (tasks: ITask[]) => void
+        setTasks: (tasks: Task[]) => void
       }
     ) => {
   const { setTasks, nRefresh } = props
@@ -107,7 +107,7 @@ const ValidJobTypesFetch = (
 
 
 export default function LaunchPanel(props: {}) {
-  const [tasks, setTasks] = React.useState<Array<ITask>>([])
+  const [tasks, setTasks] = React.useState<Array<Task>>([])
   const [nRefresh, setNRefresh] = React.useState<number>(0)
 
   return (

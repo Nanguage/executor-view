@@ -1,4 +1,5 @@
 import create from "zustand";
+import { FolderChain } from "./types";
 
 
 interface IProps {
@@ -6,6 +7,8 @@ interface IProps {
   setServerAddr: (addr: string) => void,
   validJobTypes: string[],
   setValidJobTypes: (tps: string[]) => void,
+  currentPath: FolderChain,
+  setCurrentPath: (path: FolderChain) => void,
 }
 
 
@@ -14,6 +17,8 @@ const useStore = create<IProps>((set) => ({
   setServerAddr: (addr: string) => { set({ serverAddr: addr }) },
   validJobTypes: [],
   setValidJobTypes: (tps: string[]) => { set({ validJobTypes: tps }) },
+  currentPath: [{id: 'folder-root', name: 'root'}],
+  setCurrentPath: (path: FolderChain) => { set({ currentPath: path }) },
 }))
 
 
