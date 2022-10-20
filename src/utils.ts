@@ -1,3 +1,4 @@
+import React from 'react';
 import { FolderChain } from "./types";
 
 export const getAlertCloseHandler = (setAlertOpen: (o: boolean) => void) => {
@@ -28,4 +29,49 @@ export const downloadFile = (fileName:string, fileContent: Blob) => {
   document.body.appendChild(link)
   link.click()
   link.parentNode?.removeChild(link)
+}
+
+//export const selectLocalFile = () => {
+//  return new Promise<string>((resolve, reject) =>  {
+//    const link = document.createElement("input")
+//    link.setAttribute("type", "file")
+//    //link.setAttribute("style", "display: none;")
+//    document.body.appendChild(link)
+//    const onChange = (e: any) => {
+//      const filePath: string = e.target.value
+//      resolve(filePath)
+//      link?.parentElement?.removeChild(link)
+//    }
+//    link.onchange = onChange
+//    link.click()
+//  })
+//}
+
+export const selectLocalFile = () => {
+  // see https://stackoverflow.com/a/73552508/8500469
+  let lock = false
+  return new Promise<FileList>((resolve, reject) => {
+    const el = document.createElement('input');
+    el.id = (new Date()).toString();
+    el.style.display = 'none';
+    el.setAttribute('type', 'file');
+    el.setAttribute('multiple', "")
+    document.body.appendChild(el)
+
+    el.addEventListener('change', () => {
+      lock = true;
+      resolve(el.files as FileList)
+      document.body.removeChild(el);
+    }, { once: true })
+
+    window.addEventListener('focus', () => { // file blur
+      setTimeout(() => {
+        if (!lock && document.getElementById(el.id)) {
+          reject(new Error('onblur'))
+          document.body.removeChild(el)
+        }
+      }, 300)
+    }, { once: true })
+    el.click() // open file select box
+  })
 }

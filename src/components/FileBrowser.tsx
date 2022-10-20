@@ -15,16 +15,18 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '../components/Alert';
 
 import useStore from '../store';
-import { downloadFile, folderChainToStr, getAlertCloseHandler } from '../utils';
+import { downloadFile, folderChainToStr, getAlertCloseHandler, selectLocalFile } from '../utils';
+import { FolderChain } from '../types';
 
 
 interface FetchFilesProps {
+  nRefresh: number;
   setFiles: (files: FileArray) => void;
 }
 
 
 const FetchFiles = (props: FetchFilesProps) => {
-  const { setFiles } = props
+  const { nRefresh, setFiles } = props
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const alertHidenDuration = 6000
@@ -48,7 +50,7 @@ const FetchFiles = (props: FetchFilesProps) => {
       setErrorText(error.message + `: fetch ${addr}`)
       setAlertOpen(true)
     })
-  }, [serverAddr, currentPath])
+  }, [serverAddr, currentPath, nRefresh])
 
   return (
     <>
@@ -62,7 +64,19 @@ const FetchFiles = (props: FetchFilesProps) => {
 }
 
 
+const getFilePath = (currentPath: FolderChain, fname: string) => {
+  const dirPath = folderChainToStr(currentPath.slice(1, currentPath.length))
+  let path: string
+  if (dirPath.length == 0) {
+    path = fname
+  } else {
+    path = dirPath + "/" + fname
+  }
+}
+
+
 export default function FileBrowser(props: {}) {
+  const [nRefresh, setNRefresh] = React.useState(0)
   const [files, setFiles] = React.useState<FileArray>([])
   const { currentPath, setCurrentPath, serverAddr } = useStore((state) => state)
 
@@ -87,17 +101,33 @@ export default function FileBrowser(props: {}) {
       const addr = `${serverAddr}/file/download`
       const target_file = data.state.selectedFiles[0]
       if (!target_file.isDir) {
-        const dirPath = folderChainToStr(currentPath.slice(1, currentPath.length))
-        let path: string
-        if (dirPath.length == 0) {
-          path = target_file.name
-        } else {
-          path = dirPath + "/" + target_file.name
-        }
+        const path = getFilePath(currentPath, target_file.name)
         axios.post(addr, {path: path}, {responseType: "blob"}).then((resp) => {
           downloadFile(target_file.name, resp.data)
         })
       }
+    } else if (data.id === "upload_files") {
+      selectLocalFile().then((files) => {
+        console.log(files)
+        const dirPath = folderChainToStr(currentPath.slice(1, currentPath.length))
+        const formData = new FormData()
+        for (const file of files) {
+          formData.append("files", file)
+        }
+        const addr = `${serverAddr}/file/upload?path=${dirPath}`
+        const config = {
+          headers: {
+            'accept': "application/json",
+            'content-Type': "multipart/form-data",
+          }
+        }
+        axios.post(addr, formData, config).then((resp) => {
+          console.log(resp)
+          setNRefresh(nRefresh + 1)
+        })
+      }).catch((_) => {
+        console.log("Cancel upload")
+      })
     }
   }, [currentPath])
 
@@ -119,7 +149,7 @@ export default function FileBrowser(props: {}) {
         <FileList />
         <FileContextMenu />
       </ChonkyFileBrowser>
-      <FetchFiles setFiles={setFiles}/>
+      <FetchFiles nRefresh={nRefresh} setFiles={setFiles}/>
     </>
   )
 }
