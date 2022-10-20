@@ -1,31 +1,20 @@
 import React from 'react';
 import axios from 'axios'
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
 
 import useStore from '../store'
-import Alert from '../components/Alert';
 import JobsTable from '../components/JobsTable';
 import { Job } from '../types';
+import MessageBar from '../components/MessageBar'
 
 
-interface IProps {}
-
-export default function JobsPanel(props: IProps) {
+export default function JobsPanel(props: {}) {
 
   const serverAddr = useStore((state) => state.serverAddr)
   const [jobs, setJobs] = React.useState<Array<Job>>([])
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const alertHidenDuration = 8000
   const fetchInterval = 5000
-
-  const handleAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setAlertOpen(false);
-  };
 
   React.useEffect(() => {
     fetchJobs(serverAddr)
@@ -58,11 +47,12 @@ export default function JobsPanel(props: IProps) {
 
       <JobsTable jobs={jobs}/>
 
-      <Snackbar open={alertOpen} autoHideDuration={alertHidenDuration} onClose={handleAlertClose}>
-        <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
-          {errorText}
-        </Alert>
-      </Snackbar>
+      <MessageBar
+        alertOpen={alertOpen}
+        setAlertOpen={setAlertOpen}
+        alertHidenDuration={8000}
+        text={errorText}
+      />
     </div>
   )
 }

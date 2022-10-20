@@ -4,14 +4,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
 
 import { Job } from "../types";
 import { Accordion, AccordionSummary, AccordionDetails } from './Accordion';
 import PseudoTerminal from './PseudoTerminal';
 import useStore from '../store';
-import Alert from '../components/Alert';
-import { getAlertCloseHandler } from '../utils';
+import MessageBar from './MessageBar';
 
 
 const jobLogFetchFactory = (
@@ -28,8 +26,6 @@ const jobLogFetchFactory = (
     const serverAddr = useStore((state) => state.serverAddr)
     const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
     const [errorText, setErrorText] = React.useState<string>("")
-    const alertHidenDuration = 6000
-    const handleAlertClose = getAlertCloseHandler(setAlertOpen)
 
     React.useEffect(() => {
       fetchContent()
@@ -48,13 +44,12 @@ const jobLogFetchFactory = (
     }
 
     return (
-      <>
-        <Snackbar open={alertOpen} autoHideDuration={alertHidenDuration} onClose={handleAlertClose}>
-          <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
-            {errorText}
-          </Alert>
-        </Snackbar>
-      </>
+      <MessageBar
+        alertOpen={alertOpen}
+        setAlertOpen={setAlertOpen}
+        alertHidenDuration={6000}
+        text={errorText}
+        />
     )
   }
 

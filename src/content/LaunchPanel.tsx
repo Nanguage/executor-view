@@ -1,14 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
 import useStore from '../store';
-import Alert from '../components/Alert';
 import TaskCard from '../components/TaskCard'
 import { Task } from '../types'
-import { getAlertCloseHandler } from '../utils';
+import MessageBar from '../components/MessageBar'
 
 
 const TasksFetch = (
@@ -21,7 +19,6 @@ const TasksFetch = (
   const serverAddr = useStore((state) => state.serverAddr)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const alertHidenDuration = 21000
   const fetchInterval = 90000
 
   React.useEffect(() => {
@@ -45,16 +42,13 @@ const TasksFetch = (
     })
   }
 
-  const handleAlertClose = getAlertCloseHandler(setAlertOpen)
-
   return (
-    <>
-      <Snackbar open={alertOpen} autoHideDuration={alertHidenDuration} onClose={handleAlertClose}>
-        <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
-          {errorText}
-        </Alert>
-      </Snackbar>
-    </>
+    <MessageBar
+      alertOpen={alertOpen}
+      setAlertOpen={setAlertOpen}
+      alertHidenDuration={21000}
+      text={errorText}
+    />
   )
 }
 
@@ -69,7 +63,6 @@ const ValidJobTypesFetch = (
   const serverAddr = useStore((state) => state.serverAddr)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const alertHidenDuration = 21000
   const fetchInterval = 90000
 
   React.useEffect(() => {
@@ -93,14 +86,13 @@ const ValidJobTypesFetch = (
     })
   }
 
-  const handleAlertClose = getAlertCloseHandler(setAlertOpen)
-
   return (
-    <Snackbar open={alertOpen} autoHideDuration={alertHidenDuration} onClose={handleAlertClose}>
-      <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
-        {errorText}
-      </Alert>
-    </Snackbar>
+    <MessageBar
+      alertOpen={alertOpen}
+      setAlertOpen={setAlertOpen}
+      alertHidenDuration={21000}
+      text={errorText}
+    />
   )
 
 }

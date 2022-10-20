@@ -13,12 +13,10 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import Snackbar from '@mui/material/Snackbar';
 
 import { Task, TaskArg, Job } from '../types'
 import useStore from '../store';
-import Alert from '../components/Alert';
-import { getAlertCloseHandler } from '../utils';
+import MessageBar from './MessageBar';
 
 
 const Input = styled(MuiInput)`
@@ -200,14 +198,10 @@ export default function TaskLaunchDialog(props: IProps) {
     setJobType(validJobTypes[0])
   }, [validJobTypes])
 
-  const alertHidenDuration = 8000
   const [errorOpen, setErrorOpen] = React.useState<boolean>(false)
   const [errorMsg, setErrorMsg] = React.useState<string>("")
   const [infoOpen, setInfoOpen] = React.useState<boolean>(false)
   const [infoMsg, setInfoMsg] = React.useState<string>("")
-
-  const handleErrorClose = getAlertCloseHandler(setErrorOpen)
-  const handleInfoClose = getAlertCloseHandler(setInfoOpen)
 
   const handleClose = () => {
     onClose()
@@ -247,16 +241,20 @@ export default function TaskLaunchDialog(props: IProps) {
         <Button onClick={handleClose} autoFocus>Cancel</Button>
       </DialogActions>
 
-      <Snackbar open={infoOpen} autoHideDuration={alertHidenDuration} onClose={handleInfoClose}>
-        <Alert onClose={handleInfoClose} severity="info" sx={{ width: '100%' }}>
-          {infoMsg}
-        </Alert>
-      </Snackbar>
-      <Snackbar open={errorOpen} autoHideDuration={alertHidenDuration} onClose={handleErrorClose}>
-        <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
-          {errorMsg}
-        </Alert>
-      </Snackbar>
+      <MessageBar
+        alertOpen={infoOpen}
+        setAlertOpen={setInfoOpen}
+        alertHidenDuration={8000}
+        text={infoMsg}
+        type={"info"}
+        />
+
+      <MessageBar
+        alertOpen={errorOpen}
+        setAlertOpen={setErrorOpen}
+        alertHidenDuration={8000}
+        text={errorMsg}
+        />
     </Dialog>
   );
 }

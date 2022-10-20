@@ -11,12 +11,11 @@ import {
     ChonkyActions,
 } from 'chonky';
 import { FileBrowser as ChonkyFileBrowser } from 'chonky';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '../components/Alert';
 
 import useStore from '../store';
-import { downloadFile, folderChainToStr, getAlertCloseHandler, selectLocalFile } from '../utils';
+import { downloadFile, folderChainToStr, selectLocalFile } from '../utils';
 import { FolderChain } from '../types';
+import MessageBar from './MessageBar';
 
 
 interface FetchFilesProps {
@@ -29,10 +28,8 @@ const FetchFiles = (props: FetchFilesProps) => {
   const { nRefresh, setFiles } = props
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const alertHidenDuration = 6000
   const { currentPath } = useStore((state) => state)
   const serverAddr = useStore((state) => state.serverAddr)
-  const handleAlertClose = getAlertCloseHandler(setAlertOpen)
 
   React.useEffect(() => {
     const addr = `${serverAddr}/file/list_dir/`
@@ -53,13 +50,12 @@ const FetchFiles = (props: FetchFilesProps) => {
   }, [serverAddr, currentPath, nRefresh])
 
   return (
-    <>
-      <Snackbar open={alertOpen} autoHideDuration={alertHidenDuration} onClose={handleAlertClose}>
-        <Alert onClose={handleAlertClose} severity="error" sx={{ width: '100%' }}>
-          {errorText}
-        </Alert>
-      </Snackbar>
-    </>
+    <MessageBar
+      alertOpen={alertOpen}
+      setAlertOpen={setAlertOpen}
+      alertHidenDuration={6000}
+      text={errorText}
+      />
   )
 }
 
@@ -79,6 +75,8 @@ export default function FileBrowser(props: {}) {
   const [nRefresh, setNRefresh] = React.useState(0)
   const [files, setFiles] = React.useState<FileArray>([])
   const { currentPath, setCurrentPath, serverAddr } = useStore((state) => state)
+  const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
+  const [errorText, setErrorText] = React.useState<string>("")
 
   const handleAction = React.useCallback<FileActionHandler>((data) => {
     if (data.id === "open_files") {
@@ -124,6 +122,9 @@ export default function FileBrowser(props: {}) {
         axios.post(addr, formData, config).then((resp) => {
           console.log(resp)
           setNRefresh(nRefresh + 1)
+        }).catch((error) => {
+          console.log(error)
+          setErrorText(`${error.message}: fetch ${addr}`)
         })
       }).catch((_) => {
         console.log("Cancel upload")
@@ -150,6 +151,12 @@ export default function FileBrowser(props: {}) {
         <FileContextMenu />
       </ChonkyFileBrowser>
       <FetchFiles nRefresh={nRefresh} setFiles={setFiles}/>
+      <MessageBar
+        alertOpen={alertOpen}
+        setAlertOpen={setAlertOpen}
+        alertHidenDuration={6000}
+        text={errorText}
+      />
     </>
   )
 }
