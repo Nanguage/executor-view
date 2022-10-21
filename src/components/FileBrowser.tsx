@@ -68,6 +68,7 @@ const getFilePath = (currentPath: FolderChain, fname: string) => {
   } else {
     path = dirPath + "/" + fname
   }
+  return path
 }
 
 
@@ -79,6 +80,7 @@ export default function FileBrowser(props: {}) {
   const [errorText, setErrorText] = React.useState<string>("")
 
   const handleAction = React.useCallback<FileActionHandler>((data) => {
+    console.log(data)
     if (data.id === "open_files") {
       const target_file = data.payload.files[0]
       if (target_file.isDir) {
@@ -102,11 +104,14 @@ export default function FileBrowser(props: {}) {
         const path = getFilePath(currentPath, target_file.name)
         axios.post(addr, {path: path}, {responseType: "blob"}).then((resp) => {
           downloadFile(target_file.name, resp.data)
+        }).catch((error) => {
+          console.log(error)
+          setErrorText(`${error.message}: fetch ${addr}`)
+          setAlertOpen(true)
         })
       }
     } else if (data.id === "upload_files") {
       selectLocalFile().then((files) => {
-        console.log(files)
         const dirPath = folderChainToStr(currentPath.slice(1, currentPath.length))
         const formData = new FormData()
         for (const file of files) {
@@ -120,14 +125,28 @@ export default function FileBrowser(props: {}) {
           }
         }
         axios.post(addr, formData, config).then((resp) => {
-          console.log(resp)
           setNRefresh(nRefresh + 1)
         }).catch((error) => {
           console.log(error)
           setErrorText(`${error.message}: fetch ${addr}`)
+          setAlertOpen(true)
         })
       }).catch((_) => {
         console.log("Cancel upload")
+      })
+    } else if (data.id === "delete_files") {
+      const addr = `${serverAddr}/file/delete`
+      const paths: string[] = []
+      for (const f of data.state.selectedFiles) {
+        const path = getFilePath(currentPath, f.name)
+        paths.push(path)
+      }
+      axios.post(addr, {paths: paths}).then((resp) => {
+        setNRefresh(nRefresh + 1)
+      }).catch((error) => {
+        console.log(error)
+        setErrorText(`${error.message}: fetch ${addr}`)
+        setAlertOpen(true)
       })
     }
   }, [currentPath])
@@ -135,6 +154,7 @@ export default function FileBrowser(props: {}) {
   const actions = [
     ChonkyActions.UploadFiles,
     ChonkyActions.DownloadFiles,
+    ChonkyActions.DeleteFiles,
   ]
 
   return (
