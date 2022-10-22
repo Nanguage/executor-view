@@ -36,11 +36,21 @@ const FetchFiles = (props: FetchFilesProps) => {
     const path = folderChainToStr(currentPath.slice(1, currentPath.length))
     setFiles([])
     axios.post(addr, {path: path}).then((resp) => {
-      const sfiles = resp.data.map((f: FileData) => {
+      const sfiles = []
+      for (let f of resp.data) {
         const randID = Math.random().toString().slice(2, 12)
         f['id'] = randID
-        return f
-      })
+        sfiles.push(f)
+      }
+      if (path.length > 0) {
+        const parent: FileData = {
+          'id': 'parent',
+          'name': '../',
+          'isDir': true,
+          'draggable': false,
+        }
+        sfiles.push(parent)
+      }
       setFiles(sfiles)
     }).catch((error) => {
       console.log(error)
@@ -84,9 +94,13 @@ export default function FileBrowser(props: {}) {
     if (data.id === "open_files") {
       const target_file = data.payload.files[0]
       if (target_file.isDir) {
-        const folder = {id: 'folder-' + target_file.id, name: target_file.name}
-        const newPath = currentPath.concat(folder)
-        setCurrentPath(newPath)
+        if (target_file.id === "parent") {
+          setCurrentPath(currentPath.slice(0, currentPath.length-1))
+        } else {
+          const folder = {id: 'folder-' + target_file.id, name: target_file.name}
+          const newPath = currentPath.concat(folder)
+          setCurrentPath(newPath)
+        }
       } else if (target_file.id.startsWith('folder-')) {
         let n = 0
         for (let f of currentPath) {
@@ -148,6 +162,23 @@ export default function FileBrowser(props: {}) {
         setErrorText(`${error.message}: fetch ${addr}`)
         setAlertOpen(true)
       })
+    } else if(data.id === "move_files") {
+      const addr = `${serverAddr}/file/move`
+      const paths: string[] = []
+      for (const f of data.state.selectedFiles) {
+        const path = getFilePath(currentPath, f.name)
+        paths.push(path)
+      }
+      axios.post(addr, {
+        paths: paths,
+        destination: getFilePath(currentPath, data.payload.destination.name)
+      }).then((resp) => {
+        setNRefresh(nRefresh + 1)
+      }).catch((error) => {
+        console.log(error)
+        setErrorText(`${error.message}: fetch ${addr}`)
+        setAlertOpen(true)
+      })
     }
   }, [currentPath])
 
@@ -155,6 +186,7 @@ export default function FileBrowser(props: {}) {
     ChonkyActions.UploadFiles,
     ChonkyActions.DownloadFiles,
     ChonkyActions.DeleteFiles,
+    ChonkyActions.MoveFiles,
   ]
 
   return (
