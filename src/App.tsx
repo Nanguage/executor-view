@@ -6,6 +6,8 @@ import CustomDrawer from './components/Drawer';
 import LaunchPanel from './content/LaunchPanel';
 import JobsPanel from './content/JobsPanel';
 import FilesPanel from './content/FilesPanel';
+import PipelinePanel from './content/ChainViewPanel';
+import FetchJobs from './components/FetchJobs';
 import { PanelLabel } from './types';
 import './MuiClassNameSetup';
 
@@ -16,8 +18,12 @@ const ContentRoute = (props: {label: PanelLabel}) => {
     return <LaunchPanel/>
   } else if (label === "jobs") {
     return <JobsPanel/>
-  } else {
+  } else if (label === "files") {
     return <FilesPanel/>
+  } else if (label === "chain_view") {
+    return <PipelinePanel/>
+  } else {
+    return <div/>
   }
 }
 
@@ -38,6 +44,7 @@ function App() {
           <ContentRoute label={contentLabel}/>
         </Container>
       </div>
+      <FetchJobs />
     </div>
   )
 }

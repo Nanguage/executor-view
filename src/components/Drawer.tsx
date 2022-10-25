@@ -12,6 +12,7 @@ import ListItemText from '@mui/material/ListItemText';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FolderIcon from '@mui/icons-material/Folder';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 import { PanelLabel } from '../types';
 
@@ -83,6 +84,15 @@ export default function CustomDrawer(props: IProps) {
           </ListItemButton>
         </ListItem>
 
+        <ListItem key="chain_view" disablePadding>
+          <ListItemButton onClick={() => props.setContentLabel("chain_view")}>
+            <ListItemIcon>
+              <AccountTreeIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Chain view"/>
+          </ListItemButton>
+        </ListItem>
+
         <ListItem key="files" disablePadding>
           <ListItemButton onClick={() => props.setContentLabel("files")}>
             <ListItemIcon>
@@ -91,6 +101,7 @@ export default function CustomDrawer(props: IProps) {
             <ListItemText primary="Files"/>
           </ListItemButton>
         </ListItem>
+
       </List>
 
     </Drawer>

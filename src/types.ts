@@ -22,7 +22,7 @@ export interface Job {
   stoped_time: string | null,
 }
 
-export type PanelLabel = 'launch' | 'jobs' | 'files'
+export type PanelLabel = 'launch' | 'jobs' | 'files' | 'chain_view'
 
 export interface Folder {
   id: string,
