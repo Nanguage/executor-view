@@ -94,9 +94,9 @@ export default function CustomAppBar(props: IProps) {
     props.setDrawerOpen(true);
   };
 
-  const [serverAddr, setServerAddr] = useStore(
-    (state) => [state.serverAddr, state.setServerAddr]
-  )
+  const {
+    serverAddr, setServerAddr, refreshServer,
+  } = useStore((state) => state)
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -132,6 +132,7 @@ export default function CustomAppBar(props: IProps) {
                 inputProps={{ 'aria-label': 'search' }}
                 defaultValue={serverAddr}
                 onChange={(e) => setServerAddr(e.target.value)}
+                onBlur={(e) => {refreshServer()}}
               />
           </Address>
 

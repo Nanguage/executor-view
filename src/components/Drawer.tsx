@@ -15,6 +15,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 import { PanelLabel } from '../types';
+import useStore from '../store';
 
 
 const drawerWidth = 240;
@@ -43,7 +44,9 @@ export default function CustomDrawer(props: IProps) {
 
   const handleDrawerClose = () => {
     props.setOpen(false);
-  };
+  }
+
+  const { monitorMode, allowedRouters } = useStore((state) => state)
 
   return (
     <Drawer
@@ -66,41 +69,49 @@ export default function CustomDrawer(props: IProps) {
       <Divider />
       <List>
 
-        <ListItem key="launch" disablePadding>
-          <ListItemButton onClick={() => props.setContentLabel("launch")}>
-            <ListItemIcon>
-              <RocketLaunchIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Launch task"/>
-          </ListItemButton>
-        </ListItem>
+        {(!monitorMode && allowedRouters.includes('task')) &&
+          <ListItem key="launch" disablePadding>
+            <ListItemButton onClick={() => props.setContentLabel("launch")}>
+              <ListItemIcon>
+                <RocketLaunchIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Launch task"/>
+            </ListItemButton>
+          </ListItem>
+        }
 
-        <ListItem key="jobs" disablePadding>
-          <ListItemButton onClick={() => props.setContentLabel("jobs")}>
-            <ListItemIcon>
-              <FormatListBulletedIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Jobs"/>
-          </ListItemButton>
-        </ListItem>
+        {(monitorMode || allowedRouters.includes('job')) &&
+          <ListItem key="jobs" disablePadding>
+            <ListItemButton onClick={() => props.setContentLabel("jobs")}>
+              <ListItemIcon>
+                <FormatListBulletedIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Jobs"/>
+            </ListItemButton>
+          </ListItem>
+        }
 
-        <ListItem key="chain_view" disablePadding>
-          <ListItemButton onClick={() => props.setContentLabel("chain_view")}>
-            <ListItemIcon>
-              <AccountTreeIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Chain view"/>
-          </ListItemButton>
-        </ListItem>
+        {(monitorMode || allowedRouters.includes('job')) &&
+          <ListItem key="chain_view" disablePadding>
+            <ListItemButton onClick={() => props.setContentLabel("chain_view")}>
+              <ListItemIcon>
+                <AccountTreeIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Chain view"/>
+            </ListItemButton>
+          </ListItem>
+        }
 
-        <ListItem key="files" disablePadding>
-          <ListItemButton onClick={() => props.setContentLabel("files")}>
-            <ListItemIcon>
-              <FolderIcon/>
-            </ListItemIcon>
-            <ListItemText primary="Files"/>
-          </ListItemButton>
-        </ListItem>
+        {(!monitorMode && allowedRouters.includes('file')) &&
+          <ListItem key="files" disablePadding>
+            <ListItemButton onClick={() => props.setContentLabel("files")}>
+              <ListItemIcon>
+                <FolderIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Files"/>
+            </ListItemButton>
+          </ListItem>
+        }
 
       </List>
 

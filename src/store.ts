@@ -1,12 +1,18 @@
 import create from "zustand";
-import { FolderChain, Job } from "./types";
+import { FolderChain, Job, ServerRouter } from "./types";
 
 
 interface IProps {
   serverAddr: string,
   setServerAddr: (addr: string) => void,
+  monitorMode: boolean,
+  setMonitorMode: (m: boolean) => void,
+  allowedRouters: ServerRouter[],
+  setAllowedRouters: (rts: ServerRouter[]) => void,
   validJobTypes: string[],
   setValidJobTypes: (tps: string[]) => void,
+  nRefreshServer: number,
+  refreshServer: () => void,
   currentPath: FolderChain,
   setCurrentPath: (path: FolderChain) => void,
   jobs: Job[],
@@ -18,13 +24,21 @@ interface IProps {
 
 const useStore = create<IProps>((set) => ({
   serverAddr: "http://127.0.0.1:5000",
-  setServerAddr: (addr: string) => { set({ serverAddr: addr }) },
+  setServerAddr: (addr) => { set({ serverAddr: addr }) },
+  monitorMode: false,
+  setMonitorMode: (m) => { set({ monitorMode: m }) },
+  allowedRouters: [],
+  setAllowedRouters: (rts) => { set({ allowedRouters: rts }) },
   validJobTypes: [],
-  setValidJobTypes: (tps: string[]) => { set({ validJobTypes: tps }) },
+  setValidJobTypes: (tps) => { set({ validJobTypes: tps }) },
+  nRefreshServer: 0,
+  refreshServer: () => {
+    set((state) => ({ nRefreshServer: state.nRefreshServer + 1 }))
+  },
   currentPath: [{id: 'folder-root', name: 'root'}],
-  setCurrentPath: (path: FolderChain) => { set({ currentPath: path }) },
+  setCurrentPath: (path) => { set({ currentPath: path }) },
   jobs: [],
-  setJobs: (jobs: Job[]) => { set({ jobs: jobs }) },
+  setJobs: (jobs) => { set({ jobs: jobs }) },
   nRefreshJobs: 0,
   refreshJobs: () => {
     set((state) => ({ nRefreshJobs: state.nRefreshJobs + 1 }))

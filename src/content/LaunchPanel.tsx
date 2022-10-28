@@ -53,49 +53,6 @@ const TasksFetch = (
 }
 
 
-const ValidJobTypesFetch = (
-      props: {
-        nRefresh: number,
-      }
-    ) => {
-  const { nRefresh } = props
-  const setValidJobTypes = useStore((state) => state.setValidJobTypes)
-  const serverAddr = useStore((state) => state.serverAddr)
-  const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
-  const [errorText, setErrorText] = React.useState<string>("")
-  const fetchInterval = 90000
-
-  React.useEffect(() => {
-    fetchValidJobTypes(serverAddr)
-    const myInterval = setInterval(() => fetchValidJobTypes(serverAddr), fetchInterval)
-
-    return () => {
-      clearInterval(myInterval)
-    }
-  }, [serverAddr, nRefresh])
-
-  const fetchValidJobTypes = (serverAddr: string) => {
-    const addr = serverAddr + "/job/valid_types"
-    axios.get(addr).then((resp) => {
-      setValidJobTypes(resp.data)
-    })
-    .catch((error) => {
-      console.log(error)
-      setErrorText(error.message + `: fetch ${addr}`)
-      setAlertOpen(true)
-    })
-  }
-
-  return (
-    <MessageBar
-      alertOpen={alertOpen}
-      setAlertOpen={setAlertOpen}
-      alertHidenDuration={21000}
-      text={errorText}
-    />
-  )
-
-}
 
 
 export default function LaunchPanel(props: {}) {
@@ -109,7 +66,6 @@ export default function LaunchPanel(props: {}) {
       </div>
 
       <TasksFetch nRefresh={nRefresh} setTasks={(tasks) => {setTasks(tasks)}}/>
-      <ValidJobTypesFetch nRefresh={nRefresh}/>
 
       <Grid container rowGap={1} columnGap={1}>
         {

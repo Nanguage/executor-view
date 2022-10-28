@@ -8,8 +8,10 @@ import JobsPanel from './content/JobsPanel';
 import FilesPanel from './content/FilesPanel';
 import PipelinePanel from './content/ChainViewPanel';
 import FetchJobs from './components/FetchJobs';
+import FetchServerSetting from './components/FetchServerSetting';
 import { PanelLabel } from './types';
 import './MuiClassNameSetup';
+import useStore from './store';
 
 
 const ContentRoute = (props: {label: PanelLabel}) => {
@@ -31,6 +33,19 @@ const ContentRoute = (props: {label: PanelLabel}) => {
 function App() {
   const [drawerOpen, setDrawerOpen] = React.useState<boolean>(true)
   const [contentLabel, setContentLabel] = React.useState<PanelLabel>('launch')
+  const { monitorMode, allowedRouters } = useStore((state) => state)
+
+  React.useEffect(() => {
+    if (monitorMode) {
+      setContentLabel('jobs')
+    } else if (allowedRouters.includes('task')) {
+      setContentLabel('launch')
+    } else if (allowedRouters.includes('job')) {
+      setContentLabel('jobs')
+    } else if (allowedRouters.includes('file')) {
+      setContentLabel('files')
+    }
+  }, [monitorMode, allowedRouters])
 
   return (
     <div className="App">
@@ -44,7 +59,10 @@ function App() {
           <ContentRoute label={contentLabel}/>
         </Container>
       </div>
-      <FetchJobs />
+      <FetchServerSetting />
+      {(monitorMode || allowedRouters.includes('job')) &&
+        <FetchJobs />
+      }
     </div>
   )
 }

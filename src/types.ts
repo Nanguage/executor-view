@@ -1,3 +1,5 @@
+export type ServerRouter = "job" | "task" | "file"
+
 export interface TaskArg{
   name: string,
   type: string,

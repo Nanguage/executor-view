@@ -195,7 +195,9 @@ export default function TaskLaunchDialog(props: IProps) {
   const validJobTypes = useStore((state) => state.validJobTypes)
   const [ jobType, setJobType ] = React.useState<string>("")
   React.useEffect(() => {
-    setJobType(validJobTypes[0])
+    if (validJobTypes.length > 0) {
+      setJobType(validJobTypes[0])
+    }
   }, [validJobTypes])
 
   const [errorOpen, setErrorOpen] = React.useState<boolean>(false)
