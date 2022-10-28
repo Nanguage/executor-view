@@ -198,7 +198,7 @@ export default function TaskLaunchDialog(props: IProps) {
     if (validJobTypes.length > 0) {
       setJobType(validJobTypes[0])
     }
-  }, [validJobTypes])
+  }, [JSON.stringify(validJobTypes)])
 
   const [errorOpen, setErrorOpen] = React.useState<boolean>(false)
   const [errorMsg, setErrorMsg] = React.useState<string>("")
