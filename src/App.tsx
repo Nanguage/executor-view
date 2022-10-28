@@ -45,7 +45,7 @@ function App() {
     } else if (allowedRouters.includes('file')) {
       setContentLabel('files')
     }
-  }, [monitorMode, allowedRouters])
+  }, [monitorMode, JSON.stringify(allowedRouters)])
 
   return (
     <div className="App">

@@ -13,7 +13,7 @@ export default function FetchServerSetting() {
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const fetchInterval = 90000
+  const fetchInterval = 30000
 
   React.useEffect(() => {
     fetchServerSetting(serverAddr)
