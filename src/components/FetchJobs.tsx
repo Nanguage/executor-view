@@ -5,34 +5,40 @@ import useStore from '../store'
 import MessageBar from '../components/MessageBar'
 
 
-export default function FetchJobs(props: {}) {
-  const serverAddr = useStore((state) => state.serverAddr)
-  const { setJobs } = useStore((state) => state)
+export default function FetchJobs() {
+  const { serverAddr, setJobs, monitorMode, refreshServer } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const fetchInterval = 5000
   React.useEffect(() => {
-    fetchJobs(serverAddr)
+    fetchJobs()
 
-    const myInterval = setInterval(() => fetchJobs(serverAddr), fetchInterval)
+    const myInterval = setInterval(() => fetchJobs(), fetchInterval)
 
     return () => {
       clearInterval(myInterval)
     }
-  }, [serverAddr])
+  }, [serverAddr, monitorMode])
 
-
-  const fetchJobs = (serverAddr: string) => {
-    const addr = serverAddr + "/job/list_all"
-    axios.get(addr).then((resp) => {
-      setJobs(resp.data)
-    })
-    .catch((error) => {
-      console.log(error)
-      setErrorText(error.message + `: fetch ${addr}`)
-      setAlertOpen(true)
-    })
-  }
+  const fetchJobs = React.useCallback(
+    () => {
+      let addr: string;
+      if (monitorMode) {
+        addr = serverAddr + "/monitor/list_all"
+      } else {
+        addr = serverAddr + "/job/list_all"
+      }
+      axios.get(addr).then((resp) => {
+        setJobs(resp.data)
+      })
+      .catch((error) => {
+        console.log(error)
+        setErrorText(error.message + `: fetch ${addr}`)
+        setAlertOpen(true)
+        refreshServer()
+      })
+    }, [serverAddr, monitorMode]
+  )
 
   return (
     <MessageBar

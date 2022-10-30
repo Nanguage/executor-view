@@ -16,7 +16,7 @@ const TasksFetch = (
       }
     ) => {
   const { setTasks, nRefresh } = props
-  const serverAddr = useStore((state) => state.serverAddr)
+  const { serverAddr, refreshServer } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const fetchInterval = 90000
@@ -39,6 +39,7 @@ const TasksFetch = (
       console.log(error)
       setErrorText(error.message + `: fetch ${addr}`)
       setAlertOpen(true)
+      refreshServer()
     })
   }
 
