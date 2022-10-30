@@ -23,16 +23,21 @@ const jobLogFetchFactory = (
       }) => {
 
     const { nRefresh } = props
-    const serverAddr = useStore((state) => state.serverAddr)
+    const { serverAddr, monitorMode } = useStore((state) => state)
     const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
     const [errorText, setErrorText] = React.useState<string>("")
 
     React.useEffect(() => {
       fetchContent()
-    }, [serverAddr, nRefresh])
+    }, [serverAddr, nRefresh, monitorMode])
 
-    const fetchContent = () => {
-      const addr = serverAddr + `/job/${logType}/${props.jobID}`
+    const fetchContent = React.useCallback(() => {
+      let addr: string
+      if (monitorMode) {
+        addr = serverAddr + `/monitor/${logType}/${props.jobID}`
+      } else {
+        addr = serverAddr + `/job/${logType}/${props.jobID}`
+      }
       axios.get(addr).then((resp) => {
         props.setContent(resp.data['content'])
       })
@@ -41,7 +46,7 @@ const jobLogFetchFactory = (
         setErrorText(error.message + `: fetch ${addr}`)
         setAlertOpen(true)
       })
-    }
+    }, [serverAddr, monitorMode])
 
     return (
       <MessageBar
