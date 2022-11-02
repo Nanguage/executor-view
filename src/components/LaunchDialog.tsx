@@ -1,183 +1,14 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
-import MuiInput from '@mui/material/Input';
-import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 
-import { Task, TaskArg, Job } from '../types'
+import { Task } from '../types';
 import useStore from '../store';
-
-
-const Input = styled(MuiInput)`
-  height: 50px;
-  width: 300px;
-`;
-
-
-const Dropdown = styled(Select)`
-  width: 300px;
-`;
-
-
-interface IArgInput {
-  arg: TaskArg;
-  val: any;
-  setVal: (val: any) => void;
-};
-
-
-const ArgInput = (props: IArgInput) => {
-  const { arg, val, setVal } = props;
-
-  const getChangeHandler = (parseFunc: (v: any) => any) => {
-    const handleChange = (
-          e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-      const val = parseFunc(e.target.value)
-      setVal(val)
-    }
-    return handleChange
-  }
-
-  if (arg.type === 'int') {
-    const inputProps = {
-      step: 1,
-      min: 0,
-      max: 1000000,
-      type: 'number'
-    }
-    if (arg.range !== null) {
-      inputProps.min = arg.range[0] as number
-      inputProps.max = arg.range[1] as number
-    }
-    return <Input
-            value={val} inputProps={inputProps}
-            onChange={getChangeHandler(parseInt)}/>
-  } else if (arg.type === 'float') {
-    const inputProps = {
-      step: 0.1,
-      min: 0.0,
-      max: 1000000000.0,
-      type: 'number'
-    }
-    if (arg.range !== null) {
-      inputProps.min = arg.range[0] as number
-      inputProps.max = arg.range[1] as number
-    }
-    return <Input
-            value={val} inputProps={inputProps}
-            onChange={getChangeHandler(parseFloat)}/>
-  } else {
-    return <Input
-            value={val}
-            onChange={getChangeHandler((v) => v)}
-            />
-  }
-}
-
-
-const getInitValues = (args: TaskArg[]) => {
-  const vals: any = {}
-  for (let arg of args) {
-    let val: any
-    if (arg.default !== null) {
-      val = arg.default
-    } else if (arg.range !== null) {
-      val = arg.range[0]
-    } else {
-      if (arg.type === 'int') {
-        val = 0
-      } else if (arg.type === 'float') {
-        val = 0.0
-      } else {
-        val = ""
-      }
-    }
-    vals[arg.name] = val
-  }
-  return vals
-}
-
-
-interface IArgWidgetsProps {
-  args: TaskArg[],
-  vals: any,
-  setVals: (vals: any) => void,
-}
-
-
-const ArgWidgets = ( props: IArgWidgetsProps) => {
-  const { args, vals, setVals } = props
-
-  return (
-    <>
-    {
-      args.map((arg) => (
-        <ListItem key={arg.name}>
-          <Grid container>
-            <Grid item xs={3} key={`label-${arg.name}`}>
-              <ListItemText primary={arg.name} secondary={arg.type}/>
-            </Grid>
-            <Grid item xs={9} key={`widget-${arg.name}`}>
-              <ArgInput
-                arg={arg} val={vals[arg.name]}
-                setVal={
-                  (val: any) => {
-                    const newVals = {...vals}
-                    newVals[arg.name] = val
-                    setVals(newVals)
-                  }
-                }
-                />
-            </Grid>
-          </Grid>
-        </ListItem>
-      ))
-    }
-    </>
-  )
-}
-
-
-interface IJobRunSetting {
-  validJobTypes: string[],
-  jobType: string,
-  setJobType: (t: string) => void,
-}
-
-
-const JobRunSettings = ( props: IJobRunSetting ) => {
-  const { jobType, validJobTypes, setJobType } = props
-
-  return (<>
-    <ListItem key="job_type_selection">
-      <Grid container>
-        <Grid item xs={3}>
-          <ListItemText>Job type</ListItemText>
-        </Grid>
-        <Grid item xs={9}>
-          <Dropdown
-            value={jobType}
-            onChange={(e) => {setJobType(e.target.value as string)}}
-          >
-            {validJobTypes.map(
-              (j) => <MenuItem key={j} value={j}>{j}</MenuItem>
-            )}
-          </Dropdown>
-        </Grid>
-      </Grid>
-    </ListItem>
-  </>)
-}
+import { ArgWidgets, getInitValues, JobRunSettings } from './ArgWidgets';
 
 
 interface IProps {
@@ -186,16 +17,12 @@ interface IProps {
   task: Task;
 }
 
+
 export default function TaskLaunchDialog(props: IProps) {
   const { open, onClose, task } = props;
   const [ vals, setVals ] = React.useState<any>(getInitValues(task.args))
-  const { validJobTypes, launchTask } = useStore((state) => state)
+  const { launchTask } = useStore((state) => state)
   const [ jobType, setJobType ] = React.useState<string>("")
-  React.useEffect(() => {
-    if (validJobTypes.length > 0) {
-      setJobType(validJobTypes[0])
-    }
-  }, [JSON.stringify(validJobTypes)])
 
   const handleClose = () => {
     onClose()
@@ -215,9 +42,15 @@ export default function TaskLaunchDialog(props: IProps) {
     <Dialog onClose={handleClose} open={open} maxWidth={'xs'} fullWidth={true}>
       <DialogTitle>{"Launch task: " + task.name}</DialogTitle>
       <List>
-        <JobRunSettings validJobTypes={validJobTypes} jobType={jobType} setJobType={setJobType}/>
+        {(task.args.length > 0) &&
+          <>
+            <Divider/>
+            <ArgWidgets args={task.args} vals={vals} setVals={setVals}/>
+          </>
+        }
         <Divider/>
-        <ArgWidgets args={task.args} vals={vals} setVals={setVals}/>
+        <JobRunSettings jobType={jobType} setJobType={setJobType}/>
+        <Divider/>
       </List>
 
       <DialogActions>
