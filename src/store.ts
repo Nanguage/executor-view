@@ -1,5 +1,5 @@
 import create from "zustand";
-import { FolderChain, Job, ServerRouter } from "./types";
+import { FolderChain, Job, ServerRouter, CallReq } from "./types";
 
 
 interface IProps {
@@ -19,6 +19,8 @@ interface IProps {
   setJobs: (jobs: Job[]) => void,
   nRefreshJobs: number,
   refreshJobs: () => void,
+  currentCallReq: CallReq | null,
+  launchTask: (req: CallReq) => void,
 }
 
 
@@ -43,6 +45,8 @@ const useStore = create<IProps>((set) => ({
   refreshJobs: () => {
     set((state) => ({ nRefreshJobs: state.nRefreshJobs + 1 }))
   },
+  currentCallReq: null,
+  launchTask: (req) => { set({ currentCallReq: req }) },
 }))
 
 

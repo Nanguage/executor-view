@@ -32,3 +32,10 @@ export interface Folder {
 }
 
 export type FolderChain = Array<Folder>
+
+export interface CallReq {
+  task_name: string,
+  args: any[],
+  kwargs: object,
+  job_type: string,
+}

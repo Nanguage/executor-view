@@ -31,21 +31,6 @@ export const downloadFile = (fileName:string, fileContent: Blob) => {
   link.parentNode?.removeChild(link)
 }
 
-//export const selectLocalFile = () => {
-//  return new Promise<string>((resolve, reject) =>  {
-//    const link = document.createElement("input")
-//    link.setAttribute("type", "file")
-//    //link.setAttribute("style", "display: none;")
-//    document.body.appendChild(link)
-//    const onChange = (e: any) => {
-//      const filePath: string = e.target.value
-//      resolve(filePath)
-//      link?.parentElement?.removeChild(link)
-//    }
-//    link.onchange = onChange
-//    link.click()
-//  })
-//}
 
 export const selectLocalFile = () => {
   // see https://stackoverflow.com/a/73552508/8500469

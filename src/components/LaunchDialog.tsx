@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
@@ -16,7 +15,6 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { Task, TaskArg, Job } from '../types'
 import useStore from '../store';
-import MessageBar from './MessageBar';
 
 
 const Input = styled(MuiInput)`
@@ -191,8 +189,7 @@ interface IProps {
 export default function TaskLaunchDialog(props: IProps) {
   const { open, onClose, task } = props;
   const [ vals, setVals ] = React.useState<any>(getInitValues(task.args))
-  const serverAddr = useStore((state) => state.serverAddr)
-  const validJobTypes = useStore((state) => state.validJobTypes)
+  const { validJobTypes, launchTask } = useStore((state) => state)
   const [ jobType, setJobType ] = React.useState<string>("")
   React.useEffect(() => {
     if (validJobTypes.length > 0) {
@@ -200,33 +197,18 @@ export default function TaskLaunchDialog(props: IProps) {
     }
   }, [JSON.stringify(validJobTypes)])
 
-  const [errorOpen, setErrorOpen] = React.useState<boolean>(false)
-  const [errorMsg, setErrorMsg] = React.useState<string>("")
-  const [infoOpen, setInfoOpen] = React.useState<boolean>(false)
-  const [infoMsg, setInfoMsg] = React.useState<string>("")
-
   const handleClose = () => {
     onClose()
   }
 
-  const launchTask = () => {
-    const addr = serverAddr + "/task/call"
+  const launch = () => {
     const req = {
       task_name: task.name,
       args: [],
       kwargs: vals,
       job_type: jobType,
     }
-    axios.post(addr, req).then((resp) => {
-      const job: Job = resp.data
-      setInfoMsg(`Successful launch job: ${job.id}`)
-      setInfoOpen(true)
-    })
-    .catch((error) => {
-      console.log(error)
-      setErrorMsg(`${error.message}: query on ${addr}`)
-      setErrorOpen(true)
-    })
+    launchTask(req)
   }
 
   return (
@@ -239,24 +221,10 @@ export default function TaskLaunchDialog(props: IProps) {
       </List>
 
       <DialogActions>
-        <Button onClick={launchTask}>Launch</Button>
+        <Button onClick={launch}>Launch</Button>
         <Button onClick={handleClose} autoFocus>Cancel</Button>
       </DialogActions>
 
-      <MessageBar
-        alertOpen={infoOpen}
-        setAlertOpen={setInfoOpen}
-        alertHidenDuration={8000}
-        text={infoMsg}
-        type={"info"}
-        />
-
-      <MessageBar
-        alertOpen={errorOpen}
-        setAlertOpen={setErrorOpen}
-        alertHidenDuration={8000}
-        text={errorMsg}
-        />
     </Dialog>
   );
 }

@@ -9,6 +9,7 @@ import FilesPanel from './content/FilesPanel';
 import PipelinePanel from './content/ChainViewPanel';
 import FetchJobs from './components/FetchJobs';
 import FetchServerSetting from './components/FetchServerSetting';
+import LaunchTask from './components/LaunchTask';
 import { PanelLabel } from './types';
 import './MuiClassNameSetup';
 import useStore from './store';
@@ -63,6 +64,7 @@ function App() {
       {(monitorMode || allowedRouters.includes('job')) &&
         <FetchJobs />
       }
+      <LaunchTask />
     </div>
   )
 }
