@@ -37,6 +37,7 @@ export default function TaskLaunchDialog(props: IProps) {
       job_type: jobType,
       condition: null
     }
+    console.log(afterJob)
     if (afterJob !== null) {
       req['condition'] = {
         type: "AfterAnother",
@@ -47,7 +48,7 @@ export default function TaskLaunchDialog(props: IProps) {
       }
     }
     launchTask(req)
-  }, [afterJob])
+  }, [afterJob, jobType])
 
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xs'} fullWidth={true}>
