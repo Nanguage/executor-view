@@ -6,8 +6,10 @@ import MuiInput from '@mui/material/Input';
 import Grid from '@mui/material/Grid';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
-import { TaskArg } from '../types';
+import { TaskArg, Job } from '../types';
 import useStore from '../store';
 
 
@@ -145,12 +147,14 @@ export const ArgWidgets = ( props: IArgWidgetsProps) => {
 interface IJobRunSetting {
   jobType: string,
   setJobType: (t: string) => void,
+  afterJob: Job | null,
+  setAfterJob: (i: Job | null) => void,
 }
 
 
 export const JobRunSettings = ( props: IJobRunSetting ) => {
-  const { jobType,  setJobType } = props
-  const { validJobTypes } = useStore((state) => state)
+  const { jobType,  setJobType, afterJob, setAfterJob } = props
+  const { validJobTypes, jobs } = useStore((state) => state)
 
   React.useEffect(() => {
     if (validJobTypes.length > 0) {
@@ -160,7 +164,7 @@ export const JobRunSettings = ( props: IJobRunSetting ) => {
 
   return (<>
     <ListItem key="job_type_selection">
-      <Grid container>
+      <Grid container rowGap={1}>
         <Grid item xs={3}>
           <ListItemText>Job type</ListItemText>
         </Grid>
@@ -173,6 +177,23 @@ export const JobRunSettings = ( props: IJobRunSetting ) => {
               (j) => <MenuItem key={j} value={j}>{j}</MenuItem>
             )}
           </Dropdown>
+        </Grid>
+
+        <Grid item xs={3}>
+          <ListItemText>After another</ListItemText>
+        </Grid>
+        <Grid item xs={9}>
+          <Autocomplete
+            value={afterJob}
+            onChange={(event: any, newValue: Job | null) => {
+              setAfterJob(newValue)
+            }}
+            options={jobs}
+            sx={{ width: "300px" }}
+            getOptionLabel={(option: Job) => `${option.name} id=(${option.id})`}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            renderInput={(params) => <TextField {...params} label="job" />}
+          />
         </Grid>
       </Grid>
     </ListItem>
