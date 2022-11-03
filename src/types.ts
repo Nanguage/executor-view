@@ -1,5 +1,7 @@
 export type ServerRouter = "job" | "task" | "file"
 
+export type JobStatus = "pending" | "running" | "done" | "failed" | "canceled"
+
 export interface TaskArg{
   name: string,
   type: string,
@@ -15,13 +17,24 @@ export interface Task {
 
 export interface Job {
   id: string,
-  status: string,
+  status: JobStatus,
   name: string,
   job_type: string,
   check_time: string,
   created_time: string,
   submit_time: string | null,
   stoped_time: string | null,
+  condition: Condition | null
+}
+
+export interface Condition {
+  type: string,
+  arguments: ConditionAfterAnoter
+}
+
+export interface ConditionAfterAnoter {
+  job_id: string,
+  status: JobStatus
 }
 
 export type PanelLabel = 'launch' | 'jobs' | 'files' | 'chain_view'
@@ -38,4 +51,5 @@ export interface CallReq {
   args: any[],
   kwargs: object,
   job_type: string,
+  condition: Condition | null
 }

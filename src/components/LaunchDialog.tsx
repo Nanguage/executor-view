@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 
-import { Task, Job } from '../types';
+import { Task, Job, CallReq } from '../types';
 import useStore from '../store';
 import { ArgWidgets, getInitValues, JobRunSettings } from './ArgWidgets';
 
@@ -30,7 +30,7 @@ export default function TaskLaunchDialog(props: IProps) {
   }
 
   const launch = React.useCallback(() => {
-    const req: any = {
+    const req: CallReq = {
       task_name: task.name,
       args: [],
       kwargs: vals,
