@@ -5,3 +5,11 @@ html {
 body {
   margin: 0;
 }
+
+#root > div > div:nth-child(2) > div.my-MuiContainer-root.my-MuiContainer-maxWidthLg.css-312x7-MuiContainer-root > div > div > div.react-flow__panel.react-flow__attribution.bottom.right > a {
+  display: none;
+}
+
+.react-flow__node {
+  white-space: pre-line;
+}

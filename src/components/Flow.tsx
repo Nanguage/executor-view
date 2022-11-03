@@ -1,28 +1,76 @@
-import { useCallback } from 'react';
+import React from 'react';
 import ReactFlow, {
-  MiniMap,
   Controls,
   Background,
   useNodesState,
   useEdgesState,
-  addEdge,
+  Handle,
+  Position,
 } from 'reactflow';
-// 👇 you need to import the reactflow styles
 import 'reactflow/dist/style.css';
 
-const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-];
+import useStore from '../store';
+import { Job } from '../types';
 
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+
+interface JobNodeArgs {
+  data: {
+    job: Job
+  }
+}
+
+
+const JobNode = ({ data }: JobNodeArgs) => {
+
+  const job = data.job
+
+  let color
+  if (job.status == "failed") {
+    color = "red"
+  } else {
+    color = "black"
+  }
+
+  return (
+    <>
+      <Handle type="source" position={Position.Top} />
+      <div style={{
+        color: color,
+        borderColor: color,
+        borderStyle: "solid",
+        textAlign: "center",
+        backgroundColor: "white",
+        padding: 10,
+      }}>
+        <p>{job.name}</p>
+        <p>{job.id}</p>
+      </div>
+      <Handle type="target" position={Position.Bottom} />
+    </>
+  )
+}
+
+
+const nodeTypes = { jobNode: JobNode }
+
 
 export default function Flow() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { jobs } = useStore((state) => state);
 
-  const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+  React.useEffect(() => {
+    const job_nodes = jobs.map((job) => {
+
+      return {
+        id: job.id,
+        position: {x: 0, y: 0},
+        type: "jobNode",
+        data: {job: job},
+      }
+    })
+    setNodes(job_nodes)
+  }, [JSON.stringify(jobs)])
 
   return (
     <ReactFlow
@@ -30,9 +78,8 @@ export default function Flow() {
       edges={edges}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
+      nodeTypes={nodeTypes}
     >
-      <MiniMap />
       <Controls />
       <Background />
     </ReactFlow>
