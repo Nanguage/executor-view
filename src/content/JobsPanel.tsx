@@ -6,7 +6,7 @@ import JobsTable from '../components/JobsTable';
 
 export default function JobsPanel(props: {}) {
 
-  const { jobs, refreshJobs } = useStore((state) => state)
+  const { refreshJobs } = useStore((state) => state)
 
   return (
     <div>
@@ -14,7 +14,7 @@ export default function JobsPanel(props: {}) {
         <Button onClick={(e) => refreshJobs()}>Refresh</Button>
       </div>
 
-      <JobsTable jobs={jobs}/>
+      <JobsTable />
 
     </div>
   )

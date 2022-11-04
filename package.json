@@ -14,6 +14,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
+    "@mui/x-data-grid": "^5.17.10",
     "@types/dagre": "^0.7.48",
     "axios": "^0.27.2",
     "chonky": "^2.3.2",
