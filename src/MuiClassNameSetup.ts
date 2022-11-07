@@ -6,6 +6,8 @@ ClassNameGenerator.configure(
   (componentName) => {
     if (componentName.includes("DataGrid")) {
       return componentName
+    } else if (componentName.includes("MuiAutocomplete")) {
+      return componentName
     } else {
       return "my-" + componentName
     }
