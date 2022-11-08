@@ -17,10 +17,14 @@ interface IProps {
   setCurrentPath: (path: FolderChain) => void,
   jobs: Job[],
   setJobs: (jobs: Job[]) => void,
+  id2Job: Map<string, Job>,
+  setId2Job: (m: Map<string, Job>) => void,
   nRefreshJobs: number,
   refreshJobs: () => void,
   currentCallReq: CallReq | null,
   launchTask: (req: CallReq) => void,
+  selectedJobIds: string[],
+  setSelectedJobIds: (ids: string[]) => void,
 }
 
 
@@ -41,12 +45,16 @@ const useStore = create<IProps>((set) => ({
   setCurrentPath: (path) => { set({ currentPath: path }) },
   jobs: [],
   setJobs: (jobs) => { set({ jobs: jobs }) },
+  id2Job: new Map(),
+  setId2Job: (m) => { set({ id2Job: m }) },
   nRefreshJobs: 0,
   refreshJobs: () => {
     set((state) => ({ nRefreshJobs: state.nRefreshJobs + 1 }))
   },
   currentCallReq: null,
   launchTask: (req) => { set({ currentCallReq: req }) },
+  selectedJobIds: [],
+  setSelectedJobIds: (ids) => { set({ selectedJobIds: ids }) }
 }))
 
 

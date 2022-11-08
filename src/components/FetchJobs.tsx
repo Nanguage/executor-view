@@ -6,7 +6,7 @@ import MessageBar from '../components/MessageBar'
 
 
 export default function FetchJobs() {
-  const { serverAddr, setJobs, monitorMode, refreshServer } = useStore((state) => state)
+  const { serverAddr, jobs, setJobs, setId2Job, monitorMode, refreshServer } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const fetchInterval = 5000
@@ -39,6 +39,14 @@ export default function FetchJobs() {
       })
     }, [serverAddr, monitorMode]
   )
+
+  React.useEffect(() => {
+    let map = new Map()
+    for (const job of jobs) {
+      map.set(job.id, job)
+    }
+    setId2Job(map)
+  }, [JSON.stringify(jobs)])
 
   return (
     <MessageBar

@@ -8,6 +8,8 @@ ClassNameGenerator.configure(
       return componentName
     } else if (componentName.includes("MuiAutocomplete")) {
       return componentName
+    } else if (componentName.includes("MuiButtonGroup")) {
+      return componentName
     } else {
       return "my-" + componentName
     }

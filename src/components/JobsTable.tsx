@@ -8,6 +8,7 @@ import useStore from '../store';
 const columns: GridColDef[] = [
   { field: 'id', headerName: "ID", width: 300 },
   { field: 'created_time', headerName: "Created time", width: 200 },
+  { field: 'stoped_time', headerName: "Stoped time", width: 200 },
   { field: 'name', headerName: "Name" },
   { field: 'status', headerName: "Status" },
   { field: 'job_type', headerName: "Job type" },
@@ -15,13 +16,14 @@ const columns: GridColDef[] = [
 
 
 export default function JobsTable() {
-  const { jobs } = useStore((state) => state)
+  const { jobs, setSelectedJobIds } = useStore((state) => state)
   const [rows, setRows] = React.useState<GridRowsProp>([])
 
   React.useEffect(() => {
     const rows: GridRowsProp = jobs.map((job) => ({
       id: job.id,
       created_time: job.created_time,
+      stoped_time: job.stoped_time,
       name: job.name,
       status: job.status,
       job_type: job.job_type,
@@ -36,6 +38,9 @@ export default function JobsTable() {
         disableSelectionOnClick
         rows={rows}
         columns={columns}
+        onSelectionModelChange={(newSelectionArray) => {
+          setSelectedJobIds(newSelectionArray as string[])
+        }}
       />
     </Box>
  )
