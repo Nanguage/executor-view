@@ -3,29 +3,30 @@ import axios from 'axios';
 
 import useStore from '../store';
 import MessageBar from './MessageBar';
-import { Job, CallReq } from '../types'
+import { Job, CallReq, MessageBarTypes } from '../types'
 
 
 export default function LaunchTask() {
 
   const { serverAddr, currentCallReq } = useStore((state) => state)
 
-  const [errorOpen, setErrorOpen] = React.useState<boolean>(false)
-  const [errorMsg, setErrorMsg] = React.useState<string>("")
-  const [infoOpen, setInfoOpen] = React.useState<boolean>(false)
-  const [infoMsg, setInfoMsg] = React.useState<string>("")
+  const [msgOpen, setMsgOpen] = React.useState<boolean>(false)
+  const [msg, setMsg] = React.useState<string>("")
+  const [msgType, setMsgType] = React.useState<MessageBarTypes>("info")
 
   const launchTask = (req: CallReq) => {
     const addr = serverAddr + "/task/call"
     axios.post(addr, req).then((resp) => {
       const job: Job = resp.data
-      setInfoMsg(`Successful launch job: ${job.id}`)
-      setInfoOpen(true)
+      setMsgType("info")
+      setMsg(`Successful launch job: ${job.id}`)
+      setMsgOpen(true)
     })
     .catch((error) => {
       console.log(error)
-      setErrorMsg(`${error.message}: query on ${addr}`)
-      setErrorOpen(true)
+      setMsgType("error")
+      setMsg(`${error.message}: query on ${addr}`)
+      setMsgOpen(true)
     })
   }
 
@@ -39,18 +40,11 @@ export default function LaunchTask() {
   return (
     <>
       <MessageBar
-        alertOpen={infoOpen}
-        setAlertOpen={setInfoOpen}
+        alertOpen={msgOpen}
+        setAlertOpen={setMsgOpen}
         alertHidenDuration={8000}
-        text={infoMsg}
-        type={"info"}
-        />
-
-      <MessageBar
-        alertOpen={errorOpen}
-        setAlertOpen={setErrorOpen}
-        alertHidenDuration={8000}
-        text={errorMsg}
+        text={msg}
+        type={msgType}
         />
     </>
   )

@@ -53,3 +53,7 @@ export interface CallReq {
   job_type: string,
   condition: Condition | null
 }
+
+export type MessageBarTypes = "info" | "error" | "success" | undefined
+
+export type JobModify = "re_run" | "cancel"

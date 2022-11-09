@@ -6,13 +6,11 @@ import MenuItem from '@mui/material/MenuItem';
 
 import JobDetailDialog from './JobDetailDialog';
 import useStore from '../store';
-import { Job } from '../types';
 
 
 const JobActions = () => {
-  const { id2Job, selectedJobIds } = useStore((state) => state)
+  const { selectedJobs, monitorMode, allowedRouters, modifyJobs } = useStore((state) => state)
   const [detailDialogOpen, setDetailDialogOpen] = React.useState(false)
-
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -24,12 +22,12 @@ const JobActions = () => {
 
   return (
     <>
-      {(selectedJobIds.length > 0) &&
+      {(selectedJobs.length > 0) &&
 
       <JobDetailDialog
         open={detailDialogOpen}
         onClose={() => setDetailDialogOpen(false)}
-        job={id2Job.get(selectedJobIds[0]) as Job}
+        job={selectedJobs[0]}
       />
       }
 
@@ -46,9 +44,21 @@ const JobActions = () => {
         >
         <ButtonGroup variant="text" orientation="vertical" aria-label="outlined button group">
           <MenuItem
-            disabled={selectedJobIds.length != 1}
+            disabled={selectedJobs.length != 1}
             onClick={() => {setDetailDialogOpen(true)}}
           >View detail</MenuItem>
+          {((!monitorMode) && (allowedRouters.includes('job'))) &&
+          <>
+            <MenuItem
+              disabled={selectedJobs.length < 1}
+              onClick={() => {modifyJobs(selectedJobs, "cancel")}}
+            >Cancel</MenuItem>
+            <MenuItem
+              disabled={selectedJobs.length < 1}
+              onClick={() => {modifyJobs(selectedJobs, "re_run")}}
+            >Re-run</MenuItem>
+          </>
+          }
         </ButtonGroup>
       </Popover>
     </>

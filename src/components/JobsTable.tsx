@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
 import useStore from '../store';
+import { Job } from '../types';
 
 
 const columns: GridColDef[] = [
@@ -16,7 +17,7 @@ const columns: GridColDef[] = [
 
 
 export default function JobsTable() {
-  const { jobs, setSelectedJobIds } = useStore((state) => state)
+  const { jobs, setSelectedJobs, id2Job } = useStore((state) => state)
   const [rows, setRows] = React.useState<GridRowsProp>([])
 
   React.useEffect(() => {
@@ -39,7 +40,9 @@ export default function JobsTable() {
         rows={rows}
         columns={columns}
         onSelectionModelChange={(newSelectionArray) => {
-          setSelectedJobIds(newSelectionArray as string[])
+          const job_ids = newSelectionArray as string[]
+          const jobs = job_ids.map((id) => (id2Job.get(id) as Job))
+          setSelectedJobs(jobs)
         }}
       />
     </Box>

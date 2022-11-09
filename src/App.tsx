@@ -1,3 +1,5 @@
+import './MuiClassNameSetup';
+
 import * as React from 'react';
 import Container from '@mui/material/Container';
 
@@ -10,8 +12,8 @@ import PipelinePanel from './content/ChainViewPanel';
 import FetchJobs from './components/FetchJobs';
 import FetchServerSetting from './components/FetchServerSetting';
 import LaunchTask from './components/LaunchTask';
+import JobsModify from './components/JobsModify';
 import { PanelLabel } from './types';
-import './MuiClassNameSetup';
 import useStore from './store';
 
 
@@ -64,7 +66,12 @@ function App() {
       {(monitorMode || allowedRouters.includes('job')) &&
         <FetchJobs />
       }
-      <LaunchTask />
+      {((!monitorMode) && (allowedRouters.includes('job'))) &&
+        <JobsModify />
+      }
+      {((!monitorMode) && (allowedRouters.includes('task'))) &&
+        <LaunchTask />
+      }
     </div>
   )
 }
