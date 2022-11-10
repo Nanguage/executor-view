@@ -110,7 +110,11 @@ const layoutGraph = (nodes: Node[], edges: Edge[]) => {
 export default function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { jobs } = useStore((state) => state);
+  const { jobs, refreshJobs } = useStore((state) => state);
+
+  React.useEffect(() => {
+    refreshJobs()
+  }, [])
 
   React.useEffect(() => {
     let job_nodes: Node[] = []

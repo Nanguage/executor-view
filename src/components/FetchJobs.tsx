@@ -6,7 +6,7 @@ import MessageBar from '../components/MessageBar'
 
 
 export default function FetchJobs() {
-  const { serverAddr, jobs, setJobs, setId2Job, monitorMode, refreshServer } = useStore((state) => state)
+  const { serverAddr, jobs, setJobs, setId2Job, monitorMode, refreshServer, nRefreshJobs } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const fetchInterval = 5000
@@ -18,7 +18,7 @@ export default function FetchJobs() {
     return () => {
       clearInterval(myInterval)
     }
-  }, [serverAddr, monitorMode])
+  }, [serverAddr, monitorMode, nRefreshJobs])
 
   const fetchJobs = React.useCallback(
     () => {

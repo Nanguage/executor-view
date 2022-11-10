@@ -17,8 +17,12 @@ const columns: GridColDef[] = [
 
 
 export default function JobsTable() {
-  const { jobs, setSelectedJobs, id2Job } = useStore((state) => state)
+  const { jobs, setSelectedJobs, id2Job, refreshJobs } = useStore((state) => state)
   const [rows, setRows] = React.useState<GridRowsProp>([])
+
+  React.useEffect(() => {
+    refreshJobs()
+  }, [])
 
   React.useEffect(() => {
     const rows: GridRowsProp = jobs.map((job) => ({

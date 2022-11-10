@@ -1,6 +1,7 @@
 import Flow from "../components/Flow"
 
 export default function ChainViewPanel(props: {}) {
+
   return (
     <div style={{
       width: "100%",
