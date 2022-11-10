@@ -57,6 +57,10 @@ const JobActions = () => {
               disabled={selectedJobs.length < 1}
               onClick={() => {modifyJobs(selectedJobs, "re_run")}}
             >Re-run</MenuItem>
+            <MenuItem
+              disabled={selectedJobs.length < 1}
+              onClick={() => {modifyJobs(selectedJobs, "remove")}}
+            >Remove</MenuItem>
           </>
           }
         </ButtonGroup>

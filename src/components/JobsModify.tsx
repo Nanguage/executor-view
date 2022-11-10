@@ -7,7 +7,7 @@ import { MessageBarTypes, Job } from '../types';
 
 
 const JobsModify = () => {
-  const { serverAddr, jobModify, jobsForModify, nJobModify } = useStore((state) => state)
+  const { serverAddr, jobModify, jobsForModify, nJobModify, refreshJobs } = useStore((state) => state)
 
   const [msgOpen, setMsgOpen] = React.useState<boolean>(false)
   const [msg, setMsg] = React.useState<string>("")
@@ -25,6 +25,7 @@ const JobsModify = () => {
       setMsgType("info")
       setMsg(`Successfully ${jobModify} ${jobs.length} jobs.`)
       setMsgOpen(true)
+      refreshJobs()
     }).catch((errors) => {
       console.log(errors)
       setMsgType("error")
