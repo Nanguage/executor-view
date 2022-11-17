@@ -22,7 +22,6 @@ export default function TaskLaunchDialog(props: IProps) {
   const { open, onClose, task } = props;
   const [ vals, setVals ] = React.useState<any>(getInitValues(task.args))
   const { launchTask } = useStore((state) => state)
-  const [ jobType, setJobType ] = React.useState<string>("")
   const [ afterJob, setAfterJob ] = React.useState<Job | null>(null)
 
   const handleClose = () => {
@@ -34,8 +33,7 @@ export default function TaskLaunchDialog(props: IProps) {
       task_name: task.name,
       args: [],
       kwargs: vals,
-      job_type: jobType,
-      condition: null
+      condition: null,
     }
     if (afterJob !== null) {
       req['condition'] = {
@@ -47,7 +45,7 @@ export default function TaskLaunchDialog(props: IProps) {
       }
     }
     launchTask(req)
-  }, [afterJob, jobType])
+  }, [afterJob, vals])
 
   return (
     <Dialog onClose={handleClose} open={open} maxWidth={'xs'} fullWidth={true}>
@@ -61,7 +59,6 @@ export default function TaskLaunchDialog(props: IProps) {
         }
         <Divider/>
         <JobRunSettings
-          jobType={jobType} setJobType={setJobType}
           afterJob={afterJob} setAfterJob={setAfterJob}
           />
         <Divider/>

@@ -50,7 +50,6 @@ export interface CallReq {
   task_name: string,
   args: any[],
   kwargs: object,
-  job_type: string,
   condition: Condition | null
 }
 

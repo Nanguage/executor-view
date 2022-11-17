@@ -23,6 +23,11 @@ interface JobNodeArgs {
   }
 }
 
+const NodeSize = {
+  'width': 250,
+  'height': 75,
+}
+
 
 const JobNode = ({ data }: JobNodeArgs) => {
 
@@ -60,8 +65,8 @@ const JobNode = ({ data }: JobNodeArgs) => {
           textAlign: "center",
           backgroundColor: "white",
           padding: 0,
-          width: 250,
-          height: 60,
+          width: NodeSize.width,
+          height: NodeSize.height,
         }}
       >
         <p style={{
@@ -75,6 +80,12 @@ const JobNode = ({ data }: JobNodeArgs) => {
           margin: 0,
         }}>
           {job.id}
+        </p>
+        <p style={{
+          fontSize: 5,
+          margin: 0,
+        }}>
+          {job.status}
         </p>
       </div>
       <Handle
@@ -93,7 +104,7 @@ const layoutGraph = (nodes: Node[], edges: Edge[]) => {
   g.setGraph({})
   g.setDefaultEdgeLabel(() => ({}));
   for (const node of nodes) {
-    g.setNode(node.id, {label: node.id, width: 250, height: 60})
+    g.setNode(node.id, {label: node.id, width: NodeSize.width, height: NodeSize.height})
   }
   for (const edge of edges) {
     g.setEdge(edge.source, edge.target)
@@ -149,6 +160,7 @@ export default function Flow() {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       nodeTypes={nodeTypes}
+      fitView={true}
     >
       <MiniMap />
       <Controls />

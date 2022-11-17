@@ -9,8 +9,6 @@ interface IProps {
   setMonitorMode: (m: boolean) => void,
   allowedRouters: ServerRouter[],
   setAllowedRouters: (rts: ServerRouter[]) => void,
-  validJobTypes: string[],
-  setValidJobTypes: (tps: string[]) => void,
   nRefreshServer: number,
   refreshServer: () => void,
   currentPath: FolderChain,
@@ -39,8 +37,6 @@ const useStore = create<IProps>((set) => ({
   setMonitorMode: (m) => { set({ monitorMode: m }) },
   allowedRouters: [],
   setAllowedRouters: (rts) => { set({ allowedRouters: rts }) },
-  validJobTypes: [],
-  setValidJobTypes: (tps) => { set({ validJobTypes: tps }) },
   nRefreshServer: 0,
   refreshServer: () => {
     set((state) => ({ nRefreshServer: state.nRefreshServer + 1 }))

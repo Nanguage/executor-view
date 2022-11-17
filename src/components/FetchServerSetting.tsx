@@ -8,7 +8,7 @@ import MessageBar from '../components/MessageBar'
 export default function FetchServerSetting() {
   const {
     nRefreshServer, serverAddr,
-    setValidJobTypes, setAllowedRouters,
+    setAllowedRouters,
     setMonitorMode
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
@@ -27,7 +27,6 @@ export default function FetchServerSetting() {
   const fetchServerSetting = (serverAddr: string) => {
     const addr = serverAddr + "/server_setting"
     axios.get(addr).then((resp) => {
-      setValidJobTypes(resp.data.valid_job_types)
       setAllowedRouters(resp.data.allowed_routers)
       setMonitorMode(resp.data.monitor_mode)
     })

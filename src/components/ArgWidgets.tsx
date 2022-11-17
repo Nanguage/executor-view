@@ -145,22 +145,14 @@ export const ArgWidgets = ( props: IArgWidgetsProps) => {
 
 
 interface IJobRunSetting {
-  jobType: string,
-  setJobType: (t: string) => void,
   afterJob: Job | null,
   setAfterJob: (i: Job | null) => void,
 }
 
 
 export const JobRunSettings = ( props: IJobRunSetting ) => {
-  const { jobType,  setJobType, afterJob, setAfterJob } = props
-  const { validJobTypes, jobs } = useStore((state) => state)
-
-  React.useEffect(() => {
-    if (validJobTypes.length > 0) {
-      setJobType(validJobTypes[0])
-    }
-  }, [JSON.stringify(validJobTypes)])
+  const { afterJob, setAfterJob } = props
+  const { jobs } = useStore((state) => state)
 
   return (<>
     <ListItem key="job_type_selection">
@@ -169,14 +161,6 @@ export const JobRunSettings = ( props: IJobRunSetting ) => {
           <ListItemText>Job type</ListItemText>
         </Grid>
         <Grid item xs={9}>
-          <Dropdown
-            value={jobType}
-            onChange={(e) => {setJobType(e.target.value as string)}}
-          >
-            {validJobTypes.map(
-              (j) => <MenuItem key={j} value={j}>{j}</MenuItem>
-            )}
-          </Dropdown>
         </Grid>
 
         <Grid item xs={3}>
