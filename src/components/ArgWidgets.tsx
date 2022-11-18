@@ -158,12 +158,6 @@ export const JobRunSettings = ( props: IJobRunSetting ) => {
     <ListItem key="job_type_selection">
       <Grid container rowGap={1}>
         <Grid item xs={3}>
-          <ListItemText>Job type</ListItemText>
-        </Grid>
-        <Grid item xs={9}>
-        </Grid>
-
-        <Grid item xs={3}>
           <ListItemText>After another</ListItemText>
         </Grid>
         <Grid item xs={9}>
