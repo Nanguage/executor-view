@@ -15,6 +15,11 @@ export interface Task {
   args: Array<TaskArg>,
 }
 
+export interface JobAttr {
+  cmd?: string,
+  address?: string,
+}
+
 export interface Job {
   id: string,
   status: JobStatus,
@@ -25,6 +30,7 @@ export interface Job {
   submit_time: string | null,
   stoped_time: string | null,
   condition: Condition | null
+  attrs: JobAttr,
 }
 
 export interface Condition {

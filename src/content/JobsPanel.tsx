@@ -5,6 +5,7 @@ import Divider from '@mui/material/Divider';
 import useStore from '../store'
 import JobsTable from '../components/JobsTable';
 import JobActions from '../components/JobActions';
+import JobLink from '../components/JobLink';
 
 
 export default function JobsPanel(props: {}) {
@@ -17,6 +18,7 @@ export default function JobsPanel(props: {}) {
         <ButtonGroup>
           <Button onClick={(e) => refreshJobs()}>Refresh</Button>
           <JobActions />
+          <JobLink />
         </ButtonGroup>
       </div>
 
