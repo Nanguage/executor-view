@@ -1,4 +1,4 @@
-export type ServerRouter = "job" | "task" | "file"
+export type ServerRouter = "job" | "task" | "file" | "proxy"
 
 export type JobStatus = "pending" | "running" | "done" | "failed" | "canceled"
 
