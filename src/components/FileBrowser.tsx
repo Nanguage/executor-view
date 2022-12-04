@@ -32,7 +32,7 @@ const FetchFiles = (props: FetchFilesProps) => {
   const serverAddr = useStore((state) => state.serverAddr)
 
   React.useEffect(() => {
-    const addr = `${serverAddr}/file/list_dir/`
+    const addr = `${serverAddr}/file/list_dir`
     const path = folderChainToStr(currentPath.slice(1, currentPath.length))
     setFiles([])
     axios.post(addr, {path: path}).then((resp) => {
