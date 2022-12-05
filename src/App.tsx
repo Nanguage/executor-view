@@ -5,14 +5,14 @@ import Container from '@mui/material/Container';
 
 import CustomAppBar from './components/common/AppBar'
 import CustomDrawer from './components/common/Drawer';
-import LaunchPanel from './content/LaunchPanel';
-import JobsPanel from './content/JobsPanel';
-import FilesPanel from './content/FilesPanel';
-import PipelinePanel from './content/ChainViewPanel';
-import FetchJobs from './components/fetch/FetchJobs';
-import FetchServerSetting from './components/fetch/FetchServerSetting';
-import LaunchTask from './components/fetch/LaunchTask';
-import JobsModify from './components/fetch/JobsModify';
+import LaunchPanel from './pages/LaunchPanel';
+import JobsPanel from './pages/JobsPanel';
+import FilesPanel from './pages/FilesPanel';
+import PipelinePanel from './pages/ChainViewPanel';
+import FetchJobs from './components/network/FetchJobs';
+import FetchServerSetting from './components/network/FetchServerSetting';
+import LaunchTask from './components/network/LaunchTask';
+import JobsModify from './components/network/JobsModify';
 import { PanelLabel } from './types';
 import useStore from './store';
 
