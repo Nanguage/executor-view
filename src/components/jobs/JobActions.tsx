@@ -4,13 +4,11 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 
-import JobDetailDialog from './JobDetailDialog';
 import useStore from '../../store';
 
 
 const JobActions = () => {
   const { selectedJobs, monitorMode, allowedRouters, modifyJobs } = useStore((state) => state)
-  const [detailDialogOpen, setDetailDialogOpen] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -22,15 +20,6 @@ const JobActions = () => {
 
   return (
     <>
-      {(selectedJobs.length > 0) &&
-
-      <JobDetailDialog
-        open={detailDialogOpen}
-        onClose={() => setDetailDialogOpen(false)}
-        job={selectedJobs[0]}
-      />
-      }
-
       <Button onClick={handleClick}>Actions</Button>
 
       <Popover
@@ -43,10 +32,6 @@ const JobActions = () => {
         }}
         >
         <ButtonGroup variant="text" orientation="vertical" aria-label="outlined button group">
-          <MenuItem
-            disabled={selectedJobs.length != 1}
-            onClick={() => {setDetailDialogOpen(true)}}
-          >View detail</MenuItem>
           {((!monitorMode) && (allowedRouters.includes('job'))) &&
           <>
             <MenuItem
