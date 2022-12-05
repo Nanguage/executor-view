@@ -5,11 +5,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
-import { Job } from "../types";
-import { Accordion, AccordionSummary, AccordionDetails } from './Accordion';
+import { Job } from "../../types";
+import { Accordion, AccordionSummary, AccordionDetails } from '../common/Accordion';
 import PseudoTerminal from './PseudoTerminal';
-import useStore from '../store';
-import MessageBar from './MessageBar';
+import useStore from '../../store';
+import MessageBar from '../common/MessageBar';
 
 
 const jobLogFetchFactory = (

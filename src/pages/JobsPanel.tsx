@@ -3,9 +3,9 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
 
 import useStore from '../store'
-import JobsTable from '../components/JobsTable';
-import JobActions from '../components/JobActions';
-import JobLink from '../components/JobLink';
+import JobsTable from '../components/jobs/JobsTable';
+import JobActions from '../components/jobs/JobActions';
+import JobLink from '../components/jobs/JobLink';
 
 
 export default function JobsPanel(props: {}) {

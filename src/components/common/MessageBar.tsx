@@ -1,7 +1,7 @@
 import Snackbar from '@mui/material/Snackbar';
 import Alert from './Alert';
 
-import { getAlertCloseHandler } from '../utils';
+import { getAlertCloseHandler } from '../../utils';
 
 interface ErrorBarProps {
   alertOpen: boolean,

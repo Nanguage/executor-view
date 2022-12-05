@@ -4,9 +4,9 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
 import useStore from '../store';
-import TaskCard from '../components/TaskCard'
+import TaskCard from '../components/launch/TaskCard'
 import { Task } from '../types'
-import MessageBar from '../components/MessageBar'
+import MessageBar from '../components/common/MessageBar'
 
 
 const TasksFetch = (

@@ -1,4 +1,4 @@
-import FileBrowser from '../components/FileBrowser'
+import FileBrowser from '../components/file/FileBrowser'
 
 export default function FilesPanel() {
   return (

@@ -6,8 +6,8 @@ import DialogActions from '@mui/material/DialogActions';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 
-import { Task, Job, CallReq } from '../types';
-import useStore from '../store';
+import { Task, Job, CallReq } from '../../types';
+import useStore from '../../store';
 import { ArgWidgets, getInitValues, JobRunSettings } from './ArgWidgets';
 
 

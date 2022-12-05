@@ -3,16 +3,16 @@ import './MuiClassNameSetup';
 import * as React from 'react';
 import Container from '@mui/material/Container';
 
-import CustomAppBar from './components/AppBar'
-import CustomDrawer from './components/Drawer';
+import CustomAppBar from './components/common/AppBar'
+import CustomDrawer from './components/common/Drawer';
 import LaunchPanel from './content/LaunchPanel';
 import JobsPanel from './content/JobsPanel';
 import FilesPanel from './content/FilesPanel';
 import PipelinePanel from './content/ChainViewPanel';
-import FetchJobs from './components/FetchJobs';
-import FetchServerSetting from './components/FetchServerSetting';
-import LaunchTask from './components/LaunchTask';
-import JobsModify from './components/JobsModify';
+import FetchJobs from './components/fetch/FetchJobs';
+import FetchServerSetting from './components/fetch/FetchServerSetting';
+import LaunchTask from './components/fetch/LaunchTask';
+import JobsModify from './components/fetch/JobsModify';
 import { PanelLabel } from './types';
 import useStore from './store';
 

@@ -13,8 +13,8 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import dagre from 'dagre';
 
-import useStore from '../store';
-import { Job } from '../types';
+import useStore from '../../store';
+import { Job } from '../../types';
 
 
 interface JobNodeArgs {

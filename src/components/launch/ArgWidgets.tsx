@@ -9,8 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
-import { TaskArg, Job } from '../types';
-import useStore from '../store';
+import { TaskArg, Job } from '../../types';
+import useStore from '../../store';
 
 
 const Input = styled(MuiInput)`

@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
-import useStore from '../store';
-import MessageBar from './MessageBar';
-import { MessageBarTypes, Job } from '../types';
+import useStore from '../../store';
+import MessageBar from '../common/MessageBar';
+import { MessageBarTypes, Job } from '../../types';
 
 
 const JobsModify = () => {

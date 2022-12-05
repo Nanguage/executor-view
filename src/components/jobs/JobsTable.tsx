@@ -2,8 +2,8 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
-import useStore from '../store';
-import { Job } from '../types';
+import useStore from '../../store';
+import { Job } from '../../types';
 
 
 const columns: GridColDef[] = [

@@ -5,7 +5,7 @@ import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 
 import JobDetailDialog from './JobDetailDialog';
-import useStore from '../store';
+import useStore from '../../store';
 
 
 const JobActions = () => {

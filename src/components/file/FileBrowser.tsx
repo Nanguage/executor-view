@@ -12,10 +12,10 @@ import {
 } from 'chonky';
 import { FileBrowser as ChonkyFileBrowser } from 'chonky';
 
-import useStore from '../store';
-import { downloadFile, folderChainToStr, selectLocalFile } from '../utils';
-import { FolderChain } from '../types';
-import MessageBar from './MessageBar';
+import useStore from '../../store';
+import { downloadFile, folderChainToStr, selectLocalFile } from '../../utils';
+import { FolderChain } from '../../types';
+import MessageBar from '../common/MessageBar';
 
 
 interface FetchFilesProps {

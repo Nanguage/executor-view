@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-import useStore from '../store'
-import MessageBar from '../components/MessageBar'
+import useStore from '../../store'
+import MessageBar from '../common/MessageBar'
 
 
 export default function FetchJobs() {

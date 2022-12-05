@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 
-import useStore from '../store';
-import MessageBar from '../components/MessageBar'
+import useStore from '../../store';
+import MessageBar from '../common/MessageBar'
 
 
 const JobLink = () => {

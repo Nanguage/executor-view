@@ -8,7 +8,7 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import StorageIcon from '@mui/icons-material/Storage';
 
-import useStore from '../store';
+import useStore from '../../store';
 
 
 const drawerWidth = 240;

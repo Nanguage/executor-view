@@ -1,4 +1,4 @@
-import Flow from "../components/Flow"
+import Flow from "../components/jobs/Flow"
 
 export default function ChainViewPanel(props: {}) {
 

@@ -14,8 +14,8 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FolderIcon from '@mui/icons-material/Folder';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
-import { PanelLabel } from '../types';
-import useStore from '../store';
+import { PanelLabel } from '../../types';
+import useStore from '../../store';
 
 
 const drawerWidth = 240;

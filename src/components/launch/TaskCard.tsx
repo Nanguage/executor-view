@@ -5,8 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import TaskLaunchDialog from '../components/LaunchDialog';
-import { Task } from '../types';
+import TaskLaunchDialog from './LaunchDialog';
+import { Task } from '../../types';
 
 
 interface IProps {
