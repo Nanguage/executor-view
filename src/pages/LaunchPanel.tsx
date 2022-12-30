@@ -1,59 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
-import useStore from '../store';
-import TaskCard from '../components/launch/TaskCard'
-import { Task } from '../types'
-import MessageBar from '../components/common/MessageBar'
-
-
-const TasksFetch = (
-      props: {
-        nRefresh: number,
-        setTasks: (tasks: Task[]) => void
-      }
-    ) => {
-  const { setTasks, nRefresh } = props
-  const { serverAddr, refreshServer } = useStore((state) => state)
-  const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
-  const [errorText, setErrorText] = React.useState<string>("")
-  const fetchInterval = 90000
-
-  React.useEffect(() => {
-    fetchTasks(serverAddr)
-    const myInterval = setInterval(() => fetchTasks(serverAddr), fetchInterval)
-
-    return () => {
-      clearInterval(myInterval)
-    }
-  }, [serverAddr, nRefresh])
-
-  const fetchTasks = (serverAddr: string) => {
-    const addr = serverAddr + "/task/list_all"
-    axios.get(addr).then((resp) => {
-      setTasks(resp.data)
-    })
-    .catch((error) => {
-      console.log(error)
-      setErrorText(error.message + `: fetch ${addr}`)
-      setAlertOpen(true)
-      refreshServer()
-    })
-  }
-
-  return (
-    <MessageBar
-      alertOpen={alertOpen}
-      setAlertOpen={setAlertOpen}
-      alertHidenDuration={21000}
-      text={errorText}
-    />
-  )
-}
-
-
+import TaskCard from '../components/launch/TaskCard';
+import FetchTasks from '../components/network/FetchTasks';
+import { Task } from '../types';
 
 
 export default function LaunchPanel(props: {}) {
@@ -66,7 +17,7 @@ export default function LaunchPanel(props: {}) {
         <Button onClick={(e) => {setNRefresh(nRefresh+1)}}>Refresh</Button>
       </div>
 
-      <TasksFetch nRefresh={nRefresh} setTasks={(tasks) => {setTasks(tasks)}}/>
+      <FetchTasks nRefresh={nRefresh} setTasks={(tasks) => {setTasks(tasks)}}/>
 
       <Grid container rowGap={1} columnGap={1}>
         {

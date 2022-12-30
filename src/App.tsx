@@ -12,7 +12,7 @@ import PipelinePanel from './pages/ChainViewPanel';
 import FetchJobs from './components/network/FetchJobs';
 import FetchServerSetting from './components/network/FetchServerSetting';
 import LaunchTask from './components/network/LaunchTask';
-import JobsModify from './components/network/JobsModify';
+import ModifyJobs from './components/network/ModifyJobs';
 import { PanelLabel } from './types';
 import useStore from './store';
 
@@ -67,7 +67,7 @@ function App() {
         <FetchJobs />
       }
       {((!monitorMode) && (allowedRouters.includes('job'))) &&
-        <JobsModify />
+        <ModifyJobs />
       }
       {((!monitorMode) && (allowedRouters.includes('task'))) &&
         <LaunchTask />

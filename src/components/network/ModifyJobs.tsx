@@ -6,7 +6,7 @@ import MessageBar from '../common/MessageBar';
 import { MessageBarTypes, Job } from '../../types';
 
 
-const JobsModify = () => {
+const ModifyJobs = () => {
   const { serverAddr, jobModify, jobsForModify, nJobModify, refreshJobs } = useStore((state) => state)
 
   const [msgOpen, setMsgOpen] = React.useState<boolean>(false)
@@ -53,4 +53,4 @@ const JobsModify = () => {
   )
 }
 
-export default JobsModify
+export default ModifyJobs

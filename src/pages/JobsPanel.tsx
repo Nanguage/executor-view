@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
 
-import useStore from '../store'
+import useStore from '../store';
 import JobsTable from '../components/jobs/JobsTable';
 import JobActions from '../components/jobs/JobActions';
 import JobLink from '../components/jobs/JobLink';

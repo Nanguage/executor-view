@@ -1,8 +1,10 @@
 export type ServerRouter = "job" | "task" | "file" | "proxy"
 
+export type UserMode = "free" | "mono" | "hub"
+
 export type JobStatus = "pending" | "running" | "done" | "failed" | "canceled"
 
-export interface TaskArg{
+export interface TaskArg {
   name: string,
   type: string,
   range: Array<string | number> | null,

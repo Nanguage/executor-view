@@ -1,5 +1,5 @@
 import create from "zustand";
-import { FolderChain, Job, ServerRouter, CallReq, JobModify } from "./types";
+import { FolderChain, Job, ServerRouter, CallReq, JobModify, UserMode } from "./types";
 
 
 interface IProps {
@@ -9,6 +9,10 @@ interface IProps {
   setMonitorMode: (m: boolean) => void,
   allowedRouters: ServerRouter[],
   setAllowedRouters: (rts: ServerRouter[]) => void,
+  userMode: UserMode,
+  setUserMode: (m: UserMode) => void,
+  token: string,
+  setToken: (t: string) => void,
   nRefreshServer: number,
   refreshServer: () => void,
   currentPath: FolderChain,
@@ -37,6 +41,10 @@ const useStore = create<IProps>((set) => ({
   setMonitorMode: (m) => { set({ monitorMode: m }) },
   allowedRouters: [],
   setAllowedRouters: (rts) => { set({ allowedRouters: rts }) },
+  userMode: "free",
+  setUserMode: (m) => { set({ userMode: m }) },
+  token: "",
+  setToken: (t) => { set({ token: t }) },
   nRefreshServer: 0,
   refreshServer: () => {
     set((state) => ({ nRefreshServer: state.nRefreshServer + 1 }))
