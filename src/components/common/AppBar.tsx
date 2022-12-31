@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import StorageIcon from '@mui/icons-material/Storage';
+import Button from '@mui/material/Button';
 
 import useStore from '../../store';
 
@@ -81,6 +82,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
+const CustomButton = styled(Button)(({ theme }) => ({
+  height: 39,
+  color: "white",
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+  },
+}))
+
+
+const LoginButton = () => {
+  const { setLoginDialogOpen } = useStore((state) => state)
+  return (
+    <CustomButton
+      onClick={() => {setLoginDialogOpen(true)}}
+      style={{
+        marginLeft: 20,
+      }}
+    >
+      Login
+    </CustomButton>
+  )
+}
+
 
 interface IProps {
   drawerOpen: boolean,
@@ -135,6 +159,8 @@ export default function CustomAppBar(props: IProps) {
                 onBlur={(e) => {refreshServer()}}
               />
           </Address>
+
+          <LoginButton />
 
         </Toolbar>
       </AppBar>

@@ -14,6 +14,7 @@ import FetchServerSetting from './components/network/FetchServerSetting';
 import LaunchTask from './components/network/LaunchTask';
 import ModifyJobs from './components/network/ModifyJobs';
 import { PanelLabel } from './types';
+import LoginDialog from './components/user/LoginDialog';
 import useStore from './store';
 
 
@@ -72,6 +73,7 @@ function App() {
       {((!monitorMode) && (allowedRouters.includes('task'))) &&
         <LaunchTask />
       }
+      <LoginDialog />
     </div>
   )
 }

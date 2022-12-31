@@ -68,7 +68,6 @@ export default function TaskLaunchDialog(props: IProps) {
         <Button onClick={launch}>Launch</Button>
         <Button onClick={handleClose} autoFocus>Cancel</Button>
       </DialogActions>
-
     </Dialog>
   );
 }

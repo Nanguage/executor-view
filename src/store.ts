@@ -31,6 +31,8 @@ interface IProps {
   jobsForModify: Job[],
   nJobModify: number,
   modifyJobs: (jobs: Job[], modify: JobModify) => void,
+  loginDialogOpen: boolean,
+  setLoginDialogOpen: (o: boolean) => void,
 }
 
 
@@ -71,6 +73,8 @@ const useStore = create<IProps>((set) => ({
     set({ jobModify: modify })
     set((state) => ({ nJobModify: state.nJobModify + 1 }))
   },
+  loginDialogOpen: false,
+  setLoginDialogOpen: (o: boolean) => set({ loginDialogOpen: o }),
 }))
 
 
