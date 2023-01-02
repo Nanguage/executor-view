@@ -1,9 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 
 import useStore from '../../store';
 import { Task } from '../../types';
 import MessageBar from '../../components/common/MessageBar';
+import { getAxiosInstance } from '../../utils';
 
 
 const FetchTasks = (
@@ -13,23 +13,28 @@ const FetchTasks = (
       }
     ) => {
   const { setTasks, nRefresh } = props
-  const { serverAddr, refreshServer } = useStore((state) => state)
+  const {
+    serverAddr, refreshServer,
+    userMode, token, setLoginDialogOpen,
+  } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
   const fetchInterval = 90000
 
   React.useEffect(() => {
-    fetchTasks(serverAddr)
-    const myInterval = setInterval(() => fetchTasks(serverAddr), fetchInterval)
+    fetchTasks()
+    const myInterval = setInterval(() => fetchTasks(), fetchInterval)
 
     return () => {
       clearInterval(myInterval)
     }
-  }, [serverAddr, nRefresh])
+  }, [serverAddr, nRefresh, userMode, token])
 
-  const fetchTasks = (serverAddr: string) => {
-    const addr = serverAddr + "/task/list_all"
-    axios.get(addr).then((resp) => {
+  const fetchTasks = React.useCallback(() => {
+    const addr = "/task/list_all"
+    const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
+    if (instance === undefined) {return}
+    instance.get(addr).then((resp) => {
       setTasks(resp.data)
     })
     .catch((error) => {
@@ -38,7 +43,7 @@ const FetchTasks = (
       setAlertOpen(true)
       refreshServer()
     })
-  }
+  }, [serverAddr, userMode, token])
 
   return (
     <MessageBar

@@ -9,7 +9,8 @@ export default function FetchServerSetting() {
   const {
     nRefreshServer, serverAddr,
     setAllowedRouters,
-    setMonitorMode
+    setMonitorMode,
+    setUserMode,
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
@@ -29,6 +30,7 @@ export default function FetchServerSetting() {
     axios.get(addr).then((resp) => {
       setAllowedRouters(resp.data.allowed_routers)
       setMonitorMode(resp.data.monitor_mode)
+      setUserMode(resp.data.user_mode)
     })
     .catch((error) => {
       console.log(error)

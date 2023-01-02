@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import {
     FileContextMenu,
     FileList,
@@ -16,6 +15,7 @@ import { downloadFile, folderChainToStr, selectLocalFile } from '../../utils';
 import { FolderChain } from '../../types';
 import MessageBar from '../common/MessageBar';
 import FetchFiles from '../network/FetchFiles';
+import { getAxiosInstance } from '../../utils';
 
 
 
@@ -34,12 +34,18 @@ const getFilePath = (currentPath: FolderChain, fname: string) => {
 export default function FileBrowser(props: {}) {
   const [nRefresh, setNRefresh] = React.useState(0)
   const [files, setFiles] = React.useState<FileArray>([])
-  const { currentPath, setCurrentPath, serverAddr } = useStore((state) => state)
+  const {
+    currentPath, setCurrentPath, serverAddr,
+    token, userMode, setLoginDialogOpen,
+  } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
 
   const handleAction = React.useCallback<FileActionHandler>((data) => {
     console.log(data)
+    const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
+    if (instance === undefined) {return}
+
     if (data.id === "open_files") {
       const target_file = data.payload.files[0]
       if (target_file.isDir) {
@@ -61,11 +67,11 @@ export default function FileBrowser(props: {}) {
         }
       }
     } else if (data.id === "download_files") {
-      const addr = `${serverAddr}/file/download`
+      const addr = '/file/download'
       const target_file = data.state.selectedFiles[0]
       if (!target_file.isDir) {
         const path = getFilePath(currentPath, target_file.name)
-        axios.post(addr, {path: path}, {responseType: "blob"}).then((resp) => {
+        instance.post(addr, {path: path}, {responseType: "blob"}).then((resp) => {
           downloadFile(target_file.name, resp.data)
         }).catch((error) => {
           console.log(error)
@@ -80,14 +86,14 @@ export default function FileBrowser(props: {}) {
         for (const file of files) {
           formData.append("files", file)
         }
-        const addr = `${serverAddr}/file/upload?path=${dirPath}`
+        const addr = `/file/upload?path=${dirPath}`
         const config = {
           headers: {
             'accept': "application/json",
             'content-Type': "multipart/form-data",
           }
         }
-        axios.post(addr, formData, config).then((resp) => {
+        instance.post(addr, formData, config).then((resp) => {
           setNRefresh(nRefresh + 1)
         }).catch((error) => {
           console.log(error)
@@ -98,13 +104,13 @@ export default function FileBrowser(props: {}) {
         console.log("Cancel upload")
       })
     } else if (data.id === "delete_files") {
-      const addr = `${serverAddr}/file/delete`
+      const addr = '/file/delete'
       const paths: string[] = []
       for (const f of data.state.selectedFiles) {
         const path = getFilePath(currentPath, f.name)
         paths.push(path)
       }
-      axios.post(addr, {paths: paths}).then((resp) => {
+      instance.post(addr, {paths: paths}).then((resp) => {
         setNRefresh(nRefresh + 1)
       }).catch((error) => {
         console.log(error)
@@ -112,13 +118,13 @@ export default function FileBrowser(props: {}) {
         setAlertOpen(true)
       })
     } else if(data.id === "move_files") {
-      const addr = `${serverAddr}/file/move`
+      const addr = '/file/move'
       const paths: string[] = []
       for (const f of data.state.selectedFiles) {
         const path = getFilePath(currentPath, f.name)
         paths.push(path)
       }
-      axios.post(addr, {
+      instance.post(addr, {
         paths: paths,
         destination: getFilePath(currentPath, data.payload.destination.name)
       }).then((resp) => {
@@ -129,7 +135,7 @@ export default function FileBrowser(props: {}) {
         setAlertOpen(true)
       })
     }
-  }, [currentPath])
+  }, [currentPath, serverAddr, token, userMode])
 
   const actions = [
     ChonkyActions.UploadFiles,

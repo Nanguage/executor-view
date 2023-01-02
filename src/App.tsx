@@ -15,6 +15,7 @@ import LaunchTask from './components/network/LaunchTask';
 import ModifyJobs from './components/network/ModifyJobs';
 import { PanelLabel } from './types';
 import LoginDialog from './components/user/LoginDialog';
+import Login from './components/network/Login';
 import useStore from './store';
 
 
@@ -74,6 +75,7 @@ function App() {
         <LaunchTask />
       }
       <LoginDialog />
+      <Login />
     </div>
   )
 }

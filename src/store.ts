@@ -11,7 +11,7 @@ interface IProps {
   setAllowedRouters: (rts: ServerRouter[]) => void,
   userMode: UserMode,
   setUserMode: (m: UserMode) => void,
-  token: string,
+  token: string | null,
   setToken: (t: string) => void,
   nRefreshServer: number,
   refreshServer: () => void,
@@ -33,6 +33,10 @@ interface IProps {
   modifyJobs: (jobs: Job[], modify: JobModify) => void,
   loginDialogOpen: boolean,
   setLoginDialogOpen: (o: boolean) => void,
+  nLogin: number,
+  currentUsername: string | null,
+  currentPassword: string | null,
+  login: (username: string, password: string) => void,
 }
 
 
@@ -45,7 +49,7 @@ const useStore = create<IProps>((set) => ({
   setAllowedRouters: (rts) => { set({ allowedRouters: rts }) },
   userMode: "free",
   setUserMode: (m) => { set({ userMode: m }) },
-  token: "",
+  token: null,
   setToken: (t) => { set({ token: t }) },
   nRefreshServer: 0,
   refreshServer: () => {
@@ -74,7 +78,15 @@ const useStore = create<IProps>((set) => ({
     set((state) => ({ nJobModify: state.nJobModify + 1 }))
   },
   loginDialogOpen: false,
-  setLoginDialogOpen: (o: boolean) => set({ loginDialogOpen: o }),
+  setLoginDialogOpen: (o) => set({ loginDialogOpen: o }),
+  currentUsername: null,
+  currentPassword: null,
+  nLogin: 0,
+  login: (username, password) => set((state) => ({
+    currentUsername: username,
+    currentPassword: password,
+    nLogin: state.nLogin + 1,
+  })),
 }))
 
 

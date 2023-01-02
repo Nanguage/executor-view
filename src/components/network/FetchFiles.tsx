@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import {
     FileArray,
     FileData,
@@ -8,6 +7,7 @@ import {
 import useStore from '../../store';
 import { folderChainToStr } from '../../utils';
 import MessageBar from '../common/MessageBar';
+import { getAxiosInstance } from '../../utils';
 
 
 interface FetchFilesProps {
@@ -20,14 +20,22 @@ const FetchFiles = (props: FetchFilesProps) => {
   const { nRefresh, setFiles } = props
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const { currentPath } = useStore((state) => state)
+  const {
+    currentPath, userMode, token, setLoginDialogOpen,
+  } = useStore((state) => state)
   const serverAddr = useStore((state) => state.serverAddr)
 
   React.useEffect(() => {
-    const addr = `${serverAddr}/file/list_dir`
-    const path = folderChainToStr(currentPath.slice(1, currentPath.length))
     setFiles([])
-    axios.post(addr, {path: path}).then((resp) => {
+    reqFiles()
+  }, [serverAddr, currentPath, token, userMode, nRefresh])
+
+  const reqFiles = React.useCallback(() => {
+    const path = folderChainToStr(currentPath.slice(1, currentPath.length))
+    const addr = '/file/list_dir'
+    const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
+    if (instance === undefined) {return}
+    instance.post(addr, {path: path}).then((resp) => {
       const sfiles = []
       for (let f of resp.data) {
         const randID = Math.random().toString().slice(2, 12)
@@ -49,7 +57,7 @@ const FetchFiles = (props: FetchFilesProps) => {
       setErrorText(error.message + `: fetch ${addr}`)
       setAlertOpen(true)
     })
-  }, [serverAddr, currentPath, nRefresh])
+  }, [serverAddr, token, userMode])
 
   return (
     <MessageBar

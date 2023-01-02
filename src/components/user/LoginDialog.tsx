@@ -1,3 +1,4 @@
+import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -16,14 +17,16 @@ interface LoginDialogProps {
 
 const LoginDialog = (props: LoginDialogProps) => {
 
-  const { loginDialogOpen, setLoginDialogOpen } = useStore((state) => state)
+  const [username, setUsername] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const { loginDialogOpen, setLoginDialogOpen, login } = useStore((state) => state)
 
   const handleClose = () => {
     setLoginDialogOpen(false)
   }
 
-  const login = () => {
-
+  const handleLogin = () => {
+    login(username, password)
   }
 
   return (
@@ -38,6 +41,8 @@ const LoginDialog = (props: LoginDialogProps) => {
               id="username"
               label="username"
               variant='standard'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </ListItem>
           <ListItem>
@@ -47,12 +52,14 @@ const LoginDialog = (props: LoginDialogProps) => {
               label="password"
               variant='standard'
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </ListItem>
         </List>
       </DialogContent>
       <DialogActions>
-        <Button onClick={login}>Login</Button>
+        <Button onClick={handleLogin}>Login</Button>
         <Button onClick={handleClose} style={{color: "gray"}}>Cancel</Button>
       </DialogActions>
     </Dialog>

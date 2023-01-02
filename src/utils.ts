@@ -1,5 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import memoizee from 'memoizee';
+
 import { FolderChain } from "./types";
+
 
 export const getAlertCloseHandler = (setAlertOpen: (o: boolean) => void) => {
 
@@ -60,3 +64,27 @@ export const selectLocalFile = () => {
     el.click() // open file select box
   })
 }
+
+
+export const getAxiosInstance = memoizee((
+    serverAddr: string, userMode: string, token: string | null,
+    setLoginDialogOpen: (o: boolean) => void) => {
+  console.log(serverAddr, userMode, token)
+  let instance;
+  if (userMode == "free") {
+    instance = axios.create({
+      baseURL: serverAddr,
+    })
+  } else if (token !== null) {
+    instance = axios.create({
+      baseURL: serverAddr,
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+  } else {
+    console.log("login is needed.")
+    setLoginDialogOpen(true)
+  }
+  return instance
+}, {length: 3})
