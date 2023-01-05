@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import Cookies from 'universal-cookie';
 
 import useStore from "../../store";
 import MessageBar from '../common/MessageBar';
@@ -16,7 +17,7 @@ const Login = () => {
   const [msg, setMsg] = React.useState<string>("")
   const [msgType, setMsgType] = React.useState<MessageBarTypes>("info")
 
-  const addr = serverAddr + "/user/login"
+  const addr = serverAddr + "/user/token"
   React.useEffect(() => {
     const form = new FormData()
     form.append("grant_type", "password")
@@ -24,6 +25,8 @@ const Login = () => {
     form.append("password", currentPassword as string)
     axios.post(addr, form).then((resp) => {
       const token = resp.data['access_token']
+      const cookies = new Cookies()
+      cookies.set("Authorization", `Bearer ${token}`, {path: "/"})
       setToken(token)
       setMsgType("info")
       setMsg("Login success!")

@@ -73,10 +73,12 @@ export const getAxiosInstance = memoizee((
   let instance;
   if (userMode == "free") {
     instance = axios.create({
+      withCredentials: true,
       baseURL: serverAddr,
     })
   } else if (token !== null) {
     instance = axios.create({
+      withCredentials: true,
       baseURL: serverAddr,
       headers: {
         "Authorization": `Bearer ${token}`

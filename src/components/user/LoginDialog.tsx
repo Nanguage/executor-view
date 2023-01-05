@@ -27,6 +27,7 @@ const LoginDialog = (props: LoginDialogProps) => {
 
   const handleLogin = () => {
     login(username, password)
+    handleClose()
   }
 
   return (
