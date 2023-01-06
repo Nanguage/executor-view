@@ -66,27 +66,11 @@ export const selectLocalFile = () => {
 }
 
 
-export const getAxiosInstance = memoizee((
-    serverAddr: string, userMode: string, token: string | null,
-    setLoginDialogOpen: (o: boolean) => void) => {
-  console.log(serverAddr, userMode, token)
-  let instance;
-  if (userMode == "free") {
-    instance = axios.create({
+export const getAxiosInstance = memoizee(
+  (serverAddr: string) => {
+    let instance = axios.create({
       withCredentials: true,
       baseURL: serverAddr,
     })
-  } else if (token !== null) {
-    instance = axios.create({
-      withCredentials: true,
-      baseURL: serverAddr,
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    })
-  } else {
-    console.log("login is needed.")
-    setLoginDialogOpen(true)
-  }
-  return instance
-}, {length: 3})
+    return instance
+  }, {length: 1})

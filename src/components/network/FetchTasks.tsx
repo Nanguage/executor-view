@@ -15,7 +15,6 @@ const FetchTasks = (
   const { setTasks, nRefresh } = props
   const {
     serverAddr, refreshServer,
-    userMode, token, setLoginDialogOpen,
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
@@ -28,12 +27,11 @@ const FetchTasks = (
     return () => {
       clearInterval(myInterval)
     }
-  }, [serverAddr, nRefresh, userMode, token])
+  }, [serverAddr, nRefresh])
 
   const fetchTasks = React.useCallback(() => {
     const addr = "/task/list_all"
-    const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
-    if (instance === undefined) {return}
+    const instance = getAxiosInstance(serverAddr)
     instance.get(addr).then((resp) => {
       setTasks(resp.data)
     })
@@ -43,7 +41,7 @@ const FetchTasks = (
       setAlertOpen(true)
       refreshServer()
     })
-  }, [serverAddr, userMode, token])
+  }, [serverAddr])
 
   return (
     <MessageBar

@@ -36,15 +36,13 @@ export default function FileBrowser(props: {}) {
   const [files, setFiles] = React.useState<FileArray>([])
   const {
     currentPath, setCurrentPath, serverAddr,
-    token, userMode, setLoginDialogOpen,
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
 
   const handleAction = React.useCallback<FileActionHandler>((data) => {
     console.log(data)
-    const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
-    if (instance === undefined) {return}
+    const instance = getAxiosInstance(serverAddr)
 
     if (data.id === "open_files") {
       const target_file = data.payload.files[0]
@@ -135,7 +133,7 @@ export default function FileBrowser(props: {}) {
         setAlertOpen(true)
       })
     }
-  }, [currentPath, serverAddr, token, userMode])
+  }, [currentPath, serverAddr])
 
   const actions = [
     ChonkyActions.UploadFiles,

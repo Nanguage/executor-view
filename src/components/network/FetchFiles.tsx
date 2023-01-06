@@ -20,21 +20,18 @@ const FetchFiles = (props: FetchFilesProps) => {
   const { nRefresh, setFiles } = props
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const {
-    currentPath, userMode, token, setLoginDialogOpen,
-  } = useStore((state) => state)
+  const { currentPath } = useStore((state) => state)
   const serverAddr = useStore((state) => state.serverAddr)
 
   React.useEffect(() => {
     setFiles([])
     reqFiles()
-  }, [serverAddr, currentPath, token, userMode, nRefresh])
+  }, [serverAddr, currentPath, nRefresh])
 
   const reqFiles = React.useCallback(() => {
     const path = folderChainToStr(currentPath.slice(1, currentPath.length))
     const addr = '/file/list_dir'
-    const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
-    if (instance === undefined) {return}
+    const instance = getAxiosInstance(serverAddr)
     instance.post(addr, {path: path}).then((resp) => {
       const sfiles = []
       for (let f of resp.data) {
@@ -57,7 +54,7 @@ const FetchFiles = (props: FetchFilesProps) => {
       setErrorText(error.message + `: fetch ${addr}`)
       setAlertOpen(true)
     })
-  }, [serverAddr, token, userMode])
+  }, [serverAddr])
 
   return (
     <MessageBar

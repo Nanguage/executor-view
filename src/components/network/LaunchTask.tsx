@@ -10,7 +10,6 @@ export default function LaunchTask() {
 
   const {
     serverAddr, currentCallReq,
-    token, userMode, setLoginDialogOpen,
   } = useStore((state) => state)
 
   const [msgOpen, setMsgOpen] = React.useState<boolean>(false)
@@ -19,8 +18,7 @@ export default function LaunchTask() {
 
   const launchTask = React.useCallback((req: CallReq) => {
     const addr = "/task/call"
-    const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
-    if (instance === undefined) {return}
+    const instance = getAxiosInstance(serverAddr)
     instance.post(addr, req).then((resp) => {
       const job: Job = resp.data
       setMsgType("info")
@@ -33,7 +31,7 @@ export default function LaunchTask() {
       setMsg(`${error.message}: query on ${addr}`)
       setMsgOpen(true)
     })
-  }, [token, userMode, serverAddr])
+  }, [serverAddr])
 
   React.useEffect(() => {
     if (currentCallReq !== null) {

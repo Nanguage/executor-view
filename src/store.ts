@@ -11,8 +11,6 @@ interface IProps {
   setAllowedRouters: (rts: ServerRouter[]) => void,
   userMode: UserMode,
   setUserMode: (m: UserMode) => void,
-  token: string | null,
-  setToken: (t: string) => void,
   nRefreshServer: number,
   refreshServer: () => void,
   currentPath: FolderChain,
@@ -49,8 +47,6 @@ const useStore = create<IProps>((set) => ({
   setAllowedRouters: (rts) => { set({ allowedRouters: rts }) },
   userMode: "free",
   setUserMode: (m) => { set({ userMode: m }) },
-  token: null,
-  setToken: (t) => { set({ token: t }) },
   nRefreshServer: 0,
   refreshServer: () => {
     set((state) => ({ nRefreshServer: state.nRefreshServer + 1 }))

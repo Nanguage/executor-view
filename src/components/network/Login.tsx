@@ -9,7 +9,7 @@ import { MessageBarTypes } from '../../types'
 
 const Login = () => {
   const {
-    serverAddr, setToken,
+    serverAddr,
     currentUsername, currentPassword, nLogin,
   } = useStore((state) => state)
 
@@ -27,7 +27,6 @@ const Login = () => {
       const token = resp.data['access_token']
       const cookies = new Cookies()
       cookies.set("Authorization", `Bearer ${token}`, {path: "/"})
-      setToken(token)
       setMsgType("info")
       setMsg("Login success!")
       setMsgOpen(true)

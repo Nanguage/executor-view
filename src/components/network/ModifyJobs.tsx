@@ -9,8 +9,7 @@ import { getAxiosInstance } from '../../utils';
 const ModifyJobs = () => {
   const {
     serverAddr, jobModify, jobsForModify,
-    nJobModify, refreshJobs, token, userMode,
-    setLoginDialogOpen,
+    nJobModify, refreshJobs,
   } = useStore((state) => state)
 
   const [msgOpen, setMsgOpen] = React.useState<boolean>(false)
@@ -19,8 +18,7 @@ const ModifyJobs = () => {
 
   const modifyJobs = React.useCallback((jobs: Job[]) => {
     const promises = []
-    const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
-    if (instance === undefined) {return}
+    const instance = getAxiosInstance(serverAddr)
     for (const job of jobs) {
       const addr = `/job/${jobModify}/${job.id}`
       const promise = instance.get(addr)
@@ -37,7 +35,7 @@ const ModifyJobs = () => {
       setMsg(`Error occured when ${jobModify} jobs.`)
       setMsgOpen(true)
     })
-  }, [serverAddr, token, userMode, jobModify])
+  }, [serverAddr, jobModify])
 
   React.useEffect(() => {
     if (jobModify !== undefined) {

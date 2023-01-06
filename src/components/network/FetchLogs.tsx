@@ -18,7 +18,6 @@ const jobLogFetchFactory = (
     const { nRefresh } = props
     const {
       serverAddr, monitorMode,
-      setLoginDialogOpen, token, userMode,
     } = useStore((state) => state)
     const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
     const [errorText, setErrorText] = React.useState<string>("")
@@ -28,7 +27,7 @@ const jobLogFetchFactory = (
     }, [serverAddr, nRefresh, monitorMode])
 
     const fetchContent = React.useCallback(() => {
-      const instance = getAxiosInstance(serverAddr, userMode, token, setLoginDialogOpen)
+      const instance = getAxiosInstance(serverAddr)
       if (instance === undefined) {return}
       let addr: string
       if (monitorMode) {
@@ -44,7 +43,7 @@ const jobLogFetchFactory = (
         setErrorText(error.message + `: fetch ${addr}`)
         setAlertOpen(true)
       })
-    }, [serverAddr, monitorMode, token, userMode])
+    }, [serverAddr, monitorMode])
 
     return (
       <MessageBar
