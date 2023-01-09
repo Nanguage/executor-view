@@ -114,6 +114,8 @@ interface IProps {
 
 export default function CustomAppBar(props: IProps) {
 
+  const { userMode } = useStore((state) => state)
+
   const handleDrawerOpen = () => {
     props.setDrawerOpen(true);
   };
@@ -160,7 +162,10 @@ export default function CustomAppBar(props: IProps) {
               />
           </Address>
 
-          <LoginButton />
+          {
+            (userMode != "free")
+            && <LoginButton />
+          }
 
         </Toolbar>
       </AppBar>

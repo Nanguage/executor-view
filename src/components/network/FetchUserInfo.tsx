@@ -7,7 +7,11 @@ import { getAxiosInstance } from "../../utils"
 
 const FetchUserInfo = () => {
 
-  const { serverAddr, setUserInfo, nRefreshUserInfo, setLoginDialogOpen } = useStore((state) => state)
+  const {
+    serverAddr, setUserInfo,
+    nRefreshUserInfo, setLoginDialogOpen,
+    userMode,
+  } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
 
@@ -28,7 +32,9 @@ const FetchUserInfo = () => {
       let addr = serverAddr + "/user/info"
       const instance = getAxiosInstance(serverAddr)
       instance.get(addr).then((resp) => {
-        setUserInfo(resp.data)
+        if (userMode != "free") {
+          setUserInfo(resp.data)
+        }
       })
       .catch((error) => {
         console.log(error)
