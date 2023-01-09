@@ -1,20 +1,13 @@
 import React from 'react';
 
 import useStore from '../../store';
-import { Task } from '../../types';
 import MessageBar from '../../components/common/MessageBar';
 import { getAxiosInstance } from '../../utils';
 
 
-const FetchTasks = (
-      props: {
-        nRefresh: number,
-        setTasks: (tasks: Task[]) => void
-      }
-    ) => {
-  const { setTasks, nRefresh } = props
+const FetchTasks = () => {
   const {
-    serverAddr, refreshServer,
+    serverAddr, refreshServer, nRefreshTasks, setTasks,
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
@@ -27,7 +20,7 @@ const FetchTasks = (
     return () => {
       clearInterval(myInterval)
     }
-  }, [serverAddr, nRefresh])
+  }, [serverAddr, nRefreshTasks])
 
   const fetchTasks = React.useCallback(() => {
     const addr = "/task/list_all"

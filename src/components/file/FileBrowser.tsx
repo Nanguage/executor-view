@@ -18,7 +18,6 @@ import FetchFiles from '../network/FetchFiles';
 import { getAxiosInstance } from '../../utils';
 
 
-
 const getFilePath = (currentPath: FolderChain, fname: string) => {
   const dirPath = folderChainToStr(currentPath.slice(1, currentPath.length))
   let path: string

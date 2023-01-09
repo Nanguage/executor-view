@@ -11,6 +11,7 @@ const Login = () => {
   const {
     serverAddr,
     currentUsername, currentPassword, nLogin,
+    refreshJobs
   } = useStore((state) => state)
 
   const [msgOpen, setMsgOpen] = React.useState<boolean>(false)
@@ -19,6 +20,7 @@ const Login = () => {
 
   const addr = serverAddr + "/user/token"
   React.useEffect(() => {
+    if (currentUsername === null) {return}
     const form = new FormData()
     form.append("grant_type", "password")
     form.append("username", currentUsername as string)
@@ -30,6 +32,7 @@ const Login = () => {
       setMsgType("info")
       setMsg("Login success!")
       setMsgOpen(true)
+      refreshJobs()
     })
     .catch((error) => {
       console.log(error)

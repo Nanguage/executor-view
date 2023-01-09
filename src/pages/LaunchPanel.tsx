@@ -3,21 +3,19 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
 import TaskCard from '../components/launch/TaskCard';
-import FetchTasks from '../components/network/FetchTasks';
-import { Task } from '../types';
+import useStore from '../store';
 
 
 export default function LaunchPanel(props: {}) {
-  const [tasks, setTasks] = React.useState<Array<Task>>([])
-  const [nRefresh, setNRefresh] = React.useState<number>(0)
+
+  const { refreshTasks, tasks } = useStore((state) => state)
 
   return (
     <div>
       <div>
-        <Button onClick={(e) => {setNRefresh(nRefresh+1)}}>Refresh</Button>
+        <Button onClick={(e) => {refreshTasks}}>Refresh</Button>
       </div>
 
-      <FetchTasks nRefresh={nRefresh} setTasks={(tasks) => {setTasks(tasks)}}/>
 
       <Grid container rowGap={1} columnGap={1}>
         {

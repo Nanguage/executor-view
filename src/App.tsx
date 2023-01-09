@@ -12,10 +12,12 @@ import PipelinePanel from './pages/ChainViewPanel';
 import FetchJobs from './components/network/FetchJobs';
 import FetchServerSetting from './components/network/FetchServerSetting';
 import LaunchTask from './components/network/LaunchTask';
+import FetchTasks from './components/network/FetchTasks';
 import ModifyJobs from './components/network/ModifyJobs';
 import { PanelLabel } from './types';
 import LoginDialog from './components/user/LoginDialog';
 import Login from './components/network/Login';
+import FetchUserInfo from './components/network/FetchUserInfo';
 import useStore from './store';
 
 
@@ -72,10 +74,14 @@ function App() {
         <ModifyJobs />
       }
       {((!monitorMode) && (allowedRouters.includes('task'))) &&
-        <LaunchTask />
+        <>
+          <LaunchTask />
+          <FetchTasks />
+        </>
       }
       <LoginDialog />
       <Login />
+      <FetchUserInfo />
     </div>
   )
 }

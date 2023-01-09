@@ -1,5 +1,9 @@
 import create from "zustand";
-import { FolderChain, Job, ServerRouter, CallReq, JobModify, UserMode } from "./types";
+import {
+  FolderChain, Job, ServerRouter,
+  CallReq, JobModify, UserMode,
+  UserInfo, Task,
+} from "./types";
 
 
 interface IProps {
@@ -21,6 +25,10 @@ interface IProps {
   setId2Job: (m: Map<string, Job>) => void,
   nRefreshJobs: number,
   refreshJobs: () => void,
+  tasks: Task[],
+  setTasks: (tasks: Task[]) => void,
+  nRefreshTasks: number,
+  refreshTasks: () => void,
   currentCallReq: CallReq | null,
   launchTask: (req: CallReq) => void,
   selectedJobs: Job[],
@@ -35,6 +43,9 @@ interface IProps {
   currentUsername: string | null,
   currentPassword: string | null,
   login: (username: string, password: string) => void,
+  userInfo: UserInfo | null,
+  setUserInfo: (u: UserInfo) => void,
+  nRefreshUserInfo: number,
 }
 
 
@@ -61,6 +72,10 @@ const useStore = create<IProps>((set) => ({
   refreshJobs: () => {
     set((state) => ({ nRefreshJobs: state.nRefreshJobs + 1 }))
   },
+  tasks: [],
+  setTasks: (tasks) => set({tasks: tasks}),
+  nRefreshTasks: 0,
+  refreshTasks: () => set((state) => ({nRefreshTasks: state.nRefreshTasks + 1})),
   currentCallReq: null,
   launchTask: (req) => { set({ currentCallReq: req }) },
   selectedJobs: [],
@@ -83,6 +98,10 @@ const useStore = create<IProps>((set) => ({
     currentPassword: password,
     nLogin: state.nLogin + 1,
   })),
+  userInfo: null,
+  setUserInfo: (u) => set({ userInfo: u }),
+  nRefreshUserInfo: 0,
+  refreshUserInfo: () => set((state) => ({nRefreshUserInfo: state.nRefreshUserInfo + 1})),
 }))
 
 
