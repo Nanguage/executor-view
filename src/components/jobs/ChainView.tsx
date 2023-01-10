@@ -9,6 +9,7 @@ import ReactFlow, {
   Node,
   Edge,
   MiniMap,
+  MarkerType,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import dagre from 'dagre';
@@ -144,6 +145,12 @@ export default function ChainView() {
           id: dep_job_id + "_" + job.id,
           source: dep_job_id,
           target: job.id,
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: "#888",
+            height: 20,
+            width: 20,
+          }
         }
         job_edges.push(edge)
       }
