@@ -99,17 +99,6 @@ export default function CustomDrawer(props: IProps) {
           </ListItem>
         }
 
-        {(monitorMode || allowedRouters.includes('job')) &&
-          <ListItem key="chain_view" disablePadding>
-            <ListItemButton onClick={() => props.setContentLabel("chain_view")}>
-              <ListItemIcon>
-                <AccountTreeIcon/>
-              </ListItemIcon>
-              <ListItemText primary="Chain view"/>
-            </ListItemButton>
-          </ListItem>
-        }
-
         {(!monitorMode && allowedRouters.includes('file')) &&
           <ListItem key="files" disablePadding>
             <ListItemButton onClick={() => props.setContentLabel("files")}>

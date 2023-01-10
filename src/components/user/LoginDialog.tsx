@@ -19,7 +19,9 @@ const LoginDialog = (props: LoginDialogProps) => {
 
   const [username, setUsername] = React.useState("")
   const [password, setPassword] = React.useState("")
-  const { loginDialogOpen, setLoginDialogOpen, login } = useStore((state) => state)
+  const {
+    loginDialogOpen, setLoginDialogOpen, login,
+  } = useStore((state) => state)
 
   const handleClose = () => {
     setLoginDialogOpen(false)

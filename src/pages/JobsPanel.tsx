@@ -7,6 +7,7 @@ import JobsTable from '../components/jobs/JobsTable';
 import JobActions from '../components/jobs/JobActions';
 import JobLink from '../components/jobs/JobLink';
 import OpenJobDetail from '../components/jobs/OpenJobDetail';
+import OpenChainView from '../components/jobs/OpenChainView';
 
 
 export default function JobsPanel(props: {}) {
@@ -19,6 +20,7 @@ export default function JobsPanel(props: {}) {
         <ButtonGroup>
           <Button onClick={(e) => refreshJobs()}>Refresh</Button>
           <JobActions />
+          <OpenChainView />
           <OpenJobDetail />
           <JobLink />
         </ButtonGroup>

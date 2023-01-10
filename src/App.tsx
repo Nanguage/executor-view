@@ -9,7 +9,6 @@ import LaunchPanel from './pages/LaunchPanel';
 import Home from './pages/Home';
 import JobsPanel from './pages/JobsPanel';
 import FilesPanel from './pages/FilesPanel';
-import PipelinePanel from './pages/ChainViewPanel';
 import FetchJobs from './components/network/FetchJobs';
 import FetchServerSetting from './components/network/FetchServerSetting';
 import LaunchTask from './components/network/LaunchTask';
@@ -32,8 +31,6 @@ const ContentRoute = (props: {label: PanelLabel}) => {
     return <JobsPanel/>
   } else if (label === "files") {
     return <FilesPanel/>
-  } else if (label === "chain_view") {
-    return <PipelinePanel/>
   } else {
     return <div/>
   }

@@ -29,9 +29,9 @@ export default function FetchJobs() {
     () => {
       let addr: string;
       if (monitorMode) {
-        addr = serverAddr + "/monitor/list_all"
+        addr = "/monitor/list_all"
       } else {
-        addr = serverAddr + "/job/list_all"
+        addr = "/job/list_all"
       }
       const instance = getAxiosInstance(serverAddr)
       instance.get(addr).then((resp) => {

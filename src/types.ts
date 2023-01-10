@@ -45,7 +45,7 @@ export interface ConditionAfterAnoter {
   status: JobStatus
 }
 
-export type PanelLabel = 'home' | 'launch' | 'jobs' | 'files' | 'chain_view'
+export type PanelLabel = 'home' | 'launch' | 'jobs' | 'files'
 
 export interface Folder {
   id: string,

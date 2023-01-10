@@ -27,20 +27,23 @@ const FetchUserInfo = () => {
     }
   }, [serverAddr, nRefreshUserInfo])
 
+
   const fetchUserInfo = React.useCallback(
     () => {
-      let addr = serverAddr + "/user/info"
+      const addr = "/user/info"
       const instance = getAxiosInstance(serverAddr)
       instance.get(addr).then((resp) => {
         if (userMode != "free") {
           setUserInfo(resp.data)
         }
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log(error)
+        if (error.response.status === 403) {
+          setLoginDialogOpen(true)
+        }
         setErrorText(error.message + `: fetch ${addr}`)
         setAlertOpen(true)
-        setLoginDialogOpen(true)
       })
     }, [serverAddr]
   )

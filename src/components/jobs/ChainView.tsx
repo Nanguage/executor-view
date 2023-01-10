@@ -118,7 +118,7 @@ const layoutGraph = (nodes: Node[], edges: Edge[]) => {
 }
 
 
-export default function Flow() {
+export default function ChainView() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { jobs, refreshJobs } = useStore((state) => state);
