@@ -6,7 +6,7 @@ body {
   margin: 0;
 }
 
-#root > div > div:nth-child(2) > div.my-MuiContainer-root.my-MuiContainer-maxWidthLg.css-312x7-MuiContainer-root > div > div > div.react-flow__panel.react-flow__attribution.bottom.right > a {
+body > div.my-MuiDialog-root.my-MuiModal-root.css-zw3mfo-MuiModal-root-MuiDialog-root > div.my-MuiDialog-container.my-MuiDialog-scrollPaper.css-hz1bth-MuiDialog-container > div > div:nth-child(3) > div > div.react-flow__panel.react-flow__attribution.bottom.right > a {
   display: none;
 }
 

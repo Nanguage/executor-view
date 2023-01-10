@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import { DialogActions, DialogTitle } from '@mui/material';
+import { DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 import ChainView from './ChainView';
 
@@ -19,6 +19,12 @@ const ChainViewDialog = (props: {
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={false}>
       <DialogTitle>View chains:</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Visualization of the dependency between jobs.
+        </DialogContentText>
+      </DialogContent>
+
 
       <div style={{
         width: "1000px",
