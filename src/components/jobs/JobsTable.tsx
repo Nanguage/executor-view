@@ -37,7 +37,7 @@ export default function JobsTable() {
   }, [JSON.stringify(jobs)])
 
   return (
-    <Box sx={{height: 800, width: "100%"}}>
+    <Box sx={{height: 750, width: "100%"}}>
       <DataGrid
         checkboxSelection
         disableSelectionOnClick

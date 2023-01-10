@@ -8,7 +8,17 @@ import useStore from '../store';
 
 export default function LaunchPanel(props: {}) {
 
-  const { refreshTasks, tasks } = useStore((state) => state)
+  const { refreshTasks, tasks, serverAddr } = useStore((state) => state)
+
+  React.useEffect(() => {
+    const fetchInterval = 90000
+
+    const myInterval = setInterval(() => refreshTasks(), fetchInterval)
+
+    return () => {
+      clearInterval(myInterval)
+    }
+  }, [serverAddr])
 
   return (
     <div>

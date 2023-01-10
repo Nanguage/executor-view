@@ -1,3 +1,4 @@
+import React from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
@@ -12,7 +13,16 @@ import OpenChainView from '../components/jobs/OpenChainView';
 
 export default function JobsPanel(props: {}) {
 
-  const { refreshJobs } = useStore((state) => state)
+  const { refreshJobs, serverAddr, monitorMode } = useStore((state) => state)
+
+  React.useEffect(() => {
+    const fetchInterval = 5000
+    const interval = setInterval(() => refreshJobs(), fetchInterval)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [serverAddr, monitorMode])
 
   return (
     <div>

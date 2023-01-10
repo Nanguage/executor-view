@@ -11,16 +11,10 @@ const FetchTasks = () => {
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const fetchInterval = 90000
 
   React.useEffect(() => {
     fetchTasks()
-    const myInterval = setInterval(() => fetchTasks(), fetchInterval)
-
-    return () => {
-      clearInterval(myInterval)
-    }
-  }, [serverAddr, nRefreshTasks])
+  }, [nRefreshTasks])
 
   const fetchTasks = React.useCallback(() => {
     const addr = "/task/list_all"

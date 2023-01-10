@@ -13,17 +13,10 @@ export default function FetchJobs() {
 
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-  const fetchInterval = 5000
 
   React.useEffect(() => {
     fetchJobs()
-
-    const interval = setInterval(() => fetchJobs(), fetchInterval)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [serverAddr, monitorMode, nRefreshJobs])
+  }, [nRefreshJobs])
 
   const fetchJobs = React.useCallback(
     () => {
