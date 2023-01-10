@@ -4,7 +4,6 @@ import {
     FileList,
     FileNavbar,
     FileToolbar,
-    FileArray,
     FileActionHandler,
     ChonkyActions,
 } from 'chonky';
@@ -32,9 +31,9 @@ const getFilePath = (currentPath: FolderChain, fname: string) => {
 
 export default function FileBrowser(props: {}) {
   const [nRefresh, setNRefresh] = React.useState(0)
-  const [files, setFiles] = React.useState<FileArray>([])
   const {
     currentPath, setCurrentPath, serverAddr,
+    files, setFiles,
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")

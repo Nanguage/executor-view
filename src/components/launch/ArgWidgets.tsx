@@ -152,7 +152,11 @@ interface IJobRunSetting {
 
 export const JobRunSettings = ( props: IJobRunSetting ) => {
   const { afterJob, setAfterJob } = props
-  const { jobs } = useStore((state) => state)
+  const { jobs, refreshJobs } = useStore((state) => state)
+
+  React.useEffect(() => {
+    refreshJobs()
+  }, [])
 
   return (<>
     <ListItem key="job_type_selection">

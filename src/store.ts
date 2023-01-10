@@ -1,4 +1,6 @@
+import { FileArray } from "chonky";
 import create from "zustand";
+
 import {
   PanelLabel,
   FolderChain, Job, ServerRouter,
@@ -12,6 +14,8 @@ interface IProps {
   setPanel: (p: PanelLabel) => void, 
   serverAddr: string,
   setServerAddr: (addr: string) => void,
+  connected: boolean,
+  setConnected: (c: boolean) => void,
   monitorMode: boolean,
   setMonitorMode: (m: boolean) => void,
   allowedRouters: ServerRouter[],
@@ -49,6 +53,8 @@ interface IProps {
   userInfo: UserInfo | null,
   setUserInfo: (u: UserInfo) => void,
   nRefreshUserInfo: number,
+  files: FileArray,
+  setFiles: (files: FileArray) => void,
 }
 
 
@@ -57,6 +63,23 @@ const useStore = create<IProps>((set) => ({
   setPanel: (p) => { set({panel: p}) },
   serverAddr: "http://127.0.0.1:5000",
   setServerAddr: (addr) => { set({ serverAddr: addr }) },
+  connected: false,
+  setConnected: (c) => {
+    if (c === false) {
+      // clear states
+      set({
+        panel: "home",
+        allowedRouters: [],
+        userMode: "free",
+        monitorMode: false,
+        userInfo: null,
+        jobs: [],
+        tasks: [],
+        files: [],
+      })
+    }
+    set({connected: c})
+  },
   monitorMode: false,
   setMonitorMode: (m) => { set({ monitorMode: m }) },
   allowedRouters: [],
@@ -107,6 +130,8 @@ const useStore = create<IProps>((set) => ({
   setUserInfo: (u) => set({ userInfo: u }),
   nRefreshUserInfo: 0,
   refreshUserInfo: () => set((state) => ({nRefreshUserInfo: state.nRefreshUserInfo + 1})),
+  files: [],
+  setFiles: (files) => set({files: files})
 }))
 
 
