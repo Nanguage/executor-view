@@ -1,5 +1,6 @@
 import create from "zustand";
 import {
+  PanelLabel,
   FolderChain, Job, ServerRouter,
   CallReq, JobModify, UserMode,
   UserInfo, Task,
@@ -7,6 +8,8 @@ import {
 
 
 interface IProps {
+  panel: PanelLabel,
+  setPanel: (p: PanelLabel) => void, 
   serverAddr: string,
   setServerAddr: (addr: string) => void,
   monitorMode: boolean,
@@ -50,6 +53,8 @@ interface IProps {
 
 
 const useStore = create<IProps>((set) => ({
+  panel: "home",
+  setPanel: (p) => { set({panel: p}) },
   serverAddr: "http://127.0.0.1:5000",
   setServerAddr: (addr) => { set({ serverAddr: addr }) },
   monitorMode: false,

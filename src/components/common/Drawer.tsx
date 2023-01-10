@@ -13,6 +13,7 @@ import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FolderIcon from '@mui/icons-material/Folder';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import HomeIcon from '@mui/icons-material/Home';
 
 import { PanelLabel } from '../../types';
 import useStore from '../../store';
@@ -67,6 +68,14 @@ export default function CustomDrawer(props: IProps) {
       </DrawerHeader>
       <Divider />
       <List>
+        <ListItem key="home" disablePadding>
+          <ListItemButton onClick={() => props.setContentLabel("home")}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home"/>
+          </ListItemButton>
+        </ListItem>
 
         {(!monitorMode && allowedRouters.includes('task')) &&
           <ListItem key="launch" disablePadding>

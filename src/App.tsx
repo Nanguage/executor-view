@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import CustomAppBar from './components/common/AppBar'
 import CustomDrawer from './components/common/Drawer';
 import LaunchPanel from './pages/LaunchPanel';
+import Home from './pages/Home';
 import JobsPanel from './pages/JobsPanel';
 import FilesPanel from './pages/FilesPanel';
 import PipelinePanel from './pages/ChainViewPanel';
@@ -23,7 +24,9 @@ import useStore from './store';
 
 const ContentRoute = (props: {label: PanelLabel}) => {
   const { label } = props
-  if (label === "launch") {
+  if (label === "home") {
+    return <Home />
+  } else if (label === "launch") {
     return <LaunchPanel/>
   } else if (label === "jobs") {
     return <JobsPanel/>
@@ -39,19 +42,13 @@ const ContentRoute = (props: {label: PanelLabel}) => {
 
 function App() {
   const [drawerOpen, setDrawerOpen] = React.useState<boolean>(true)
-  const [contentLabel, setContentLabel] = React.useState<PanelLabel>('launch')
-  const { monitorMode, allowedRouters } = useStore((state) => state)
+  const {
+    monitorMode, allowedRouters,
+    panel, setPanel,
+  } = useStore((state) => state)
 
   React.useEffect(() => {
-    if (monitorMode) {
-      setContentLabel('jobs')
-    } else if (allowedRouters.includes('task')) {
-      setContentLabel('launch')
-    } else if (allowedRouters.includes('job')) {
-      setContentLabel('jobs')
-    } else if (allowedRouters.includes('file')) {
-      setContentLabel('files')
-    }
+    setPanel("home")
   }, [monitorMode, JSON.stringify(allowedRouters)])
 
   return (
@@ -60,10 +57,10 @@ function App() {
       <div style={{display: 'flex'}}>
         <CustomDrawer
           open={drawerOpen} setOpen={(o) => {setDrawerOpen(o)}}
-          setContentLabel={(l) => {setContentLabel(l)}}
+          setContentLabel={(l) => {setPanel(l)}}
           />
         <Container sx={{ mt: 10, mb: 4}}>
-          <ContentRoute label={contentLabel}/>
+          <ContentRoute label={panel}/>
         </Container>
       </div>
       <FetchServerSetting />
