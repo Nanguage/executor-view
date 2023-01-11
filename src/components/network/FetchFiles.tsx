@@ -3,10 +3,10 @@ import {
     FileArray,
     FileData,
 } from 'chonky';
+import { useSnackbar } from 'notistack';
 
 import useStore from '../../store';
 import { folderChainToStr } from '../../utils';
-import MessageBar from '../common/MessageBar';
 import { getAxiosInstance } from '../../utils';
 
 
@@ -18,10 +18,10 @@ interface FetchFilesProps {
 
 const FetchFiles = (props: FetchFilesProps) => {
   const { nRefresh, setFiles } = props
-  const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
-  const [errorText, setErrorText] = React.useState<string>("")
   const { currentPath } = useStore((state) => state)
   const serverAddr = useStore((state) => state.serverAddr)
+
+  const { enqueueSnackbar } = useSnackbar()
 
   React.useEffect(() => {
     setFiles([])
@@ -51,18 +51,12 @@ const FetchFiles = (props: FetchFilesProps) => {
       setFiles(sfiles)
     }).catch((error) => {
       console.log(error)
-      setErrorText(error.message + `: fetch ${addr}`)
-      setAlertOpen(true)
+      enqueueSnackbar(error.message + `: fetch ${addr}`, {variant: "error"})
     })
   }, [serverAddr])
 
   return (
-    <MessageBar
-      alertOpen={alertOpen}
-      setAlertOpen={setAlertOpen}
-      alertHidenDuration={6000}
-      text={errorText}
-      />
+    <></>
   )
 }
 

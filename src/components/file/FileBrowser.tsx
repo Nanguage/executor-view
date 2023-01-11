@@ -8,11 +8,11 @@ import {
     ChonkyActions,
 } from 'chonky';
 import { FileBrowser as ChonkyFileBrowser } from 'chonky';
+import { useSnackbar } from 'notistack';
 
 import useStore from '../../store';
 import { downloadFile, folderChainToStr, selectLocalFile } from '../../utils';
 import { FolderChain } from '../../types';
-import MessageBar from '../common/MessageBar';
 import FetchFiles from '../network/FetchFiles';
 import { getAxiosInstance } from '../../utils';
 
@@ -35,8 +35,8 @@ export default function FileBrowser(props: {}) {
     currentPath, setCurrentPath, serverAddr,
     files, setFiles,
   } = useStore((state) => state)
-  const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
-  const [errorText, setErrorText] = React.useState<string>("")
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleAction = React.useCallback<FileActionHandler>((data) => {
     console.log(data)
@@ -71,8 +71,7 @@ export default function FileBrowser(props: {}) {
           downloadFile(target_file.name, resp.data)
         }).catch((error) => {
           console.log(error)
-          setErrorText(`${error.message}: fetch ${addr}`)
-          setAlertOpen(true)
+          enqueueSnackbar(`${error.message}: fetch ${addr}`, { variant: "error" })
         })
       }
     } else if (data.id === "upload_files") {
@@ -93,8 +92,7 @@ export default function FileBrowser(props: {}) {
           setNRefresh(nRefresh + 1)
         }).catch((error) => {
           console.log(error)
-          setErrorText(`${error.message}: fetch ${addr}`)
-          setAlertOpen(true)
+          enqueueSnackbar(`${error.message}: fetch ${addr}`, { variant: "error" })
         })
       }).catch((_) => {
         console.log("Cancel upload")
@@ -110,8 +108,7 @@ export default function FileBrowser(props: {}) {
         setNRefresh(nRefresh + 1)
       }).catch((error) => {
         console.log(error)
-        setErrorText(`${error.message}: fetch ${addr}`)
-        setAlertOpen(true)
+        enqueueSnackbar(`${error.message}: fetch ${addr}`, { variant: "error" })
       })
     } else if(data.id === "move_files") {
       const addr = '/file/move'
@@ -127,8 +124,7 @@ export default function FileBrowser(props: {}) {
         setNRefresh(nRefresh + 1)
       }).catch((error) => {
         console.log(error)
-        setErrorText(`${error.message}: fetch ${addr}`)
-        setAlertOpen(true)
+        enqueueSnackbar(`${error.message}: fetch ${addr}`, { variant: "error" })
       })
     }
   }, [currentPath, serverAddr])
@@ -154,12 +150,6 @@ export default function FileBrowser(props: {}) {
         <FileContextMenu />
       </ChonkyFileBrowser>
       <FetchFiles nRefresh={nRefresh} setFiles={setFiles}/>
-      <MessageBar
-        alertOpen={alertOpen}
-        setAlertOpen={setAlertOpen}
-        alertHidenDuration={6000}
-        text={errorText}
-      />
     </>
   )
 }

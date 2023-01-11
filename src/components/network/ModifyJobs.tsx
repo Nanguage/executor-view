@@ -1,8 +1,8 @@
 import React from 'react';
+import { useSnackbar } from 'notistack';
 
 import useStore from '../../store';
-import MessageBar from '../common/MessageBar';
-import { MessageBarTypes, Job } from '../../types';
+import { Job } from '../../types';
 import { getAxiosInstance } from '../../utils';
 
 
@@ -12,9 +12,7 @@ const ModifyJobs = () => {
     nJobModify, refreshJobs,
   } = useStore((state) => state)
 
-  const [msgOpen, setMsgOpen] = React.useState<boolean>(false)
-  const [msg, setMsg] = React.useState<string>("")
-  const [msgType, setMsgType] = React.useState<MessageBarTypes>("info")
+  const { enqueueSnackbar } = useSnackbar()
 
   const modifyJobs = React.useCallback((jobs: Job[]) => {
     const promises = []
@@ -25,15 +23,10 @@ const ModifyJobs = () => {
       promises.push(promise)
     }
     Promise.all(promises).then((vals) => {
-      setMsgType("info")
-      setMsg(`Successfully ${jobModify} ${jobs.length} jobs.`)
-      setMsgOpen(true)
-      refreshJobs()
+      enqueueSnackbar(`Successfully ${jobModify} ${jobs.length} jobs.`, {variant: "success"})
     }).catch((errors) => {
       console.log(errors)
-      setMsgType("error")
-      setMsg(`Error occured when ${jobModify} jobs.`)
-      setMsgOpen(true)
+      enqueueSnackbar(`Error occured when ${jobModify} jobs.`, {variant: "error"})
     })
   }, [serverAddr, jobModify])
 
@@ -44,15 +37,7 @@ const ModifyJobs = () => {
   }, [nJobModify])
 
   return (
-    <>
-      <MessageBar
-        alertOpen={msgOpen}
-        setAlertOpen={setMsgOpen}
-        alertHidenDuration={8000}
-        text={msg}
-        type={msgType}
-        />
-    </>
+    <></>
   )
 }
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import axios from "axios";
 import Cookies from 'universal-cookie';
+import { useSnackbar } from 'notistack';
 
 import useStore from "../../store";
-import MessageBar from '../common/MessageBar';
-import { MessageBarTypes } from '../../types'
 
 
 const Login = () => {
@@ -14,9 +13,7 @@ const Login = () => {
     refreshJobs
   } = useStore((state) => state)
 
-  const [msgOpen, setMsgOpen] = React.useState<boolean>(false)
-  const [msg, setMsg] = React.useState<string>("")
-  const [msgType, setMsgType] = React.useState<MessageBarTypes>("info")
+  const { enqueueSnackbar } = useSnackbar()
 
   const addr = serverAddr + "/user/token"
   React.useEffect(() => {
@@ -29,28 +26,16 @@ const Login = () => {
       const token = resp.data['access_token']
       const cookies = new Cookies()
       cookies.set("Authorization", `Bearer ${token}`, {path: "/"})
-      setMsgType("info")
-      setMsg("Login success!")
-      setMsgOpen(true)
+      enqueueSnackbar("Login success!", {variant: "success"})
       refreshJobs()
     })
     .catch((error) => {
       console.log(error)
-      setMsgType("error")
-      setMsg("Login failed!")
-      setMsgOpen(true)
+      enqueueSnackbar("Login failed", {variant: "error"})
     })
   }, [nLogin])
 
-  return (<>
-    <MessageBar
-      alertOpen={msgOpen}
-      setAlertOpen={setMsgOpen}
-      alertHidenDuration={8000}
-      text={msg}
-      type={msgType}
-    /> 
-  </>)
+  return (<></>)
 }
 
 export default Login;

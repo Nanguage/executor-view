@@ -1,7 +1,7 @@
 import React from 'react';
+import { useSnackbar } from 'notistack';
 
 import useStore from '../../store';
-import MessageBar from '../common/MessageBar';
 import { getAxiosInstance } from '../../utils';
 
 
@@ -19,8 +19,8 @@ const jobLogFetchFactory = (
     const {
       serverAddr, monitorMode,
     } = useStore((state) => state)
-    const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
-    const [errorText, setErrorText] = React.useState<string>("")
+
+    const { enqueueSnackbar } = useSnackbar()
 
     React.useEffect(() => {
       fetchContent()
@@ -40,18 +40,12 @@ const jobLogFetchFactory = (
       })
       .catch((error) => {
         console.log(error)
-        setErrorText(error.message + `: fetch ${addr}`)
-        setAlertOpen(true)
+        enqueueSnackbar(error.message + `: fetch ${addr}`, {variant: "error"})
       })
     }, [serverAddr, monitorMode])
 
     return (
-      <MessageBar
-        alertOpen={alertOpen}
-        setAlertOpen={setAlertOpen}
-        alertHidenDuration={6000}
-        text={errorText}
-        />
+      <></>
     )
   }
 

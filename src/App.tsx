@@ -2,6 +2,7 @@ import './MuiClassNameSetup';
 
 import * as React from 'react';
 import Container from '@mui/material/Container';
+import { SnackbarProvider } from 'notistack';
 
 import CustomAppBar from './components/common/AppBar'
 import CustomDrawer from './components/common/Drawer';
@@ -49,34 +50,36 @@ function App() {
   }, [monitorMode, JSON.stringify(allowedRouters)])
 
   return (
-    <div className="App">
-      <CustomAppBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
-      <div style={{display: 'flex'}}>
-        <CustomDrawer
-          open={drawerOpen} setOpen={(o) => {setDrawerOpen(o)}}
-          setContentLabel={(l) => {setPanel(l)}}
-          />
-        <Container sx={{ mt: 10, mb: 4}}>
-          <ContentRoute label={panel}/>
-        </Container>
+    <SnackbarProvider maxSnack={6} autoHideDuration={7000} dense={true}>
+      <div className="App">
+        <CustomAppBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
+        <div style={{display: 'flex'}}>
+          <CustomDrawer
+            open={drawerOpen} setOpen={(o) => {setDrawerOpen(o)}}
+            setContentLabel={(l) => {setPanel(l)}}
+            />
+          <Container sx={{ mt: 10, mb: 4}}>
+            <ContentRoute label={panel}/>
+          </Container>
+        </div>
+        <FetchServerSetting />
+        {(monitorMode || allowedRouters.includes('job')) &&
+          <FetchJobs />
+        }
+        {((!monitorMode) && (allowedRouters.includes('job'))) &&
+          <ModifyJobs />
+        }
+        {((!monitorMode) && (allowedRouters.includes('task'))) &&
+          <>
+            <LaunchTask />
+            <FetchTasks />
+          </>
+        }
+        <LoginDialog />
+        <Login />
+        <FetchUserInfo />
       </div>
-      <FetchServerSetting />
-      {(monitorMode || allowedRouters.includes('job')) &&
-        <FetchJobs />
-      }
-      {((!monitorMode) && (allowedRouters.includes('job'))) &&
-        <ModifyJobs />
-      }
-      {((!monitorMode) && (allowedRouters.includes('task'))) &&
-        <>
-          <LaunchTask />
-          <FetchTasks />
-        </>
-      }
-      <LoginDialog />
-      <Login />
-      <FetchUserInfo />
-    </div>
+    </SnackbarProvider>
   )
 }
 

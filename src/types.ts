@@ -61,8 +61,6 @@ export interface CallReq {
   condition: Condition | null
 }
 
-export type MessageBarTypes = "info" | "error" | "success" | undefined
-
 export type JobModify = "re_run" | "cancel" | "remove"
 
 export interface UserInfo {

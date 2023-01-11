@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 import useStore from '../../store';
-import MessageBar from '../common/MessageBar'
 
 
 export default function FetchServerSetting() {
@@ -13,8 +13,9 @@ export default function FetchServerSetting() {
     setUserMode,
     setConnected,
   } = useStore((state) => state)
-  const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
-  const [errorText, setErrorText] = React.useState<string>("")
+
+  const { enqueueSnackbar } = useSnackbar()
+
   const fetchInterval = 30000
 
   React.useEffect(() => {
@@ -36,19 +37,13 @@ export default function FetchServerSetting() {
     })
     .catch((error) => {
       console.log(error)
-      setErrorText(error.message + `: fetch ${addr}`)
-      setAlertOpen(true)
+      enqueueSnackbar(error.message + `: fetch ${addr}`, {variant: "error"})
       setConnected(false)
     })
   }
 
   return (
-    <MessageBar
-      alertOpen={alertOpen}
-      setAlertOpen={setAlertOpen}
-      alertHidenDuration={21000}
-      text={errorText}
-    />
+    <></>
   )
 
 }

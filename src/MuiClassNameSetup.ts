@@ -10,6 +10,8 @@ ClassNameGenerator.configure(
       return componentName
     } else if (componentName.includes("MuiButtonGroup")) {
       return componentName
+    } else if (componentName.includes("MuiCollapse")) {
+      return componentName
     } else {
       return "my-" + componentName
     }

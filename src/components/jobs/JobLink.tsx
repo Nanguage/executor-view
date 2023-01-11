@@ -1,14 +1,13 @@
-import React from 'react';
 import Button from '@mui/material/Button';
+import { useSnackbar } from 'notistack';
 
 import useStore from '../../store';
-import MessageBar from '../common/MessageBar'
 
 
 const JobLink = () => {
   const { selectedJobs, allowedRouters, serverAddr } = useStore((state) => state)
-  const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
-  const [errorText, setErrorText] = React.useState<string>("")
+
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleClick = () => {
     const sjob = selectedJobs[0]
@@ -20,8 +19,7 @@ const JobLink = () => {
       else {
         const addr = sjob.attrs['address']
         if (addr === undefined) {
-          setErrorText("Error when get address of job.")
-          setAlertOpen(true)
+          enqueueSnackbar("Error when get address of job.", {variant: "error"})
           return
         }
         url = "http://" + addr
@@ -32,12 +30,6 @@ const JobLink = () => {
 
   return (
     <>
-    <MessageBar
-      alertOpen={alertOpen}
-      setAlertOpen={setAlertOpen}
-      alertHidenDuration={6000}
-      text={errorText}
-    />
     <Button
       onClick={handleClick}
       disabled={(selectedJobs.length != 1) || (selectedJobs[0].job_type !== "webapp")}
