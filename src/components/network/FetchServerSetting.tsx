@@ -11,6 +11,7 @@ export default function FetchServerSetting() {
     setAllowedRouters,
     setMonitorMode,
     setUserMode,
+    setConnected,
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
@@ -31,11 +32,13 @@ export default function FetchServerSetting() {
       setAllowedRouters(resp.data.allowed_routers)
       setMonitorMode(resp.data.monitor_mode)
       setUserMode(resp.data.user_mode)
+      setConnected(true)
     })
     .catch((error) => {
       console.log(error)
       setErrorText(error.message + `: fetch ${addr}`)
       setAlertOpen(true)
+      setConnected(false)
     })
   }
 

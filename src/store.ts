@@ -16,6 +16,7 @@ interface IProps {
   setServerAddr: (addr: string) => void,
   connected: boolean,
   setConnected: (c: boolean) => void,
+  clearAllStates: () => void,
   monitorMode: boolean,
   setMonitorMode: (m: boolean) => void,
   allowedRouters: ServerRouter[],
@@ -51,14 +52,15 @@ interface IProps {
   currentPassword: string | null,
   login: (username: string, password: string) => void,
   userInfo: UserInfo | null,
-  setUserInfo: (u: UserInfo) => void,
+  setUserInfo: (u: UserInfo | null) => void,
   nRefreshUserInfo: number,
+  refreshUserInfo: () => void,
   files: FileArray,
   setFiles: (files: FileArray) => void,
 }
 
 
-const useStore = create<IProps>((set) => ({
+const useStore = create<IProps>((set, get) => ({
   panel: "home",
   setPanel: (p) => { set({panel: p}) },
   serverAddr: "http://127.0.0.1:5000",
@@ -66,19 +68,21 @@ const useStore = create<IProps>((set) => ({
   connected: false,
   setConnected: (c) => {
     if (c === false) {
-      // clear states
-      set({
-        panel: "home",
-        allowedRouters: [],
-        userMode: "free",
-        monitorMode: false,
-        userInfo: null,
-        jobs: [],
-        tasks: [],
-        files: [],
-      })
+      get().clearAllStates()
     }
     set({connected: c})
+  },
+  clearAllStates: () => {
+    set({
+      panel: "home",
+      allowedRouters: [],
+      userMode: "free",
+      monitorMode: false,
+      userInfo: null,
+      jobs: [],
+      tasks: [],
+      files: [],
+    })
   },
   monitorMode: false,
   setMonitorMode: (m) => { set({ monitorMode: m }) },
@@ -127,7 +131,20 @@ const useStore = create<IProps>((set) => ({
     nLogin: state.nLogin + 1,
   })),
   userInfo: null,
-  setUserInfo: (u) => set({ userInfo: u }),
+  setUserInfo: (u) => {
+    if (u === null) {
+      set({
+        jobs: [],
+        tasks: [],
+        files: [],
+      })
+    } else {
+      const state = get()
+      state.refreshTasks()
+      state.refreshJobs()
+    }
+    set({ userInfo: u })
+  },
   nRefreshUserInfo: 0,
   refreshUserInfo: () => set((state) => ({nRefreshUserInfo: state.nRefreshUserInfo + 1})),
   files: [],

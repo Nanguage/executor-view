@@ -8,25 +8,12 @@ import { getAxiosInstance } from "../../utils"
 const FetchUserInfo = () => {
 
   const {
-    serverAddr, setUserInfo,
-    nRefreshUserInfo, setLoginDialogOpen,
+    serverAddr, setUserInfo, refreshUserInfo,
+    nRefreshUserInfo, setLoginDialogOpen, loginDialogOpen,
     userMode,
   } = useStore((state) => state)
   const [alertOpen, setAlertOpen] = React.useState<boolean>(false)
   const [errorText, setErrorText] = React.useState<string>("")
-
-  const fetchInterval = 5000
-
-  React.useEffect(() => {
-    fetchUserInfo()
-
-    const interval = setInterval(() => fetchUserInfo(), fetchInterval)
-    
-    return () => {
-      clearInterval(interval)
-    }
-  }, [serverAddr, nRefreshUserInfo])
-
 
   const fetchUserInfo = React.useCallback(
     () => {
@@ -39,14 +26,31 @@ const FetchUserInfo = () => {
       })
       .catch((error: any) => {
         console.log(error)
-        if (error.response.status === 403) {
+        if ([403, 401].includes(error.response.status)) {
           setLoginDialogOpen(true)
         }
-        setErrorText(error.message + `: fetch ${addr}`)
-        setAlertOpen(true)
+        if (loginDialogOpen === false) {
+          setErrorText(error.message + `: fetch ${addr}`)
+          setAlertOpen(true)
+        }
+        setUserInfo(null)
       })
-    }, [serverAddr]
+    }, [serverAddr, userMode, loginDialogOpen]
   )
+
+  React.useEffect(() => {
+    const fetchInterval = 5000
+
+    const interval = setInterval(() => refreshUserInfo(), fetchInterval)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [serverAddr])
+
+  React.useEffect(() => {
+    fetchUserInfo()
+  }, [nRefreshUserInfo])
 
   return (
     <MessageBar
