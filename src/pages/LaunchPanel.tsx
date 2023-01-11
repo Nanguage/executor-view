@@ -31,7 +31,7 @@ export default function LaunchPanel(props: {}) {
         {
           tasks.map(
             (t) =>
-            <Grid item xs={12} key={t.name}>
+            <Grid item xs={5} key={t.name}>
               <TaskCard name={t.name} description={t.description} task={t}/>
             </Grid>
           )

@@ -10,7 +10,7 @@ const FetchUserInfo = () => {
   const {
     serverAddr, setUserInfo, refreshUserInfo,
     nRefreshUserInfo, setLoginDialogOpen, loginDialogOpen,
-    userMode,
+    userMode, connected,
   } = useStore((state) => state)
 
   const { enqueueSnackbar } = useSnackbar()
@@ -40,12 +40,17 @@ const FetchUserInfo = () => {
   React.useEffect(() => {
     const fetchInterval = 5000
 
-    const interval = setInterval(() => refreshUserInfo(), fetchInterval)
+    const interval = setInterval(
+      () => {
+        if (connected) {
+          refreshUserInfo()
+        }
+      }, fetchInterval)
 
     return () => {
       clearInterval(interval)
     }
-  }, [serverAddr])
+  }, [serverAddr, connected])
 
   React.useEffect(() => {
     fetchUserInfo()

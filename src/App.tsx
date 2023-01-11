@@ -50,7 +50,7 @@ function App() {
   }, [monitorMode, JSON.stringify(allowedRouters)])
 
   return (
-    <SnackbarProvider maxSnack={6} autoHideDuration={7000} dense={true}>
+    <SnackbarProvider maxSnack={6} autoHideDuration={7000}>
       <div className="App">
         <CustomAppBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
         <div style={{display: 'flex'}}>
