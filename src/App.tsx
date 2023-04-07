@@ -2,7 +2,9 @@ import './MuiClassNameSetup';
 
 import * as React from 'react';
 import Container from '@mui/material/Container';
-import { SnackbarProvider } from 'notistack';
+import IconButton from '@mui/material/IconButton';
+import Close from '@mui/icons-material/Close';
+import { SnackbarProvider, closeSnackbar } from 'notistack';
 
 import CustomAppBar from './components/common/AppBar'
 import CustomDrawer from './components/common/Drawer';
@@ -50,7 +52,16 @@ function App() {
   }, [monitorMode, JSON.stringify(allowedRouters)])
 
   return (
-    <SnackbarProvider maxSnack={6} autoHideDuration={7000}>
+    <SnackbarProvider
+      maxSnack={6}
+      autoHideDuration={7000}
+      action={(snackbarId) => (
+        <IconButton
+          onClick={() => closeSnackbar(snackbarId)}>
+            <Close />
+        </IconButton>
+      )}
+      >
       <div className="App">
         <CustomAppBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}/>
         <div style={{display: 'flex'}}>

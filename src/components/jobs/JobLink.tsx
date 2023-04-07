@@ -5,7 +5,10 @@ import useStore from '../../store';
 
 
 const JobLink = () => {
-  const { selectedJobs, allowedRouters, serverAddr } = useStore((state) => state)
+  const {
+    selectedJobs, allowedRouters, serverAddr,
+    refreshJobs,
+  } = useStore((state) => state)
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -17,6 +20,7 @@ const JobLink = () => {
         url = `${serverAddr}/proxy/app/${sjob.id}/`
       }
       else {
+        refreshJobs()
         const addr = sjob.attrs['address']
         if (addr === undefined) {
           enqueueSnackbar("Error when get address of job.", {variant: "error"})

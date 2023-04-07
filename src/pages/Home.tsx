@@ -51,7 +51,7 @@ const UserInfoPanel = () => {
         </div>
       </div>
     )
-  } else {
+  } else if (userMode !== "free") {
     return (
       <div style={{textAlign: "center"}}>
         <p style={{
@@ -62,6 +62,10 @@ const UserInfoPanel = () => {
           Login is needed in {userMode} mode.
         </p>
       </div>
+    )
+  } else {
+    return (
+      <></>
     )
   }
 }

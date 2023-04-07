@@ -21,7 +21,7 @@
     "chonky-icon-fontawesome": "^2.3.2",
     "dagre": "^0.8.5",
     "memoizee": "^0.4.15",
-    "notistack": "^2.0.8",
+    "notistack": "3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reactflow": "^11.1.2",
