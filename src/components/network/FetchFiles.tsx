@@ -53,7 +53,7 @@ const FetchFiles = (props: FetchFilesProps) => {
       console.log(error)
       enqueueSnackbar(error.message + `: fetch ${addr}`, {variant: "error"})
     })
-  }, [serverAddr])
+  }, [serverAddr, currentPath])
 
   return (
     <></>
