@@ -45,11 +45,20 @@ function App() {
   const {
     monitorMode, allowedRouters,
     panel, setPanel,
+    setServerAddr,
   } = useStore((state) => state)
 
   React.useEffect(() => {
     setPanel("home")
   }, [monitorMode, JSON.stringify(allowedRouters)])
+
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const serverAddr = urlParams.get('server')
+    if (serverAddr !== null) {
+      setServerAddr(serverAddr)
+    }
+  }, [])
 
   return (
     <SnackbarProvider
