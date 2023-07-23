@@ -25,6 +25,8 @@ jobs:
         run: |
           yarn install
           yarn build
+        env:
+          BASE_URL: /executor-view/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
