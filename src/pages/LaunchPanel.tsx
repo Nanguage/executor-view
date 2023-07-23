@@ -8,24 +8,13 @@ import useStore from '../store';
 
 export default function LaunchPanel(props: {}) {
 
-  const { refreshTasks, tasks, serverAddr } = useStore((state) => state)
-
-  React.useEffect(() => {
-    const fetchInterval = 90000
-
-    const myInterval = setInterval(() => refreshTasks(), fetchInterval)
-
-    return () => {
-      clearInterval(myInterval)
-    }
-  }, [serverAddr])
+  const { refreshTasks, tasks} = useStore((state) => state)
 
   return (
     <div>
       <div>
-        <Button onClick={(e) => {refreshTasks}}>Refresh</Button>
+        <Button onClick={(e) => {refreshTasks()}}>Refresh</Button>
       </div>
-
 
       <Grid container rowGap={1} columnGap={1}>
         {

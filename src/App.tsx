@@ -53,6 +53,7 @@ function App() {
   }, [monitorMode, JSON.stringify(allowedRouters)])
 
   React.useEffect(() => {
+    console.log("Hello")
     const urlParams = new URLSearchParams(window.location.search)
     const serverAddr = urlParams.get('server')
     if (serverAddr !== null) {

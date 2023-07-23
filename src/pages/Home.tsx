@@ -95,8 +95,6 @@ const ConnectInfoPanel = () => {
 
 
 const Home = () => {
-
-
   const {
     connected
   } = useStore((state) => state)

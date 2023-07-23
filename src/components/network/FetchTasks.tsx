@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import axios from 'axios';
 import { useSnackbar } from 'notistack';
 
 import useStore from '../../store';
@@ -7,27 +8,40 @@ import { getAxiosInstance } from '../../utils';
 
 const FetchTasks = () => {
   const {
-    serverAddr, refreshServer, nRefreshTasks, setTasks,
+    serverAddr, refreshServer,
+    nRefreshTasks, setTasks,
   } = useStore((state) => state)
 
   const { enqueueSnackbar } = useSnackbar()
+  const fetchInterval = 90000
 
-  React.useEffect(() => {
-    fetchTasks()
-  }, [nRefreshTasks])
-
-  const fetchTasks = React.useCallback(() => {
+  const fetchTasks = (serverURL: string) => {
+    const source = axios.CancelToken.source()
+    const instance = getAxiosInstance(serverURL)
     const addr = "/task/list_all"
-    const instance = getAxiosInstance(serverAddr)
-    instance.get(addr).then((resp) => {
+    instance.get(addr, {cancelToken: source.token}).then((resp) => {
       setTasks(resp.data)
     })
     .catch((error) => {
-      console.log(error)
-      enqueueSnackbar(error.message + `: fetch ${addr}`, {variant: "error"})
-      refreshServer()
+      if (axios.isCancel(error)) {
+        console.log("fetchTasks request cancelled")
+      } else {
+        console.log(error)
+        enqueueSnackbar(error.message + `: fetch ${addr}`, {variant: "error"})
+        refreshServer()
+      }
     })
-  }, [serverAddr])
+    return source.cancel
+  }
+
+  React.useEffect(() => {
+    const cancelRequest = fetchTasks(serverAddr)
+    const myInterval = setInterval(() => fetchTasks(serverAddr), fetchInterval)
+    return () => {
+      clearInterval(myInterval)
+      cancelRequest()
+    }
+  }, [serverAddr, nRefreshTasks])
 
   return (
     <></>

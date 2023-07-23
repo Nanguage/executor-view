@@ -156,7 +156,7 @@ export default function CustomAppBar(props: IProps) {
               <StyledInputBase
                 placeholder="Server address"
                 inputProps={{ 'aria-label': 'search' }}
-                defaultValue={serverAddr}
+                value={serverAddr}
                 onChange={(e) => setServerAddr(e.target.value)}
                 onBlur={(e) => {refreshServer()}}
               />
