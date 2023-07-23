@@ -42,7 +42,7 @@ export interface Condition {
 
 export interface ConditionAfterAnoter {
   job_id: string,
-  status: JobStatus
+  statuses: JobStatus[]
 }
 
 export type PanelLabel = 'home' | 'launch' | 'jobs' | 'files'

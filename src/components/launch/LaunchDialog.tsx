@@ -40,7 +40,7 @@ export default function TaskLaunchDialog(props: IProps) {
         type: "AfterAnother",
         arguments: {
           job_id: afterJob.id,
-          status: "done"
+          statuses: ["done"]
         }
       }
     }
