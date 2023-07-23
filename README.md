@@ -19,9 +19,9 @@
 ## 📖 Introduction
 
 Executor View is the web frontend for [Executor HTTP](https://github.com/Nanguage/executor-http).
-It's provided a web interface for users to submit jobs to the executor-http server.
+It's provided a web interface for users to submit, monitor, and manage jobs for the executor-http server.
 
-![screenshot](docs/task_panel.png)
+![screenshot](docs/imgs/task_panel.png)
 
 ### Specify server address via URL
 
