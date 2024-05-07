@@ -10,7 +10,7 @@ const Login = () => {
   const {
     serverAddr,
     currentUsername, currentPassword, nLogin,
-    refreshJobs
+    refreshJobs, refreshServer, refreshUserInfo
   } = useStore((state) => state)
 
   const { enqueueSnackbar } = useSnackbar()
@@ -28,6 +28,8 @@ const Login = () => {
       cookies.set("Authorization", `Bearer ${token}`, {path: "/"})
       enqueueSnackbar("Login success!", {variant: "success"})
       refreshJobs()
+      refreshServer()
+      refreshUserInfo()
     })
     .catch((error) => {
       console.log(error)

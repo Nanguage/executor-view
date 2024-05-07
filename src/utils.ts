@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import memoizee from 'memoizee';
+import Cookies from 'universal-cookie';
 
 import { FolderChain } from "./types";
 
@@ -66,11 +66,16 @@ export const selectLocalFile = () => {
 }
 
 
-export const getAxiosInstance = memoizee(
-  (serverAddr: string) => {
-    let instance = axios.create({
-      withCredentials: true,
-      baseURL: serverAddr,
-    })
-    return instance
-  }, {length: 1})
+export const getAxiosInstance = (serverAddr: string) => {
+  const cookies = new Cookies();
+  const authToken = cookies.get('Authorization');
+
+  let instance = axios.create({
+    withCredentials: true,
+    baseURL: serverAddr,
+    headers: {
+      'Authorization': authToken,
+    }
+  })
+  return instance
+}

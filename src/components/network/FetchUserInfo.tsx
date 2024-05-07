@@ -12,7 +12,7 @@ const FetchUserInfo = () => {
     serverAddr, setUserInfo, refreshUserInfo,
     nRefreshUserInfo, setLoginDialogOpen, loginDialogOpen,
     userMode, connected,
-  } = useStore((state) => state)
+  } = useStore()
 
   const { enqueueSnackbar } = useSnackbar()
   const fetchInterval = 5000
