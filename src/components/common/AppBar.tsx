@@ -92,7 +92,7 @@ const CustomButton = styled(Button)(({ theme }) => ({
 
 
 const LoginButton = () => {
-  const { setLoginDialogOpen } = useStore((state) => state)
+  const { setLoginDialogOpen, userInfo } = useStore()
   return (
     <CustomButton
       onClick={() => {setLoginDialogOpen(true)}}
@@ -100,7 +100,9 @@ const LoginButton = () => {
         marginLeft: 20,
       }}
     >
-      Login
+      {
+        userInfo === null ? "Login" : userInfo.username
+      }
     </CustomButton>
   )
 }

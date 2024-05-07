@@ -16,12 +16,13 @@ interface LoginDialogProps {
 
 
 const LoginDialog = (props: LoginDialogProps) => {
-
-  const [username, setUsername] = React.useState("")
-  const [password, setPassword] = React.useState("")
   const {
-    loginDialogOpen, setLoginDialogOpen, login,
+    loginDialogOpen, setLoginDialogOpen, login, userInfo
   } = useStore((state) => state)
+  const _username = userInfo === null ? "" : userInfo.username
+
+  const [username, setUsername] = React.useState(_username)
+  const [password, setPassword] = React.useState("")
 
   const handleClose = () => {
     setLoginDialogOpen(false)
