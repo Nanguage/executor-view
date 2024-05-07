@@ -5,7 +5,6 @@ import ListItemText from '@mui/material/ListItemText';
 import MuiInput from '@mui/material/Input';
 import Grid from '@mui/material/Grid';
 import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
@@ -72,6 +71,11 @@ const ArgInput = (props: IArgInput) => {
     return <Input
             value={val} inputProps={inputProps}
             onChange={getChangeHandler(parseFloat)}/>
+  } else if (arg.type === "Path") {
+    return <Input
+            value={val}
+            onChange={getChangeHandler((v) => v)}
+            />
   } else {
     return <Input
             value={val}

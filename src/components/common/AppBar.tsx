@@ -8,6 +8,7 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import StorageIcon from '@mui/icons-material/Storage';
 import Button from '@mui/material/Button';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 import useStore from '../../store';
 
@@ -94,16 +95,31 @@ const CustomButton = styled(Button)(({ theme }) => ({
 const LoginButton = () => {
   const { setLoginDialogOpen, userInfo } = useStore()
   return (
-    <CustomButton
-      onClick={() => {setLoginDialogOpen(true)}}
-      style={{
-        marginLeft: 20,
-      }}
-    >
+    <div style={{marginLeft: 10}}>
       {
-        userInfo === null ? "Login" : userInfo.username
+        userInfo === null ? (
+          <CustomButton
+            onClick={() => {setLoginDialogOpen(true)}}
+            style={{
+              marginLeft: 20,
+            }}
+          >
+            Login
+          </CustomButton>
+        ) : (
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={() => setLoginDialogOpen(true)}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+        )
       }
-    </CustomButton>
+    </div>
   )
 }
 
