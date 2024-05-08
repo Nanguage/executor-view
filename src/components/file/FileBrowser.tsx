@@ -34,6 +34,7 @@ export default function FileBrowser(props: {}) {
   const {
     currentPath, setCurrentPath, serverAddr,
     files, setFiles,
+    setSelectedFiles,
   } = useStore((state) => state)
 
   const { enqueueSnackbar } = useSnackbar();
@@ -126,6 +127,9 @@ export default function FileBrowser(props: {}) {
         console.log(error)
         enqueueSnackbar(`${error.message}: fetch ${addr}`, { variant: "error" })
       })
+    } else if(data.id === "change_selection") {
+      console.log(data.state.selectedFiles)
+      setSelectedFiles(data.state.selectedFiles)
     }
   }, [currentPath, serverAddr])
 

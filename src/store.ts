@@ -57,6 +57,14 @@ interface IProps {
   refreshUserInfo: () => void,
   files: FileArray,
   setFiles: (files: FileArray) => void,
+  selectedFiles: FileArray,
+  setSelectedFiles: (files: FileArray) => void,
+  fileSelectDialogOpen: boolean,
+  setFileSelectDialogOpen: (o: boolean) => void,
+  returnFile: string | null,
+  setReturnFile: (f: string | null) => void,
+  fieldSetter: (val: any) => void,
+  setFieldSetter: (f: (val: any) => void) => void,
 }
 
 
@@ -148,7 +156,15 @@ const useStore = create<IProps>((set, get) => ({
   nRefreshUserInfo: 0,
   refreshUserInfo: () => set((state) => ({nRefreshUserInfo: state.nRefreshUserInfo + 1})),
   files: [],
-  setFiles: (files) => set({files: files})
+  setFiles: (files) => set({files: files}),
+  selectedFiles: [],
+  setSelectedFiles: (files) => set({selectedFiles: files}),
+  fileSelectDialogOpen: false,
+  setFileSelectDialogOpen: (o) => set({fileSelectDialogOpen: o}),
+  returnFile: null,
+  setReturnFile: (f) => set({returnFile: f}),
+  fieldSetter: (val) => {},
+  setFieldSetter: (f) => set({fieldSetter: f}),
 }))
 
 

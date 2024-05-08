@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import Select from '@mui/material/Select';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 import { TaskArg, Job } from '../../types';
 import useStore from '../../store';
@@ -72,10 +73,27 @@ const ArgInput = (props: IArgInput) => {
             value={val} inputProps={inputProps}
             onChange={getChangeHandler(parseFloat)}/>
   } else if (arg.type === "Path") {
-    return <Input
-            value={val}
-            onChange={getChangeHandler((v) => v)}
-            />
+    const { setFileSelectDialogOpen, setFieldSetter } = useStore()
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+      }}>
+        <Input
+          value={val}
+          onChange={getChangeHandler((v) => v)}
+          />
+        <Button
+          onClick={
+            () => {
+              setFieldSetter(setVal)
+              setFileSelectDialogOpen(true)
+            }
+          }
+        >Select</Button>
+      </div>
+    )
   } else {
     return <Input
             value={val}

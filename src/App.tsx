@@ -19,6 +19,7 @@ import FetchTasks from './components/network/FetchTasks';
 import ModifyJobs from './components/network/ModifyJobs';
 import { PanelLabel } from './types';
 import LoginDialog from './components/user/LoginDialog';
+import FileSelectDialog from './components/file/FileSelectDialog';
 import Login from './components/network/Login';
 import FetchUserInfo from './components/network/FetchUserInfo';
 import useStore from './store';
@@ -97,6 +98,7 @@ function App() {
           </>
         }
         <LoginDialog />
+        <FileSelectDialog />
         <Login />
         <FetchUserInfo />
       </div>
